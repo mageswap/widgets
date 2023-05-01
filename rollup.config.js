@@ -8,7 +8,6 @@ const { babel } = require('@rollup/plugin-babel')
 const commonjs = require('@rollup/plugin-commonjs')
 const inject = require('@rollup/plugin-inject')
 const json = require('@rollup/plugin-json')
-const ts = require('@rollup/plugin-typescript')
 const { nodeResolve: resolve } = require('@rollup/plugin-node-resolve')
 const { default: dts } = require('rollup-plugin-dts')
 const url = require('@rollup/plugin-url')
@@ -55,7 +54,6 @@ const transpile = {
 
     // Source code transformation
     json(), // imports json as ES6; doing so enables module resolution
-    ts(),
     url({ include: ['**/*.png', '**/*.svg'], limit: Infinity }), // imports assets as data URIs
     svgr({ jsxRuntime: 'automatic' }), // imports svgs as React components (without re-importing React)
     sass({ output: 'dist/fonts.css', verbose: false }), // generates fonts.css

@@ -120,14 +120,9 @@ export function Provider({ locale, forceRenderAfterLocaleChange = true, onActiva
   // See https://github.com/lingui/js-lingui/issues/1194#issuecomment-1068488619.
   if (i18n.locale === undefined && locale === DEFAULT_LOCALE) {
     const pluralsGet = () => plurals[DEFAULT_LOCALE] as any
-    i18n.loadLocaleData(DEFAULT_LOCALE, { plurals: pluralsGet })
-    i18n.load(DEFAULT_LOCALE, {})
+    i18n.load(DEFAULT_LOCALE, { plurals: pluralsGet() })
     i18n.activate(DEFAULT_LOCALE)
   }
 
-  return (
-    <I18nProvider forceRenderOnLocaleChange={forceRenderAfterLocaleChange} i18n={i18n}>
-      {children}
-    </I18nProvider>
-  )
+  return <I18nProvider i18n={i18n}>{children}</I18nProvider>
 }

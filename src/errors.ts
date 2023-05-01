@@ -20,6 +20,7 @@ export class WidgetError extends Error {
   dismissable = false
 
   constructor(config: WidgetErrorConfig) {
+    console.trace()
     super(config.message)
     this.header = config.header ?? DEFAULT_ERROR_HEADER
     this.action = config.action ?? DEFAULT_ERROR_ACTION

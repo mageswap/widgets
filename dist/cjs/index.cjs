@@ -3,17 +3,17 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('react');
-var index = require('./index-419955f9.cjs');
+var index = require('./index-bdef4b51.cjs');
 var sdkCore = require('@mageswap/sdk-core');
 require('buffer');
 require('@babel/runtime/helpers/slicedToArray');
-require('@babel/runtime/helpers/defineProperty');
-require('@babel/runtime/helpers/extends');
 require('styled-components');
 require('@babel/runtime/helpers/taggedTemplateLiteral');
 require('react-feather');
+require('@babel/runtime/helpers/defineProperty');
 require('polished');
 require('wcag-contrast');
+require('@babel/runtime/helpers/extends');
 require('rebass');
 require('@web3-react/core');
 require('@babel/runtime/helpers/objectWithoutProperties');
