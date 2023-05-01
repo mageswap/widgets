@@ -1,6 +1,6 @@
-import { Fraction, Percent } from '@uniswap/sdk-core'
-import { Pair } from '@uniswap/v2-sdk'
-import { FeeAmount, Pool } from '@uniswap/v3-sdk'
+import { Fraction, Percent } from '@mageswap/sdk-core'
+import { Pair } from '@mageswap/v2-sdk'
+import { FeeAmount, Pool } from '@mageswap/v3-sdk'
 import {
   ALLOWED_PRICE_IMPACT_HIGH,
   ALLOWED_PRICE_IMPACT_LOW,

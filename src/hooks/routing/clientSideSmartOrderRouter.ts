@@ -1,6 +1,6 @@
 import { BaseProvider } from '@ethersproject/providers'
-import { BigintIsh, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
-import type { AlphaRouterConfig } from '@uniswap/smart-order-router'
+import { BigintIsh, CurrencyAmount, Token, TradeType } from '@mageswap/sdk-core'
+import type { AlphaRouterConfig } from '@mageswap/smart-order-router'
 // This file is lazy-loaded, so the import of smart-order-router is intentional.
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import {
@@ -10,7 +10,7 @@ import {
   routeAmountsToString,
   StaticV2SubgraphProvider,
   UniswapMulticallProvider,
-} from '@uniswap/smart-order-router'
+} from '@mageswap/smart-order-router'
 import { nativeOnChain } from 'constants/tokens'
 import JSBI from 'jsbi'
 import { GetQuoteArgs, QuoteResult, QuoteState } from 'state/routing/types'
@@ -36,7 +36,7 @@ function getRouter(chainId: ChainId, provider: BaseProvider): AlphaRouter {
   if (cached) return cached
 
   // V2 is unsupported for chains other than mainnet.
-  // TODO(zzmp): Upstream to @uniswap/smart-order-router, exporting an enum of supported v2 chains for clarity.
+  // TODO(zzmp): Upstream to @mageswap/smart-order-router, exporting an enum of supported v2 chains for clarity.
   let v2SubgraphProvider
   if (chainId !== ChainId.MAINNET) {
     v2SubgraphProvider = new StaticV2SubgraphProvider(chainId)
@@ -44,7 +44,7 @@ function getRouter(chainId: ChainId, provider: BaseProvider): AlphaRouter {
 
   // V3 computes on-chain, so the quoter must have gas limits appropriate to the provider.
   // Most defaults are fine, but polygon needs a lower gas limit.
-  // TODO(zzmp): Upstream to @uniswap/smart-order-router, possibly making this easier to modify
+  // TODO(zzmp): Upstream to @mageswap/smart-order-router, possibly making this easier to modify
   // (eg allowing configuration without an instance to avoid duplicating multicall2Provider).
   let onChainQuoteProvider
   let multicall2Provider

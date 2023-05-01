@@ -1,5 +1,5 @@
-import { Currency, TradeType } from '@uniswap/sdk-core'
-import { FeeOptions } from '@uniswap/v3-sdk'
+import { Currency, TradeType } from '@mageswap/sdk-core'
+import { FeeOptions } from '@mageswap/v3-sdk'
 import { SupportedChainId } from 'constants/chains'
 import { nativeOnChain } from 'constants/tokens'
 import { atom } from 'jotai'

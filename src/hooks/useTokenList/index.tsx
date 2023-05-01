@@ -1,5 +1,5 @@
-import { Token } from '@uniswap/sdk-core'
-import { TokenInfo, TokenList } from '@uniswap/token-lists'
+import { Token } from '@mageswap/sdk-core'
+import { TokenInfo, TokenList } from '@mageswap/token-lists'
 import { useWeb3React } from '@web3-react/core'
 import { useAsyncError } from 'components/Error/ErrorBoundary'
 import { SupportedChainId } from 'constants/chains'

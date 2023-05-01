@@ -1,4 +1,4 @@
-import { createMulticall } from '@uniswap/redux-multicall'
+import { createMulticall } from '@mageswap/redux-multicall'
 import { useWeb3React } from '@web3-react/core'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useInterfaceMulticall } from 'hooks/useContract'

@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount, Token } from '@mageswap/sdk-core'
 import { WidgetPromise } from 'errors'
 import { GetQuoteArgs, InterfaceTrade, TradeResult } from 'state/routing/types'
 import {

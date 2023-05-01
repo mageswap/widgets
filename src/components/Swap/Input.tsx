@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { formatCurrencyAmount, NumberType } from '@uniswap/conedison/format'
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
+import { formatCurrencyAmount, NumberType } from '@mageswap/conedison/format'
+import { Currency, CurrencyAmount } from '@mageswap/sdk-core'
 import { TextButton } from 'components/Button'
 import { loadingTransitionCss } from 'css/loading'
 import { useIsSwapFieldIndependent, useSwapAmount, useSwapCurrency, useSwapInfo } from 'hooks/swap'

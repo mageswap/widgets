@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { formatPriceImpact } from '@uniswap/conedison/format'
+import { formatPriceImpact } from '@mageswap/conedison/format'
 import Row from 'components/Row'
 import Tooltip, { SmallToolTipBody, TooltipText } from 'components/Tooltip'
 import { PriceImpact } from 'hooks/usePriceImpact'

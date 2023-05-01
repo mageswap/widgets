@@ -1,6 +1,6 @@
-import { tokens } from '@uniswap/default-token-list'
-import { Currency, TradeType } from '@uniswap/sdk-core'
-import { Field, SupportedChainId, SwapWidget } from '@uniswap/widgets'
+import { tokens } from '@mageswap/default-token-list'
+import { Currency, TradeType } from '@mageswap/sdk-core'
+import { Field, SupportedChainId, SwapWidget } from '@mageswap/widgets'
 import Row from 'components/Row'
 import { useCallback, useMemo, useState } from 'react'
 

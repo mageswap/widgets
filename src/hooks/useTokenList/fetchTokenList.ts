@@ -1,4 +1,4 @@
-import type { TokenList } from '@uniswap/token-lists'
+import type { TokenList } from '@mageswap/token-lists'
 import contenthashToUri from 'utils/contenthashToUri'
 import parseENSAddress from 'utils/parseENSAddress'
 import uriToHttp from 'utils/uriToHttp'

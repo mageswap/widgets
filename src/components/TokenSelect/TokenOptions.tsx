@@ -1,4 +1,4 @@
-import { Currency } from '@uniswap/sdk-core'
+import { Currency } from '@mageswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import useCurrencyBalance from 'hooks/useCurrencyBalance'
 import useNativeEvent from 'hooks/useNativeEvent'
@@ -231,7 +231,7 @@ const TokenOptions = forwardRef<TokenOptionsHandle, TokenOptionsProps>(function 
         {({ height }) => (
           <TokenList
             hover={hover}
-            height={height}
+            height={height as any}
             width="100%"
             itemCount={tokens.length}
             itemData={tokens}

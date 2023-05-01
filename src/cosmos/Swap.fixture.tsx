@@ -1,5 +1,5 @@
-import { tokens } from '@uniswap/default-token-list'
-import { TokenInfo } from '@uniswap/token-lists'
+import { tokens } from '@mageswap/default-token-list'
+import { TokenInfo } from '@mageswap/token-lists'
 import {
   darkTheme,
   defaultTheme,
@@ -7,7 +7,7 @@ import {
   lightTheme,
   SupportedChainId,
   SwapWidget,
-} from '@uniswap/widgets'
+} from '@mageswap/widgets'
 import Row from 'components/Row'
 import { CHAIN_NAMES_TO_IDS } from 'constants/chains'
 import { useCallback, useEffect, useMemo, useState } from 'react'

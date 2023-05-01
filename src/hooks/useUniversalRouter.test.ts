@@ -1,7 +1,7 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { sendTransaction } from '@uniswap/conedison/provider/index'
-import { TradeType } from '@uniswap/sdk-core'
-import { SwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@uniswap/universal-router-sdk'
+import { sendTransaction } from '@mageswap/conedison/provider/index'
+import { TradeType } from '@mageswap/sdk-core'
+import { SwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@mageswap/universal-router-sdk'
 import { SupportedChainId } from 'constants/chains'
 import { TWO_PERCENT } from 'constants/misc'
 import { InterfaceTrade } from 'state/routing/types'
@@ -22,7 +22,7 @@ const SWAP_TRANSACTION_INFO = {
   slippageTolerance: OPTIONS.slippageTolerance,
 }
 
-jest.mock('@uniswap/conedison/provider/index', () => ({
+jest.mock('@mageswap/conedison/provider/index', () => ({
   sendTransaction: jest.fn().mockResolvedValue(RESPONSE),
 }))
 

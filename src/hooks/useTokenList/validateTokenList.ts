@@ -1,4 +1,4 @@
-import type { TokenInfo, TokenList } from '@uniswap/token-lists'
+import type { TokenInfo, TokenList } from '@mageswap/token-lists'
 import type { ValidateFunction } from 'ajv'
 
 enum ValidationSchema {

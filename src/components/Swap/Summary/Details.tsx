@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
-import { formatCurrencyAmount, formatPriceImpact, NumberType } from '@uniswap/conedison/format'
-import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { formatCurrencyAmount, formatPriceImpact, NumberType } from '@mageswap/conedison/format'
+import { Currency, CurrencyAmount, Token } from '@mageswap/sdk-core'
 import Column from 'components/Column'
 import { useIsDialogPageCentered } from 'components/Dialog'
 import Row from 'components/Row'

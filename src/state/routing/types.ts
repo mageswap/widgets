@@ -1,7 +1,7 @@
 import { BaseProvider } from '@ethersproject/providers'
-import { Trade } from '@uniswap/router-sdk'
-import { Currency, Token, TradeType } from '@uniswap/sdk-core'
-import type { ChainId } from '@uniswap/smart-order-router'
+import { Trade } from '@mageswap/router-sdk'
+import { Currency, Token, TradeType } from '@mageswap/sdk-core'
+import type { ChainId } from '@mageswap/smart-order-router'
 import { QuoteType, RouterPreference } from 'hooks/routing/types'
 import { OnSwapQuote } from 'state/swap'
 
