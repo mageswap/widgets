@@ -21,6 +21,11 @@ export enum SupportedChainId {
   CELO_ALFAJORES = 44787,
 
   BNB = 56,
+
+  FANTOM = 250,
+  CANTO = 7700,
+  AVAX = 43114,
+  ZKSYNC = 324,
 }
 
 export enum ChainName {
@@ -38,6 +43,10 @@ export enum ChainName {
   CELO = 'celo',
   CELO_ALFAJORES = 'celo-alfajores',
   BNB = 'bnb',
+  FANTOM = 'fantom',
+  CANTO = 'canto',
+  AVAX = 'avax',
+  ZKSYNC = 'zksync',
 }
 
 export const CHAIN_NAMES_TO_IDS: { [chainName: string]: SupportedChainId } = {
