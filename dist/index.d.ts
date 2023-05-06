@@ -300,7 +300,11 @@ declare enum SupportedChainId {
     POLYGON_MUMBAI = 80001,
     CELO = 42220,
     CELO_ALFAJORES = 44787,
-    BNB = 56
+    BNB = 56,
+    FANTOM = 250,
+    CANTO = 7700,
+    AVAX = 43114,
+    ZKSYNC = 324
 }
 
 type DefaultAddress = string | {

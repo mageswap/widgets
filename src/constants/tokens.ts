@@ -95,6 +95,35 @@ export const USDC_CELO_ALFAJORES = new Token(
   'USDC',
   'USD//C'
 )
+export const USDC_FANTOM_CHAIN = new Token(
+  SupportedChainId.FANTOM,
+  '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75',
+  6,
+  'USDC',
+  'USD//C'
+)
+
+export const USDC_CANTO_CHAIN = new Token(
+  SupportedChainId.CANTO,
+  '0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd',
+  6,
+  'USDC',
+  'USD//C'
+)
+export const USDC_ZKSYNC_CHAIN = new Token(
+  SupportedChainId.ZKSYNC,
+  '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
+  6,
+  'USDC',
+  'USD//C'
+)
+export const USDC_AVAX_CHAIN = new Token(
+  SupportedChainId.AVAX,
+  '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+  6,
+  'USDC',
+  'USD//C'
+)
 export const AMPL = new Token(
   SupportedChainId.MAINNET,
   '0xD46bA6D942050d489DBd938a2C909A5d5039A161',
@@ -145,6 +174,10 @@ export const USDC: { [chainId in SupportedChainId]: Token } = {
   [SupportedChainId.KOVAN]: USDC_KOVAN,
   [SupportedChainId.ROPSTEN]: USDC_ROPSTEN,
   [SupportedChainId.BNB]: USDC_BNB_CHAIN,
+  [SupportedChainId.AVAX]: USDC_AVAX_CHAIN,
+  [SupportedChainId.FANTOM]: USDC_FANTOM_CHAIN,
+  [SupportedChainId.ZKSYNC]: USDC_ZKSYNC_CHAIN,
+  [SupportedChainId.CANTO]: USDC_CANTO_CHAIN,
 }
 export const DAI_POLYGON = new Token(
   SupportedChainId.POLYGON,

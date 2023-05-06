@@ -86,4 +86,8 @@ export const JSON_RPC_FALLBACK_ENDPOINTS: Record<SupportedChainId, string[]> = {
     'https://bsc-dataseed4.defibit.io',
     'https://rpc.ankr.com/bsc',
   ],
+  [SupportedChainId.FANTOM]: ['https://rpc.ftm.tools'],
+  [SupportedChainId.CANTO]: ['https://canto.slingshot.finance'],
+  [SupportedChainId.AVAX]: ['https://canto.slingshot.finance'],
+  [SupportedChainId.ZKSYNC]: ['https://mainnet.era.zksync.io'],
 }
