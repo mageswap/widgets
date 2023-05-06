@@ -5,7 +5,7 @@ const isDevelopment =
 module.exports = {
   compact: false,
   presets: [
-    '@babel/preset-env',
+    '@babel/preset-es2015',
     [
       '@babel/preset-react',
       {
