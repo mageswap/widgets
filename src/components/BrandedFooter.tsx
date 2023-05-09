@@ -32,14 +32,11 @@ const Wrapper = styled(Row)`
 export default memo(function BrandedFooter() {
   return (
     <Wrapper justify="center">
-      <UniswapA href={`https://uniswap.org/`}>
         <Row gap={0.25}>
-          <Logo />
           <ThemedText.Caption>
-            <Trans>Powered by the Uniswap protocol</Trans>
+            <Trans>Powered by magic</Trans>
           </ThemedText.Caption>
         </Row>
-      </UniswapA>
     </Wrapper>
   )
 })
