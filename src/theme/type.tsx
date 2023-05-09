@@ -1,5 +1,6 @@
 import { Text, TextProps as TextPropsWithCss } from 'rebass'
 import styled, { useTheme } from 'styled-components/macro'
+import React from 'react'
 
 import { AnimationSpeed } from './animations'
 import type { Color } from './theme'

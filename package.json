@@ -2,7 +2,7 @@
   "name": "@mageswap/widgets",
   "description": "mageswap Interface",
   "homepage": "https://github.com/mageswap/widgets#readme",
-  "version": "3.0.12",
+  "version": "3.0.14",
   "repository": "https://github.com/mageswap/widgets",
   "publishConfig": {
     "access": "public"

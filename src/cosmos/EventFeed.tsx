@@ -1,6 +1,6 @@
 import { defaultTheme, SwapEventHandlers, TransactionEventHandlers, WidgetEventHandlers } from '@mageswap/widgets'
 import Row from 'components/Row'
-import { useState } from 'react'
+import React,{ useState } from 'react'
 import styled from 'styled-components/macro'
 import * as Type from 'theme/type'
 

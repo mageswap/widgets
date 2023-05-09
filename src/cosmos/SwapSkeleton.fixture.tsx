@@ -1,5 +1,5 @@
 import { darkTheme, defaultTheme, lightTheme, SwapWidgetSkeleton } from '@mageswap/widgets'
-import { useEffect } from 'react'
+import React,{ useEffect } from 'react'
 import { useValue } from 'react-cosmos/fixture'
 import { WIDGET_BREAKPOINTS } from 'theme/breakpoints'
 

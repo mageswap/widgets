@@ -2,7 +2,7 @@ import { tokens } from '@mageswap/default-token-list'
 import { Currency, TradeType } from '@mageswap/sdk-core'
 import { Field, SupportedChainId, SwapWidget } from '@mageswap/widgets'
 import Row from 'components/Row'
-import { useCallback, useMemo, useState } from 'react'
+import React ,{ useCallback, useMemo, useState } from 'react'
 
 import { nativeOnChain, USDC } from '../constants/tokens'
 import EventFeed, { Event, HANDLERS } from './EventFeed'

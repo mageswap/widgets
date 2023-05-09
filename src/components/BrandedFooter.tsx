@@ -31,12 +31,7 @@ const Wrapper = styled(Row)`
 
 export default memo(function BrandedFooter() {
   return (
-    <Wrapper justify="center">
-        <Row gap={0.25}>
-          <ThemedText.Caption>
-            <Trans>Powered by magic</Trans>
-          </ThemedText.Caption>
-        </Row>
-    </Wrapper>
+    <>
+    </>
   )
 })
