@@ -74,4 +74,3 @@ import 'make-plural/plurals';
 import 'react-redux';
 import 'redux';
 import 'resize-observer-polyfill';
-//# sourceMappingURL=index.js.map

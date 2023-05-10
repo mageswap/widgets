@@ -1375,7 +1375,7 @@ function Provider$7(_ref) {
       provider.getBlockNumber().then(function (block) {
         if (stale) return;
         onBlock(block);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         if (stale) return;
         console.error("Failed to get block number for chainId ".concat(activeChainId), error);
       });
@@ -2739,7 +2739,7 @@ var moo = {exports: {}};
           return src.split(':')[1].trim();
         }
       },
-      "case": {
+      case: {
         lineBreaks: true,
         match: /[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*(?:=[0-9]+|(?:[\0-\x08\x0E-\x1F0-9A-Z_a-z\x7F-\x84\x86-\xA0\xA8\xAA\xAD\xAF\xB2-\xB5\xB7-\xBA\xBC-\xBE\xC0-\xD6\xD8-\xF6\xF8-\u200D\u202A-\u202F\u203F\u2040\u2054\u205F-\u218F\u2460-\u24FF\u2776-\u2793\u2C00-\u2DFF\u2E80-\u3000\u3004-\u3007\u3021-\u302F\u3031-\uD7FF\uE000-\uFD3D\uFD40-\uFE44\uFE47-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*\{/,
         push: 'body',
@@ -2753,12 +2753,12 @@ var moo = {exports: {}};
       }
     }
   };
-  exports.lexer = moo_1["default"].states(exports.states);
+  exports.lexer = moo_1.default.states(exports.states);
 })(lexer);
 
 function _createSuper$6(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$6(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 function _isNativeReflectConstruct$6() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$4(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$4(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen); }
 function _arrayLikeToArray$4(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 /**
@@ -3503,7 +3503,7 @@ var WidgetPromise = /*#__PURE__*/function (_Promise) {
     onrejected) {
       return ('then' in value ? value : value()).then(onfulfilled !== null && onfulfilled !== void 0 ? onfulfilled : function (v) {
         return v;
-      })["catch"](function (reason) {
+      }).catch(function (reason) {
         try {
           onrejected(reason);
         } catch (error) {
@@ -3797,7 +3797,7 @@ var routing = createApi({
                   console.warn("GetQuote failed on routing API, falling back to client: ".concat((_ref3 = (_error$message = _context2.t0 === null || _context2.t0 === void 0 ? void 0 : _context2.t0.message) !== null && _error$message !== void 0 ? _error$message : _context2.t0 === null || _context2.t0 === void 0 ? void 0 : _context2.t0.detail) !== null && _ref3 !== void 0 ? _ref3 : _context2.t0));
                 case 28:
                   _context2.next = 30;
-                  return import('./clientSideSmartOrderRouter-336c303c.js');
+                  return import('./clientSideSmartOrderRouter-05b7f181.js');
                 case 30:
                   clientSideSmartOrderRouter = _context2.sent;
                   _context2.prev = 31;
@@ -6843,7 +6843,7 @@ function Updater(_ref) {
             blockNumber: lastBlockNumber
           });
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         if (!error.isCancelledError) {
           console.warn("Failed to get transaction receipt for ".concat(hash), error);
         }
@@ -7209,7 +7209,7 @@ function useUpdatePermitAllowance(token, spender, nonce, onPermitSignature) {
           id: "hhGrAC",
           message: "{symbol} permit allowance failed: {0}",
           values: {
-            "0": (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
+            0: (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
             symbol: symbol
           }
         }),
@@ -7293,7 +7293,7 @@ function useUpdateTokenAllowance(amount, spender) {
           case 6:
             allowance = MaxUint256.toString();
             _context.next = 9;
-            return contract.estimateGas.approve(spender, allowance)["catch"](function () {
+            return contract.estimateGas.approve(spender, allowance).catch(function () {
               // Fallback for tokens which restrict approval amounts:
               allowance = amount.quotient.toString();
               return contract.estimateGas.approve(spender, allowance);
@@ -7329,7 +7329,7 @@ function useUpdateTokenAllowance(amount, spender) {
           id: "R0FX6s",
           message: "{symbol} token allowance failed: {0}",
           values: {
-            "0": (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
+            0: (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
             symbol: symbol
           }
         }),
@@ -7519,7 +7519,7 @@ function computeFiatValuePriceImpact(fiatValueInput, fiatValueOutput) {
   return new Percent(pct.numerator, pct.denominator);
 }
 
-function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
 function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function computeRealizedPriceImpact(trade) {
@@ -7781,7 +7781,7 @@ function useGasPrice() {
   }, [resultStr]);
 }
 
-function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
 function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var V3_SWAP_DEFAULT_SLIPPAGE = new Percent(50, 10000); // .50%
@@ -8330,7 +8330,7 @@ function useApproval(amountToApprove, spender, useIsPendingApproval) {
         case 23:
           useExact = false;
           _context.next = 26;
-          return tokenContract.estimateGas.approve(spender, MaxUint256$1)["catch"](function () {
+          return tokenContract.estimateGas.approve(spender, MaxUint256$1).catch(function () {
             // general fallback for tokens which restrict approval amounts
             useExact = true;
             return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString());
@@ -8345,7 +8345,7 @@ function useApproval(amountToApprove, spender, useIsPendingApproval) {
               tokenAddress: token.address,
               spenderAddress: spender
             };
-          })["catch"](function (error) {
+          }).catch(function (error) {
             logFailure(error);
             throw error;
           }));
@@ -10103,10 +10103,10 @@ function _validate() {
           _context.next = _context.t0 === ValidationSchema.LIST ? 3 : _context.t0 === ValidationSchema.TOKENS ? 5 : 7;
           break;
         case 3:
-          validatorImport = import('./validateTokenList-cb8626e8.js');
+          validatorImport = import('./validateTokenList-35c8439b.js');
           return _context.abrupt("break", 9);
         case 5:
-          validatorImport = import('./validateTokens-640dd368.js');
+          validatorImport = import('./validateTokens-23ae6f05.js');
           return _context.abrupt("break", 9);
         case 7:
           throw new Error('No validation function specified for schema');
@@ -10118,7 +10118,7 @@ function _validate() {
           _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
           validatorModule = _yield$Promise$all2[1];
           _context.next = 16;
-          return validatorModule["default"];
+          return validatorModule.default;
         case 16:
           validator = _context.sent;
           if (!(validator !== null && validator !== void 0 && validator(data))) {
@@ -10536,15 +10536,15 @@ function useQueryTokens(query, tokens) {
     return sortedTokens.filter(filter);
   }, [filter, sortedTokens]);
   var queriedTokens = useSortTokensByQuery(debouncedQuery, filteredTokens);
-  var _native = useMemo(function () {
+  var native = useMemo(function () {
     return chainId && nativeOnChain(chainId);
   }, [chainId]);
   return useMemo(function () {
-    if (_native && filter(_native)) {
-      return [_native].concat(_toConsumableArray(queriedTokens));
+    if (native && filter(native)) {
+      return [native].concat(_toConsumableArray(queriedTokens));
     }
     return queriedTokens;
-  }, [filter, _native, queriedTokens]);
+  }, [filter, native, queriedTokens]);
 }
 
 var UNISWAP_TOKEN_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org';
@@ -11260,7 +11260,7 @@ function useSwapAmount(field) {
   return [amount, updateAmount];
 }
 
-function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
 function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var colors = new Map();
@@ -12371,10 +12371,10 @@ function useAreBalancesLoaded() {
   var _useWeb3React2 = useWeb3React(),
     account = _useWeb3React2.account;
   var tokens = useTokenList();
-  var _native = useNativeCurrency();
+  var native = useNativeCurrency();
   var currencies = useMemo(function () {
-    return [_native].concat(_toConsumableArray(tokens));
-  }, [_native, tokens]);
+    return [native].concat(_toConsumableArray(tokens));
+  }, [native, tokens]);
   var balances = useCurrencyBalances(account, currencies).filter(Boolean);
   return !account || currencies.length === balances.length;
 }
@@ -14038,7 +14038,7 @@ function getAllowanceFailedAction(shouldRequestApproval, retry, currency) {
         id: "u7Sumz",
         message: "{0} approval failed",
         values: {
-          "0": (_currency$symbol = currency.symbol) !== null && _currency$symbol !== void 0 ? _currency$symbol : 'token'
+          0: (_currency$symbol = currency.symbol) !== null && _currency$symbol !== void 0 ? _currency$symbol : 'token'
         }
       }),
       content: i18n._(
@@ -14079,7 +14079,7 @@ function getAllowancePendingAction(shouldRequestApproval, cancel, currency) {
         id: "Q4V37Q",
         message: "Approve {0} for trading",
         values: {
-          "0": (_currency$symbol2 = currency.symbol) !== null && _currency$symbol2 !== void 0 ? _currency$symbol2 : 'token'
+          0: (_currency$symbol2 = currency.symbol) !== null && _currency$symbol2 !== void 0 ? _currency$symbol2 : 'token'
         }
       }),
       content: i18n._(
@@ -14358,7 +14358,7 @@ function TransactionStatusDialog(_ref2) {
       id: "Yx3Ckv",
       message: "Try increasing your slippage tolerance.<0/>NOTE: Fee on transfer and rebase tokens are incompatible with Uniswap V3.",
       components: {
-        "0": /*#__PURE__*/React.createElement("br", null)
+        0: /*#__PURE__*/React.createElement("br", null)
       }
     }),
     action: /*#__PURE__*/React.createElement(Trans, {
@@ -14898,7 +14898,7 @@ function useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, si
     if (argentWalletContract && trade.inputAmount.currency.isToken) {
       return [{
         address: argentWalletContract.address,
-        calldata: argentWalletContract["interface"].encodeFunctionData('wc_multiCall', [[approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress), {
+        calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [[approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress), {
           to: swapRouterAddress,
           value: value,
           data: calldata
@@ -15002,7 +15002,7 @@ function swapErrorToUserReadableMessage(error) {
         id: "moHqNj",
         message: "{0}. Try increasing your slippage tolerance.\nNote: fee-on-transfer and rebase tokens are incompatible with Uniswap V3.",
         values: {
-          "0": reason ? reason : 'Unknown error'
+          0: reason ? reason : 'Unknown error'
         }
       });
   }
@@ -15045,7 +15045,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                       call: call,
                       gasEstimate: gasEstimate
                     };
-                  })["catch"](function (gasError) {
+                  }).catch(function (gasError) {
                     console.debug('Gas estimate failed, trying eth_call to extract error', call);
                     return provider.call(tx).then(function (result) {
                       console.debug('Unexpected successful call after failed estimate gas', call, gasError, result);
@@ -15056,7 +15056,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                           message: "Unexpected issue with estimating the gas. Please try again."
                         })
                       };
-                    })["catch"](function (callError) {
+                    }).catch(function (callError) {
                       console.debug('Call threw error', call, callError);
                       return {
                         call: call,
@@ -15112,7 +15112,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                   value: value
                 } : {})).then(function (response) {
                   return response;
-                })["catch"](function (error) {
+                }).catch(function (error) {
                   // if the user rejected the tx, pass this along
                   if (isUserRejection(error)) {
                     throw new UserRejectedRequestError();
@@ -15126,7 +15126,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                         id: "04FGVa",
                         message: "Swap failed: {0}",
                         values: {
-                          "0": swapErrorToUserReadableMessage(error)
+                          0: swapErrorToUserReadableMessage(error)
                         }
                       })
                     });
@@ -15726,7 +15726,7 @@ function toJsonRpcUrlsMap(connectionMap) {
   return toJsonRpcMap(getJsonRpcUrls);
 }
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -15992,7 +15992,7 @@ function ChainSwitchButton(_ref) {
       id: "TyF6nf",
       message: "Connect to {0}",
       values: {
-        "0": (_getChainInfo = getChainInfo(chainId)) === null || _getChainInfo === void 0 ? void 0 : _getChainInfo.label
+        0: (_getChainInfo = getChainInfo(chainId)) === null || _getChainInfo === void 0 ? void 0 : _getChainInfo.label
       }
     }) : /*#__PURE__*/React.createElement(Trans, {
       id: "aRPqbz",
@@ -16024,8 +16024,8 @@ function WrapButton(_ref) {
   useEffect(function () {
     return setIsPending(false);
   }, [wrapCallback]);
-  var _native = useNativeCurrency();
-  var inputCurrency = wrapType === TransactionType.WRAP ? _native : _native.wrapped;
+  var native = useNativeCurrency();
+  var inputCurrency = wrapType === TransactionType.WRAP ? native : native.wrapped;
   var onSubmit = useOnSubmit();
   var throwAsync = useAsyncError();
   var onWrap = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
@@ -16075,8 +16075,8 @@ function WrapButton(_ref) {
     id: "xYxQCZ",
     message: "{0} {1}",
     values: {
-      "0": wrapType === TransactionType.WRAP ? 'Wrap' : 'Unwrap',
-      "1": inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
+      0: wrapType === TransactionType.WRAP ? 'Wrap' : 'Unwrap',
+      1: inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
     }
   }));
 }
@@ -16326,7 +16326,7 @@ function RoutingDiagram(_ref12) {
     id: "0YS0q8",
     message: "Best price route costs {0} in gas. Your price is optimized by considering split routes, multiple hops, and gas costs.",
     values: {
-      "0": formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice)
+      0: formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice)
     }
   }))));
 }
@@ -16498,15 +16498,15 @@ function Wrap(_ref8) {
       id: "Jrdeg2",
       message: "Convert {0} to {1} with no slippage",
       values: {
-        "0": inputCurrency.symbol,
-        "1": outputCurrency.symbol
+        0: inputCurrency.symbol,
+        1: outputCurrency.symbol
       }
     }) : /*#__PURE__*/React.createElement(Trans, {
       id: "p/80nE",
       message: "Convert {0} to {1}",
       values: {
-        "0": inputCurrency.symbol,
-        "1": outputCurrency.symbol
+        0: inputCurrency.symbol,
+        1: outputCurrency.symbol
       }
     });
   }, [inputCurrency.symbol, isWideWidget, outputCurrency.symbol]);
@@ -16922,7 +16922,7 @@ function ToolbarActionButton() {
       id: "m6RmA/",
       message: "Insufficient {0} balance",
       values: {
-        "0": inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
+        0: inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
       }
     }));
   }
@@ -17188,19 +17188,19 @@ function Provider$1(_ref2) {
   useEffect(function () {
     // Ignore any errors during connection so they do not propagate to the widget.
     if (connectors.user) {
-      connectors.user.activate()["catch"](function () {
+      connectors.user.activate().catch(function () {
         return undefined;
       });
       return;
     } else if (shouldEagerlyConnect) {
       var eagerConnectors = [connectors.metaMask, connectors.walletConnect];
       eagerConnectors.forEach(function (connector) {
-        return connector.connectEagerly()["catch"](function () {
+        return connector.connectEagerly().catch(function () {
           return undefined;
         });
       });
     }
-    connectors.network.activate()["catch"](function () {
+    connectors.network.activate().catch(function () {
       return undefined;
     });
   }, [connectors.metaMask, connectors.network, connectors.user, connectors.walletConnect, shouldEagerlyConnect]);
@@ -17355,7 +17355,7 @@ function _dynamicActivate() {
         case 4:
           catalog = _context.sent;
           // Bundlers will either export it as default or as a named export named default.
-          i18n.load(locale, catalog.messages || catalog["default"].messages);
+          i18n.load(locale, catalog.messages || catalog.default.messages);
           _context.next = 10;
           break;
         case 8:
@@ -17386,7 +17386,7 @@ function Provider(_ref2) {
   useEffect(function () {
     dynamicActivate(processedLocale).then(function () {
       return onActivate === null || onActivate === void 0 ? void 0 : onActivate(processedLocale);
-    })["catch"](function (error) {
+    }).catch(function (error) {
       console.error('Failed to activate locale', processedLocale, error);
     });
   }, [processedLocale, onActivate]);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('react');
-var index = require('./index-f3bade6a.cjs');
+var index = require('./index-c8d5868a.cjs');
 var sdkCore = require('@mageswap/sdk-core');
 require('buffer');
 require('@babel/runtime/helpers/slicedToArray');

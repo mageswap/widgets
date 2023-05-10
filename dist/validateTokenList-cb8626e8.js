@@ -2533,4 +2533,3 @@ function validate10(data) {
 }
 
 export { validate10 as default, validate };
-//# sourceMappingURL=validateTokenList-cb8626e8.js.map

@@ -1,89 +1,140 @@
-import React, { Children, useMemo, createContext, useContext, useRef, memo, forwardRef, useState, useCallback, useEffect, Component, useImperativeHandle, StrictMode } from 'react';
-import { Buffer } from 'buffer';
-import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
-import _styled, { css, keyframes, ThemeProvider, useTheme } from 'styled-components';
-import _taggedTemplateLiteral from '@babel/runtime/helpers/taggedTemplateLiteral';
-import { AlertTriangle as AlertTriangle$1, ArrowDown as ArrowDown$1, ArrowRight as ArrowRight$1, ArrowLeft as ArrowLeft$1, ArrowUp, BarChart2, ChevronDown as ChevronDown$1, ChevronUp, Clock, HelpCircle as HelpCircle$1, Info as Info$1, ArrowUpRight, Settings as Settings$2, Slash, Trash2, X as X$1, XOctagon as XOctagon$1, Search as Search$1 } from 'react-feather';
-import _defineProperty from '@babel/runtime/helpers/defineProperty';
-import { transparentize, readableColor, darken, lighten, opacify, rgba, mix } from 'polished';
-import { hex } from 'wcag-contrast';
-import _extends$a from '@babel/runtime/helpers/extends';
-import { Text } from 'rebass';
-import { useWeb3React, Web3ReactProvider, initializeConnector } from '@web3-react/core';
-import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
-import { UNIVERSAL_ROUTER_ADDRESS, SwapRouter as SwapRouter$1 } from '@mageswap/universal-router-sdk';
-import { skipToken, createApi } from '@reduxjs/toolkit/query/react';
-import { atomWithImmer, withImmer } from 'jotai/immer';
-import { useUpdateAtom, useAtomValue, atomWithReset } from 'jotai/utils';
-import { Token, WETH9, Ether, NativeCurrency, CurrencyAmount, TradeType, MaxUint256, Percent, Fraction, Price as Price$1 } from '@mageswap/sdk-core';
-import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
-import _createClass from '@babel/runtime/helpers/createClass';
-import _inherits from '@babel/runtime/helpers/inherits';
-import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
-import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
-import invariant from 'tiny-invariant';
-import { parseUnits } from '@ethersproject/units';
-import JSBI from 'jsbi';
-import { isPlainObject, configureStore } from '@reduxjs/toolkit';
-import { atom, useAtom, Provider as Provider$a } from 'jotai';
-import { Trade as Trade$1, MixedRouteSDK, Protocol, partitionMixedRouteByProtocol, SwapRouter } from '@mageswap/router-sdk';
-import { Route as Route$2, Pair } from '@mageswap/v2-sdk';
-import { Route as Route$1, Pool as Pool$1, FeeAmount, toHex as toHex$1 } from '@mageswap/v3-sdk';
-import _typeof from '@babel/runtime/helpers/typeof';
-import _asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
-import _get from '@babel/runtime/helpers/get';
-import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
-import _wrapNativeSuper from '@babel/runtime/helpers/wrapNativeSuper';
-import qs from 'qs';
-import { Interface } from '@ethersproject/abi';
-import { createMulticall, NEVER_RELOAD } from '@mageswap/redux-multicall';
-import { getAddress } from '@ethersproject/address';
-import { AddressZero, MaxUint256 as MaxUint256$1 } from '@ethersproject/constants';
-import { Contract } from '@ethersproject/contracts';
-import { PERMIT2_ADDRESS, MaxAllowanceTransferAmount, AllowanceTransfer } from '@mageswap/permit2-sdk';
-import { signTypedData } from '@mageswap/conedison/provider/signing';
-import { formatPriceImpact, formatCurrencyAmount as formatCurrencyAmount$1, NumberType, formatPrice } from '@mageswap/conedison/format';
-import { namehash } from 'ethers/lib/utils';
-import { splitSignature, arrayify } from '@ethersproject/bytes';
-import { BigNumber } from '@ethersproject/bignumber';
-import { parseBytes32String } from '@ethersproject/strings';
-import maxSize from 'popper-max-size-modifier';
-import { createPortal } from 'react-dom';
-import { usePopper } from 'react-popper';
-import { namehash as namehash$1 } from '@ethersproject/hash';
-import CID from 'cids';
-import { getNameFromData, rmPrefix } from 'multicodec';
-import { decode, toB58String } from 'multihashes';
-import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
-import 'wicg-inert';
-import Vibrant from 'node-vibrant/lib/bundle.js';
-import 'setimmediate';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList, areEqual } from 'react-window';
-import { URI_AVAILABLE, WalletConnect } from '@web3-react/walletconnect';
-import QRCode from 'qrcode';
-import { sendTransaction } from '@mageswap/conedison/provider/index';
-import { JsonRpcProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
-import { EIP1193 } from '@web3-react/eip1193';
-import { MetaMask } from '@web3-react/metamask';
-import { Network } from '@web3-react/network';
-import { Connector } from '@web3-react/types';
-import { af, ar, ca, cs, da, de, el, en, es, fi, fr, he, hu, id, it, ja, ko, nl, no, pl, pt, ro, ru, sr, sv, sw, tr, uk, vi, zh } from 'make-plural/plurals';
-import { Provider as Provider$9 } from 'react-redux';
-import { combineReducers } from 'redux';
-import ResizeObserver from 'resize-observer-polyfill';
+'use strict';
+
+var React = require('react');
+var buffer = require('buffer');
+var _slicedToArray = require('@babel/runtime/helpers/slicedToArray');
+var _styled = require('styled-components');
+var _taggedTemplateLiteral = require('@babel/runtime/helpers/taggedTemplateLiteral');
+var reactFeather = require('react-feather');
+var _defineProperty = require('@babel/runtime/helpers/defineProperty');
+var polished = require('polished');
+var wcagContrast = require('wcag-contrast');
+var _extends$a = require('@babel/runtime/helpers/extends');
+var rebass = require('rebass');
+var core = require('@web3-react/core');
+var _objectWithoutProperties = require('@babel/runtime/helpers/objectWithoutProperties');
+var universalRouterSdk = require('@mageswap/universal-router-sdk');
+var react = require('@reduxjs/toolkit/query/react');
+var immer = require('jotai/immer');
+var utils = require('jotai/utils');
+var sdkCore = require('@mageswap/sdk-core');
+var _classCallCheck = require('@babel/runtime/helpers/classCallCheck');
+var _createClass = require('@babel/runtime/helpers/createClass');
+var _inherits = require('@babel/runtime/helpers/inherits');
+var _possibleConstructorReturn = require('@babel/runtime/helpers/possibleConstructorReturn');
+var _getPrototypeOf = require('@babel/runtime/helpers/getPrototypeOf');
+var invariant = require('tiny-invariant');
+var units = require('@ethersproject/units');
+var JSBI = require('jsbi');
+var toolkit = require('@reduxjs/toolkit');
+var jotai = require('jotai');
+var routerSdk = require('@mageswap/router-sdk');
+var v2Sdk = require('@mageswap/v2-sdk');
+var v3Sdk = require('@mageswap/v3-sdk');
+var _typeof = require('@babel/runtime/helpers/typeof');
+var _asyncToGenerator = require('@babel/runtime/helpers/asyncToGenerator');
+var _regeneratorRuntime = require('@babel/runtime/regenerator');
+var _get = require('@babel/runtime/helpers/get');
+var _assertThisInitialized = require('@babel/runtime/helpers/assertThisInitialized');
+var _wrapNativeSuper = require('@babel/runtime/helpers/wrapNativeSuper');
+var qs = require('qs');
+var abi$1 = require('@ethersproject/abi');
+var reduxMulticall = require('@mageswap/redux-multicall');
+var address = require('@ethersproject/address');
+var constants = require('@ethersproject/constants');
+var contracts = require('@ethersproject/contracts');
+var permit2Sdk = require('@mageswap/permit2-sdk');
+var signing = require('@mageswap/conedison/provider/signing');
+var format = require('@mageswap/conedison/format');
+var utils$1 = require('ethers/lib/utils');
+var bytes = require('@ethersproject/bytes');
+var bignumber = require('@ethersproject/bignumber');
+var strings = require('@ethersproject/strings');
+var maxSize = require('popper-max-size-modifier');
+var reactDom = require('react-dom');
+var reactPopper = require('react-popper');
+var hash = require('@ethersproject/hash');
+var CID = require('cids');
+var multicodec = require('multicodec');
+var multihashes = require('multihashes');
+var _toConsumableArray = require('@babel/runtime/helpers/toConsumableArray');
+require('wicg-inert');
+var Vibrant = require('node-vibrant/lib/bundle.js');
+require('setimmediate');
+var AutoSizer = require('react-virtualized-auto-sizer');
+var reactWindow = require('react-window');
+var walletconnect = require('@web3-react/walletconnect');
+var QRCode = require('qrcode');
+var index = require('@mageswap/conedison/provider/index');
+var providers = require('@ethersproject/providers');
+var eip1193 = require('@web3-react/eip1193');
+var metamask = require('@web3-react/metamask');
+var network = require('@web3-react/network');
+var types = require('@web3-react/types');
+var plurals = require('make-plural/plurals');
+var reactRedux = require('react-redux');
+var redux = require('redux');
+var ResizeObserver = require('resize-observer-polyfill');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var _slicedToArray__default = /*#__PURE__*/_interopDefaultLegacy(_slicedToArray);
+var _styled__default = /*#__PURE__*/_interopDefaultLegacy(_styled);
+var _taggedTemplateLiteral__default = /*#__PURE__*/_interopDefaultLegacy(_taggedTemplateLiteral);
+var _defineProperty__default = /*#__PURE__*/_interopDefaultLegacy(_defineProperty);
+var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends$a);
+var _objectWithoutProperties__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutProperties);
+var _classCallCheck__default = /*#__PURE__*/_interopDefaultLegacy(_classCallCheck);
+var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
+var _inherits__default = /*#__PURE__*/_interopDefaultLegacy(_inherits);
+var _possibleConstructorReturn__default = /*#__PURE__*/_interopDefaultLegacy(_possibleConstructorReturn);
+var _getPrototypeOf__default = /*#__PURE__*/_interopDefaultLegacy(_getPrototypeOf);
+var invariant__default = /*#__PURE__*/_interopDefaultLegacy(invariant);
+var JSBI__default = /*#__PURE__*/_interopDefaultLegacy(JSBI);
+var _typeof__default = /*#__PURE__*/_interopDefaultLegacy(_typeof);
+var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
+var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
+var _get__default = /*#__PURE__*/_interopDefaultLegacy(_get);
+var _assertThisInitialized__default = /*#__PURE__*/_interopDefaultLegacy(_assertThisInitialized);
+var _wrapNativeSuper__default = /*#__PURE__*/_interopDefaultLegacy(_wrapNativeSuper);
+var qs__default = /*#__PURE__*/_interopDefaultLegacy(qs);
+var maxSize__default = /*#__PURE__*/_interopDefaultLegacy(maxSize);
+var CID__default = /*#__PURE__*/_interopDefaultLegacy(CID);
+var _toConsumableArray__default = /*#__PURE__*/_interopDefaultLegacy(_toConsumableArray);
+var Vibrant__default = /*#__PURE__*/_interopDefaultLegacy(Vibrant);
+var AutoSizer__default = /*#__PURE__*/_interopDefaultLegacy(AutoSizer);
+var QRCode__default = /*#__PURE__*/_interopDefaultLegacy(QRCode);
+var ResizeObserver__default = /*#__PURE__*/_interopDefaultLegacy(ResizeObserver);
 
 if (typeof window !== 'undefined') {
   // WalletConnect relies on Buffer, so it must be polyfilled.
   if (!('Buffer' in window)) {
-    window.Buffer = Buffer;
+    window.Buffer = buffer.Buffer;
   }
 }
 
-const LinguiContext = React.createContext(null);
+const LinguiContext = React__default["default"].createContext(null);
 function useLingui() {
-  const context = React.useContext(LinguiContext);
+  const context = React__default["default"].useContext(LinguiContext);
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
       throw new Error("useLingui hook was used without I18nProvider.");
@@ -96,16 +147,16 @@ const I18nProvider = ({
   defaultComponent,
   children
 }) => {
-  const latestKnownLocale = React.useRef(i18n.locale);
-  const makeContext = React.useCallback(
+  const latestKnownLocale = React__default["default"].useRef(i18n.locale);
+  const makeContext = React__default["default"].useCallback(
     () => ({
       i18n,
       defaultComponent
     }),
     [i18n, defaultComponent]
   );
-  const [context, setContext] = React.useState(makeContext());
-  React.useEffect(() => {
+  const [context, setContext] = React__default["default"].useState(makeContext());
+  React__default["default"].useEffect(() => {
     const updateContext = () => {
       latestKnownLocale.current = i18n.locale;
       setContext(makeContext());
@@ -122,7 +173,7 @@ const I18nProvider = ({
     );
     return null;
   }
-  return /* @__PURE__ */ React.createElement(LinguiContext.Provider, { value: context }, children);
+  return /* @__PURE__ */ React__default["default"].createElement(LinguiContext.Provider, { value: context }, children);
 };
 
 const tagRe = /<([a-zA-Z0-9]+)>(.*?)<\/\1>|<([a-zA-Z0-9]+)\/>/;
@@ -166,13 +217,13 @@ function formatElements(value, elements = {}) {
           `${element.type} is a void element tag therefore it must have no children`
         );
       }
-      element = React.createElement(React.Fragment);
+      element = React__default["default"].createElement(React__default["default"].Fragment);
     }
     if (Array.isArray(element)) {
-      element = React.createElement(React.Fragment, {}, element);
+      element = React__default["default"].createElement(React__default["default"].Fragment, {}, element);
     }
     tree.push(
-      React.cloneElement(
+      React__default["default"].cloneElement(
         element,
         { key: uniqueId() },
         // format children for pair tags
@@ -203,7 +254,7 @@ function Trans(props) {
   if (values) {
     Object.keys(values).forEach((key) => {
       const value = values[key];
-      const valueIsReactEl = React.isValidElement(value) || Array.isArray(value) && value.every((el) => React.isValidElement(el));
+      const valueIsReactEl = React__default["default"].isValidElement(value) || Array.isArray(value) && value.every((el) => React__default["default"].isValidElement(el));
       if (!valueIsReactEl)
         return;
       const index = Object.keys(components).length;
@@ -237,20 +288,20 @@ function Trans(props) {
     console.error(
       `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
     );
-    return React.createElement(FallbackComponent, i18nProps, translation);
+    return React__default["default"].createElement(FallbackComponent, i18nProps, translation);
   }
   if (typeof render === "function") {
     return render(i18nProps);
   }
   const Component = component || FallbackComponent;
   const RenderedComponent = defaultComponent && !component ? defaultComponent : Component;
-  return React.createElement(RenderedComponent, i18nProps, translation);
+  return React__default["default"].createElement(RenderedComponent, i18nProps, translation);
 }
 const RenderFragment = ({ children }) => {
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, children);
+  return /* @__PURE__ */ React__default["default"].createElement(React__default["default"].Fragment, null, children);
 };
 
-var Row = /*#__PURE__*/_styled.div.withConfig({
+var Row = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Row",
   componentId: "sc-1xuszpw-0"
 })(["align-items:", ";color:", ";display:", ";flex-flow:", ";flex-grow:", ";gap:", ";grid-auto-flow:column;grid-template-columns:", ";justify-content:", ";padding:", ";"], function (_ref) {
@@ -276,8 +327,8 @@ var Row = /*#__PURE__*/_styled.div.withConfig({
   var grow = _ref7.grow,
     children = _ref7.children;
   if (grow === 'first') return '1fr';
-  if (grow === 'last') return "repeat(".concat(Children.count(children) - 1, ", auto) 1fr");
-  if (grow) return "repeat(".concat(Children.count(children), ", 1fr)");
+  if (grow === 'last') return "repeat(".concat(React.Children.count(children) - 1, ", auto) 1fr");
+  if (grow) return "repeat(".concat(React.Children.count(children), ", 1fr)");
   return undefined;
 }, function (_ref8) {
   var justify = _ref8.justify;
@@ -290,15 +341,15 @@ var Row = /*#__PURE__*/_styled.div.withConfig({
 var _circle$1, _path$6;
 function _extends$9() { _extends$9 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$9.apply(this, arguments); }
 var SvgCheck = function SvgCheck(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$9({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$9({
     viewBox: "0 0 20 20",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _circle$1 || (_circle$1 = /*#__PURE__*/React.createElement("circle", {
+  }, props), _circle$1 || (_circle$1 = /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: 10,
     cy: 10,
     r: 10
-  })), _path$6 || (_path$6 = /*#__PURE__*/React.createElement("path", {
+  })), _path$6 || (_path$6 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M14 7L8.5 12.5L6 10",
     stroke: "white",
     strokeWidth: 2,
@@ -310,16 +361,16 @@ var SvgCheck = function SvgCheck(props) {
 var _polyline, _polyline2;
 function _extends$8() { _extends$8 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$8.apply(this, arguments); }
 var SvgExpando = function SvgExpando(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$8({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$8({
     viewBox: "0 0 24 24",
     fill: "none",
     strokeWidth: 2,
     strokeLinecap: "round",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _polyline || (_polyline = /*#__PURE__*/React.createElement("polyline", {
+  }, props), _polyline || (_polyline = /*#__PURE__*/React__default["default"].createElement("polyline", {
     className: "left",
     points: "18 15 12 9"
-  })), _polyline2 || (_polyline2 = /*#__PURE__*/React.createElement("polyline", {
+  })), _polyline2 || (_polyline2 = /*#__PURE__*/React__default["default"].createElement("polyline", {
     className: "right",
     points: "12 9 6 15"
   })));
@@ -328,28 +379,28 @@ var SvgExpando = function SvgExpando(props) {
 var _path$5, _line$1, _line2, _line3;
 function _extends$7() { _extends$7 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
 var SvgGasIcon = function SvgGasIcon(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$7({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$7({
     width: 16,
     height: 16,
     viewBox: "0 0 16 16",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$5 || (_path$5 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$5 || (_path$5 = /*#__PURE__*/React__default["default"].createElement("path", {
     strokeWidth: "0.1px",
     d: "M13.5211 3.64304L13.1601 3.9892L13.1675 3.99659L13.5211 3.64304ZM11.0276 0.320661C10.8364 0.12136 10.5199 0.114744 10.3206 0.305883C10.1213 0.497022 10.1147 0.813535 10.3058 1.01284L11.0276 0.320661ZM4.00002 1.83335H8.00002V0.83335H4.00002V1.83335ZM8.83335 2.66668V13.6667H9.83335V2.66668H8.83335ZM3.16669 13.6667V2.66668H2.16669V13.6667H3.16669ZM8.00002 1.83335C8.46026 1.83335 8.83335 2.20645 8.83335 2.66668H9.83335C9.83335 1.65416 9.01254 0.83335 8.00002 0.83335V1.83335ZM4.00002 0.83335C2.9875 0.83335 2.16669 1.65416 2.16669 2.66668H3.16669C3.16669 2.20645 3.53978 1.83335 4.00002 1.83335V0.83335ZM10 9.10002H10.2667V8.10002H10V9.10002ZM11.1 9.93336V11.4667H12.1V9.93336H11.1ZM14.5 11.4675V4.5514H13.5V11.4675H14.5ZM13.882 3.29695L11.0276 0.320661L10.3058 1.01284L13.1602 3.98912L13.882 3.29695ZM14.5 4.5514C14.5 3.98367 14.1383 3.55309 13.8746 3.28948L13.1675 3.99659C13.404 4.23308 13.5 4.41189 13.5 4.5514H14.5ZM12.8 13.1667C13.7385 13.1667 14.5 12.4068 14.5 11.4675H13.5C13.5 11.8537 13.187 12.1667 12.8 12.1667V13.1667ZM11.1 11.4667C11.1 12.4056 11.8611 13.1667 12.8 13.1667V12.1667C12.4134 12.1667 12.1 11.8533 12.1 11.4667H11.1ZM10.2667 9.10002C10.7269 9.10002 11.1 9.47312 11.1 9.93336H12.1C12.1 8.92083 11.2792 8.10002 10.2667 8.10002V9.10002ZM13.5 4.66668C13.5 5.12692 13.1269 5.50002 12.6667 5.50002V6.50002C13.6792 6.50002 14.5 5.67921 14.5 4.66668H13.5ZM12.6667 5.50002C12.2064 5.50002 11.8334 5.12692 11.8334 4.66668H10.8334C10.8334 5.67921 11.6542 6.50002 12.6667 6.50002V5.50002ZM11.8334 4.66668C11.8334 4.20645 12.2064 3.83335 12.6667 3.83335V2.83335C11.6542 2.83335 10.8334 3.65416 10.8334 4.66668H11.8334ZM12.6667 3.83335C13.1269 3.83335 13.5 4.20645 13.5 4.66668H14.5C14.5 3.65416 13.6792 2.83335 12.6667 2.83335V3.83335ZM3.66669 15.1667H8.33335V14.1667H3.66669V15.1667ZM2.16669 13.6667C2.16669 14.4952 2.83826 15.1667 3.66669 15.1667V14.1667C3.39054 14.1667 3.16669 13.9429 3.16669 13.6667H2.16669ZM8.83335 13.6667C8.83335 13.9429 8.6095 14.1667 8.33335 14.1667V15.1667C9.16178 15.1667 9.83335 14.4952 9.83335 13.6667H8.83335Z"
-  })), _line$1 || (_line$1 = /*#__PURE__*/React.createElement("line", {
+  })), _line$1 || (_line$1 = /*#__PURE__*/React__default["default"].createElement("line", {
     x1: 4.5,
     y1: 8.83337,
     x2: 7.5,
     y2: 8.83337,
     strokeLinecap: "round"
-  })), _line2 || (_line2 = /*#__PURE__*/React.createElement("line", {
+  })), _line2 || (_line2 = /*#__PURE__*/React__default["default"].createElement("line", {
     x1: 4.5,
     y1: 10.8334,
     x2: 7.5,
     y2: 10.8334,
     strokeLinecap: "round"
-  })), _line3 || (_line3 = /*#__PURE__*/React.createElement("line", {
+  })), _line3 || (_line3 = /*#__PURE__*/React__default["default"].createElement("line", {
     x1: 4.5,
     y1: 12.8334,
     x2: 7.5,
@@ -361,25 +412,25 @@ var SvgGasIcon = function SvgGasIcon(props) {
 var _path$4, _path2$2, _path3$2;
 function _extends$6() { _extends$6 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
 var SvgLargeArrow = function SvgLargeArrow(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$6({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$6({
     width: 90,
     height: 90,
     viewBox: "0 0 90 90",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$4 || (_path$4 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$4 || (_path$4 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M45 82.5C65.7107 82.5 82.5 65.7107 82.5 45C82.5 24.2893 65.7107 7.5 45 7.5C24.2893 7.5 7.5 24.2893 7.5 45C7.5 65.7107 24.2893 82.5 45 82.5Z",
     stroke: "#4C82FB",
     strokeWidth: 4,
     strokeLinecap: "round",
     strokeLinejoin: "round"
-  })), _path2$2 || (_path2$2 = /*#__PURE__*/React.createElement("path", {
+  })), _path2$2 || (_path2$2 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M60 45L45 30L30 45",
     stroke: "#4C82FB",
     strokeWidth: 4,
     strokeLinecap: "round",
     strokeLinejoin: "round"
-  })), _path3$2 || (_path3$2 = /*#__PURE__*/React.createElement("path", {
+  })), _path3$2 || (_path3$2 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M45 60V30",
     stroke: "#4C82FB",
     strokeWidth: 4,
@@ -391,13 +442,13 @@ var SvgLargeArrow = function SvgLargeArrow(props) {
 var _path$3;
 function _extends$5() { _extends$5 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
 var SvgLargeCheck = function SvgLargeCheck(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$5({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$5({
     width: 64,
     height: 46,
     viewBox: "0 0 64 46",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$3 || (_path$3 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$3 || (_path$3 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M62 2.5L20.75 43.75L2 25",
     stroke: "#76D191",
     strokeWidth: 4,
@@ -409,13 +460,13 @@ var SvgLargeCheck = function SvgLargeCheck(props) {
 var _path$2;
 function _extends$4() { _extends$4 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
 var SvgReverse = function SvgReverse(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$4({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$4({
     width: 14,
     height: 20,
     viewBox: "0 0 14 20",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$2 || (_path$2 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$2 || (_path$2 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M5.33317 5.41663L9.08317 1.66663M9.08317 1.66663L12.8332 5.41663M9.08317 1.66663V9.99996M8.6665 14.5833L4.9165 18.3333M4.9165 18.3333L1.1665 14.5833M4.9165 18.3333L4.9165 10.8333",
     stroke: "currentColor",
     strokeWidth: 1.5,
@@ -427,43 +478,43 @@ var SvgReverse = function SvgReverse(props) {
 var _mask, _circle, _circle2;
 function _extends$3() { _extends$3 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
 var SvgSpinner = function SvgSpinner(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$3({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$3({
     viewBox: "0 0 24 24",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _mask || (_mask = /*#__PURE__*/React.createElement("mask", {
+  }, props), _mask || (_mask = /*#__PURE__*/React__default["default"].createElement("mask", {
     id: "mask"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: 12,
     cy: 12,
     r: 9,
     fill: "black",
     stroke: "black",
     strokeWidth: 2
-  }), /*#__PURE__*/React.createElement("rect", {
+  }), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: 12,
     height: 12,
     fill: "white",
     strokeWidth: 0
-  }), /*#__PURE__*/React.createElement("circle", {
+  }), /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: 3,
     cy: 12,
     r: 1,
     fill: "white",
     strokeWidth: 0
-  }), /*#__PURE__*/React.createElement("circle", {
+  }), /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: 12,
     cy: 3,
     r: 1,
     fill: "white",
     strokeWidth: 0
-  }))), _circle || (_circle = /*#__PURE__*/React.createElement("circle", {
+  }))), _circle || (_circle = /*#__PURE__*/React__default["default"].createElement("circle", {
     id: "dot",
     cx: 12,
     cy: 12,
     r: 6,
     fill: "#293249",
     stroke: "none"
-  })), _circle2 || (_circle2 = /*#__PURE__*/React.createElement("circle", {
+  })), _circle2 || (_circle2 = /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: 12,
     cy: 12,
     r: 9,
@@ -479,20 +530,20 @@ var SvgSpinner = function SvgSpinner(props) {
 var _path$1, _path2$1, _path3$1;
 function _extends$2() { _extends$2 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 var SvgWallet = function SvgWallet(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$2({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$2({
     width: 24,
     height: 24,
     viewBox: "0 0 24 24",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$1 || (_path$1 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M2 7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V7Z",
     stroke: "currentColor",
     strokeWidth: 2
-  })), _path2$1 || (_path2$1 = /*#__PURE__*/React.createElement("path", {
+  })), _path2$1 || (_path2$1 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M4 19H20C21.1046 19 22 18.1046 22 17V14C22 12.8954 21.1046 12 20 12H16C15.4477 12 14.9935 12.4624 14.7645 12.965C14.4438 13.6688 13.789 14.5 12 14.5C10.29 14.5 9.48213 13.7406 9.1936 13.0589C8.96576 12.5206 8.49905 12 7.91447 12H4C2.89543 12 2 12.8954 2 14V17C2 18.1046 2.89543 19 4 19Z",
     fill: "currentColor"
-  })), _path3$1 || (_path3$1 = /*#__PURE__*/React.createElement("path", {
+  })), _path3$1 || (_path3$1 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M22 13V11C22 9.89543 21.1034 9 19.9989 9C14.0294 9 9.97062 9 4.00115 9C2.89658 9 2 9.89543 2 11V13",
     stroke: "currentColor",
     strokeWidth: 2
@@ -502,24 +553,24 @@ var SvgWallet = function SvgWallet(props) {
 var _path, _path2, _path3;
 function _extends$1() { _extends$1 = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 var SvgWalletDisconnect = function SvgWalletDisconnect(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$1({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends$1({
     width: 16,
     height: 16,
     viewBox: "0 0 16 16",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+  }, props), _path || (_path = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M15.216 4.30015L12.7625 6.7537C13.4081 6.80314 13.9167 7.34272 13.9167 8.00001V8.43867C13.5743 8.16419 13.1397 8.00001 12.6667 8.00001H11.5162L5.43287 14.0833H12.6667C14.1855 14.0833 15.4167 12.8521 15.4167 11.3333V5.33332C15.4167 4.9679 15.3454 4.61913 15.216 4.30015Z"
-  })), _path2 || (_path2 = /*#__PURE__*/React.createElement("path", {
+  })), _path2 || (_path2 = /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M0.663258 11.994C0.611066 11.7824 0.58338 11.5611 0.58338 11.3333V5.33332C0.58338 3.81454 1.8146 2.58332 3.33338 2.58332H10.0739L8.57394 4.08332H3.33338C2.64302 4.08332 2.08338 4.64296 2.08338 5.33332V5.55032C2.4588 5.35831 2.88407 5.25001 3.33446 5.25001H7.40725L5.90725 6.75001H3.33446C2.64357 6.75001 2.08338 7.31018 2.08338 8.00001V8.43867C2.42578 8.16419 2.86041 8.00001 3.33338 8.00001H4.65725L0.663258 11.994Z"
-  })), _path3 || (_path3 = /*#__PURE__*/React.createElement("path", {
+  })), _path3 || (_path3 = /*#__PURE__*/React__default["default"].createElement("path", {
     fillRule: "evenodd",
     clipRule: "evenodd",
     d: "M0.559422 15.4406C0.266529 15.1477 0.343167 14.5962 0.730598 14.2088L14.2088 0.730598C14.5962 0.343167 15.1477 0.266529 15.4406 0.559422C15.7335 0.852315 15.6569 1.40383 15.2694 1.79126L1.79126 15.2694C1.40383 15.6569 0.852315 15.7335 0.559422 15.4406Z"
   })));
 };
 
-var iconHoverCss = /*#__PURE__*/css([":hover{cursor:pointer;opacity:0.6;}"]);
+var iconHoverCss = /*#__PURE__*/_styled.css([":hover{cursor:pointer;opacity:0.6;}"]);
 
 var Layer = /*#__PURE__*/function (Layer) {
   Layer[Layer["UNDERLAYER"] = -1] = "UNDERLAYER";
@@ -545,77 +596,77 @@ var SlideAnimationType = /*#__PURE__*/function (SlideAnimationType) {
   SlideAnimationType["PAGING"] = "paging";
   return SlideAnimationType;
 }({});
-var fadeIn = /*#__PURE__*/keyframes(["from{opacity:0;}to{opacity:1;}"]);
-var fadeOut = /*#__PURE__*/keyframes(["to{opacity:0;}from{opacity:1;}"]);
-var fadeAnimationCss = /*#__PURE__*/css(["animation:", " ", " ease-in-out;&.", "{animation:", " ", " ease-in-out;}"], fadeIn, AnimationSpeed.Medium, SlideAnimationType.CLOSING, fadeOut, AnimationSpeed.Medium);
+var fadeIn = /*#__PURE__*/_styled.keyframes(["from{opacity:0;}to{opacity:1;}"]);
+var fadeOut = /*#__PURE__*/_styled.keyframes(["to{opacity:0;}from{opacity:1;}"]);
+var fadeAnimationCss = /*#__PURE__*/_styled.css(["animation:", " ", " ease-in-out;&.", "{animation:", " ", " ease-in-out;}"], fadeIn, AnimationSpeed.Medium, SlideAnimationType.CLOSING, fadeOut, AnimationSpeed.Medium);
 
 function ownKeys$k(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$k(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$k(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$k(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$k(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$k(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$k(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var black$1 = 'hsl(0, 0%, 0%)';
 var white$1 = 'hsl(0, 0%, 100%)';
 var light = {
   // surface
-  interactive: transparentize(1 - 0.54, black$1),
-  outline: transparentize(1 - 0.24, black$1),
+  interactive: polished.transparentize(1 - 0.54, black$1),
+  outline: polished.transparentize(1 - 0.24, black$1),
   // text
   primary: black$1,
-  secondary: transparentize(1 - 0.64, black$1),
+  secondary: polished.transparentize(1 - 0.64, black$1),
   onInteractive: white$1
 };
 var dark = {
   // surface
-  interactive: transparentize(1 - 0.48, white$1),
-  outline: transparentize(1 - 0.12, white$1),
+  interactive: polished.transparentize(1 - 0.48, white$1),
+  outline: polished.transparentize(1 - 0.12, white$1),
   // text
   primary: white$1,
-  secondary: transparentize(1 - 0.6, white$1),
+  secondary: polished.transparentize(1 - 0.6, white$1),
   onInteractive: black$1
 };
 function getDynamicTheme(theme, color) {
   var colors = {
     light: light,
     dark: dark
-  }[readableColor(color, 'light', 'dark', false)];
+  }[polished.readableColor(color, 'light', 'dark', false)];
   return _objectSpread$k(_objectSpread$k(_objectSpread$k({}, theme), colors), {}, {
     module: color,
     onHover: function onHover(color) {
-      return color === colors.primary ? transparentize(0.4, colors.primary) : opacify(0.25, color);
+      return color === colors.primary ? polished.transparentize(0.4, colors.primary) : polished.opacify(0.25, color);
     }
   });
 }
 function getAccessibleColor(theme, color) {
   var dynamic = getDynamicTheme(theme, color);
   var primary = dynamic.primary;
-  var AAscore = hex(color, primary);
-  var contrastify = hex(color, '#000') > hex(color, '#fff') ? darken : lighten;
+  var AAscore = wcagContrast.hex(color, primary);
+  var contrastify = wcagContrast.hex(color, '#000') > wcagContrast.hex(color, '#fff') ? polished.darken : polished.lighten;
   while (AAscore < 3) {
     color = contrastify(0.005, color);
     primary = getDynamicTheme(theme, color).primary;
-    AAscore = hex(color, primary);
+    AAscore = wcagContrast.hex(color, primary);
   }
   return color;
 }
 function DynamicThemeProvider(_ref) {
   var color = _ref.color,
     children = _ref.children;
-  var theme = /*#__PURE__*/useTheme();
-  var value = useMemo(function () {
+  var theme = /*#__PURE__*/_styled.useTheme();
+  var value = React.useMemo(function () {
     if (!color) {
       return theme;
     }
     var accessibleColor = getAccessibleColor(theme, color);
     return getDynamicTheme(theme, accessibleColor);
   }, [theme, color]);
-  return /*#__PURE__*/React.createElement(ThemeProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(_styled.ThemeProvider, {
     theme: value
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     style: {
       color: value.primary
     }
   }, children));
 }
 
-var TextWrapper = /*#__PURE__*/_styled(Text).withConfig({
+var TextWrapper = /*#__PURE__*/_styled__default["default"](rebass.Text).withConfig({
   displayName: "type__TextWrapper",
   componentId: "sc-3dtpqx-0"
 })(["color:", ";min-height:", ";user-select:", ";white-space:", ";display:", ";"], function (_ref) {
@@ -636,12 +687,12 @@ var TextWrapper = /*#__PURE__*/_styled(Text).withConfig({
   var $inline = _ref5.$inline;
   return $inline && 'inline';
 });
-var TransitionTextWrapper = /*#__PURE__*/_styled(TextWrapper).withConfig({
+var TransitionTextWrapper = /*#__PURE__*/_styled__default["default"](TextWrapper).withConfig({
   displayName: "type__TransitionTextWrapper",
   componentId: "sc-3dtpqx-1"
 })(["transition:font-size ", " ease-out,line-height ", " ease-out;"], AnimationSpeed.Medium, AnimationSpeed.Medium);
 function H1(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "headline headline-1",
     fontSize: 36,
     fontWeight: 500,
@@ -650,7 +701,7 @@ function H1(props) {
   }, props));
 }
 function H3(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "headline headline-3",
     fontSize: 20,
     fontWeight: 500,
@@ -659,7 +710,7 @@ function H3(props) {
   }, props));
 }
 function H4(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "headline headline-4",
     fontSize: 20,
     fontWeight: 500,
@@ -668,7 +719,7 @@ function H4(props) {
   }, props));
 }
 function Subhead1(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "subhead subhead-1",
     fontSize: 16,
     fontWeight: 500,
@@ -677,7 +728,7 @@ function Subhead1(props) {
   }, props));
 }
 function Subhead2(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "subhead subhead-2",
     fontSize: 14,
     fontWeight: 500,
@@ -686,7 +737,7 @@ function Subhead2(props) {
   }, props));
 }
 function Body1(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "body body-1",
     fontSize: 16,
     fontWeight: 400,
@@ -695,7 +746,7 @@ function Body1(props) {
 }
 var Body2LineHeightRem = 1.25;
 function Body2(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "body body-2",
     fontSize: 14,
     fontWeight: 400,
@@ -703,7 +754,7 @@ function Body2(props) {
   }, props));
 }
 function Caption$1(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "caption",
     fontSize: 12,
     fontWeight: 400,
@@ -711,7 +762,7 @@ function Caption$1(props) {
   }, props));
 }
 function Badge(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "badge",
     fontSize: "8px",
     fontWeight: 600,
@@ -720,7 +771,7 @@ function Badge(props) {
   }, props));
 }
 function ButtonLarge(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "button button-large",
     fontSize: 20,
     fontWeight: 600,
@@ -729,7 +780,7 @@ function ButtonLarge(props) {
   }, props));
 }
 function ButtonMedium(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "button button-medium",
     fontSize: 16,
     fontWeight: 500,
@@ -738,7 +789,7 @@ function ButtonMedium(props) {
   }, props));
 }
 function ButtonSmall(props) {
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "button button-small",
     fontSize: 14,
     fontWeight: 600,
@@ -754,7 +805,7 @@ function TransitionButton(props) {
     large: 20
   }[props.buttonSize];
   var lineHeight = "".concat(fontSize, "px");
-  return /*#__PURE__*/React.createElement(TransitionTextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TransitionTextWrapper, _extends__default["default"]({
     className: className,
     fontSize: fontSize,
     fontWeight: 600,
@@ -763,9 +814,9 @@ function TransitionButton(props) {
   }, props));
 }
 function Code(props) {
-  var _useTheme2 = useTheme(),
+  var _useTheme2 = _styled.useTheme(),
     fontFamilyCode = _useTheme2.fontFamilyCode;
-  return /*#__PURE__*/React.createElement(TextWrapper, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TextWrapper, _extends__default["default"]({
     className: "code",
     fontSize: 12,
     fontWeight: 400,
@@ -775,7 +826,7 @@ function Code(props) {
 }
 
 function ownKeys$j(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$j(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$j(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$j(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$j(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$j(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$j(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var white = 'hsl(0, 0%, 100%)';
 var black = 'hsl(0, 0%, 0%)';
 var brandLight = 'hsl(328, 97%, 53%)';
@@ -791,7 +842,7 @@ var stateColors = {
 var lightTheme = _objectSpread$j(_objectSpread$j({
   // surface
   accent: brandLight,
-  accentSoft: rgba(brandLight, 0.24),
+  accentSoft: polished.rgba(brandLight, 0.24),
   container: 'hsl(0, 0%, 100%)',
   module: 'hsl(231, 54%, 97%)',
   interactive: 'hsl(227, 70%, 95%)',
@@ -814,7 +865,7 @@ var lightTheme = _objectSpread$j(_objectSpread$j({
 var darkTheme = _objectSpread$j(_objectSpread$j({
   // surface
   accent: brandDark,
-  accentSoft: rgba(brandDark, 0.24),
+  accentSoft: polished.rgba(brandDark, 0.24),
   container: 'hsla(224, 37%, 8%, 1)',
   module: 'hsl(222, 37%, 12%)',
   interactive: 'hsla(223, 28%, 22%, 1)',
@@ -856,17 +907,17 @@ var defaultTheme = _objectSpread$j({
   fontFamilyCode: 'IBM Plex Mono',
   tokenColorExtraction: false
 }, lightTheme);
-var ThemeContext = /*#__PURE__*/createContext(toDefaultTheme(defaultTheme));
+var ThemeContext = /*#__PURE__*/React.createContext(toDefaultTheme(defaultTheme));
 function Provider$8(_ref) {
   var theme = _ref.theme,
     children = _ref.children;
-  var contextTheme = useContext(ThemeContext);
-  var value = useMemo(function () {
+  var contextTheme = React.useContext(ThemeContext);
+  var value = React.useMemo(function () {
     return toDefaultTheme(_objectSpread$j(_objectSpread$j({}, contextTheme), theme));
   }, [contextTheme, theme]);
-  return /*#__PURE__*/React.createElement(ThemeContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(ThemeContext.Provider, {
     value: value
-  }, /*#__PURE__*/React.createElement(ThemeProvider, {
+  }, /*#__PURE__*/React__default["default"].createElement(_styled.ThemeProvider, {
     theme: value
   }, children));
 }
@@ -874,7 +925,7 @@ function toDefaultTheme(theme) {
   return _objectSpread$j(_objectSpread$j({}, theme), {}, {
     borderRadius: clamp(theme.borderRadius ? theme.borderRadius : defaultBorderRadius),
     onHover: function onHover(color) {
-      return color === theme.primary ? transparentize(0.4, theme.primary) : mix(0.06, theme.primary, color);
+      return color === theme.primary ? polished.transparentize(0.4, theme.primary) : polished.mix(0.06, theme.primary, color);
     }
   });
   function clamp(value) {
@@ -897,35 +948,35 @@ var getUniqueId = function getUniqueId() {
 function AutoRouterIcon(_ref) {
   var className = _ref.className,
     id = _ref.id;
-  var componentIdRef = useRef(id !== null && id !== void 0 ? id : getUniqueId());
+  var componentIdRef = React.useRef(id !== null && id !== void 0 ? id : getUniqueId());
   var componentId = "AutoRouterIconGradient".concat(componentIdRef.current);
-  return /*#__PURE__*/React.createElement("svg", {
+  return /*#__PURE__*/React__default["default"].createElement("svg", {
     width: "23",
     height: "20",
     viewBox: "0 0 23 20",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg",
     className: className
-  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("linearGradient", {
+  }, /*#__PURE__*/React__default["default"].createElement("defs", null, /*#__PURE__*/React__default["default"].createElement("linearGradient", {
     id: componentId,
     x1: "0",
     y1: "0",
     x2: "1",
     y2: "0",
     gradientTransform: "rotate(95)"
-  }, /*#__PURE__*/React.createElement("stop", {
+  }, /*#__PURE__*/React__default["default"].createElement("stop", {
     id: "stop1",
     offset: "0",
     stopColor: "#2274E2"
-  }), /*#__PURE__*/React.createElement("stop", {
+  }), /*#__PURE__*/React__default["default"].createElement("stop", {
     id: "stop1",
     offset: "0.5",
     stopColor: "#2274E2"
-  }), /*#__PURE__*/React.createElement("stop", {
+  }), /*#__PURE__*/React__default["default"].createElement("stop", {
     id: "stop2",
     offset: "1",
     stopColor: "#3FB672"
-  }))), /*#__PURE__*/React.createElement("path", {
+  }))), /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M16 16C10 16 9 10 5 10M16 16C16 17.6569 17.3431 19 19 19C20.6569 19 22 17.6569 22 16C22 14.3431 20.6569 13 19 13C17.3431 13 16 14.3431 16 16ZM5 10C9 10 10 4 16 4M5 10H1.5M16 4C16 5.65685 17.3431 7 19 7C20.6569 7 22 5.65685 22 4C22 2.34315 20.6569 1 19 1C17.3431 1 16 2.34315 16 4Z",
     strokeWidth: "2",
     strokeLinecap: "round",
@@ -961,12 +1012,12 @@ function getGradientIconSrc(account) {
   return gradients[i];
 }
 function IdenticonIcon() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
-  var iconSrc = useMemo(function () {
+  var iconSrc = React.useMemo(function () {
     return account && getGradientIconSrc(account);
   }, [account]);
-  return /*#__PURE__*/React.createElement("img", {
+  return /*#__PURE__*/React__default["default"].createElement("img", {
     src: iconSrc,
     alt: "account icon",
     width: "16px",
@@ -977,7 +1028,7 @@ function IdenticonIcon() {
 var _templateObject$8, _templateObject2$3;
 // Intentionally uses `em` in order to scale with font size.
 function icon(Icon) {
-  return _styled(Icon).withConfig({
+  return _styled__default["default"](Icon).withConfig({
     displayName: "icons",
     componentId: "sc-hgxqho-0"
   })(["clip-path:stroke-box;height:1em;stroke:", ";width:1em;"], function (_ref) {
@@ -987,14 +1038,14 @@ function icon(Icon) {
     return theme[color];
   });
 }
-var largeIconCss = css(_templateObject$8 || (_templateObject$8 = _taggedTemplateLiteral(["\n  display: flex;\n\n  svg {\n    align-self: center;\n    height: ", "em;\n    width: ", "em;\n  }\n"])), function (_ref2) {
+var largeIconCss = _styled.css(_templateObject$8 || (_templateObject$8 = _taggedTemplateLiteral__default["default"](["\n  display: flex;\n\n  svg {\n    align-self: center;\n    height: ", "em;\n    width: ", "em;\n  }\n"])), function (_ref2) {
   var iconSize = _ref2.iconSize;
   return iconSize;
 }, function (_ref3) {
   var iconSize = _ref3.iconSize;
   return iconSize;
 });
-var LargeWrapper = /*#__PURE__*/_styled.div.withConfig({
+var LargeWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "icons__LargeWrapper",
   componentId: "sc-hgxqho-1"
 })(["height:", "em;width:", "em;", ""], function (_ref4) {
@@ -1013,39 +1064,39 @@ function LargeIcon(_ref6) {
     strokeWidth = _ref6$strokeWidth === void 0 ? 1.5 : _ref6$strokeWidth,
     onClick = _ref6.onClick,
     className = _ref6.className;
-  return /*#__PURE__*/React.createElement(LargeWrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(LargeWrapper, {
     color: color,
     iconSize: size,
     className: className
-  }, Icon && /*#__PURE__*/React.createElement(Icon, {
+  }, Icon && /*#__PURE__*/React__default["default"].createElement(Icon, {
     color: color,
     strokeWidth: strokeWidth,
     onClick: onClick
   }));
 }
-var AlertTriangle = icon(AlertTriangle$1);
-var ArrowDown = icon(ArrowDown$1);
-var ArrowRight = icon(ArrowRight$1);
-var ArrowLeft = icon(ArrowLeft$1);
-icon(ArrowUp);
-icon(BarChart2);
-var ChevronDown = icon(ChevronDown$1);
-icon(ChevronUp);
-icon(Clock);
-var HelpCircle = icon(HelpCircle$1);
+var AlertTriangle = icon(reactFeather.AlertTriangle);
+var ArrowDown = icon(reactFeather.ArrowDown);
+var ArrowRight = icon(reactFeather.ArrowRight);
+var ArrowLeft = icon(reactFeather.ArrowLeft);
+icon(reactFeather.ArrowUp);
+icon(reactFeather.BarChart2);
+var ChevronDown = icon(reactFeather.ChevronDown);
+icon(reactFeather.ChevronUp);
+icon(reactFeather.Clock);
+var HelpCircle = icon(reactFeather.HelpCircle);
 icon(IdenticonIcon);
-var Info = icon(Info$1);
-var Link = icon(ArrowUpRight);
+var Info = icon(reactFeather.Info);
+var Link = icon(reactFeather.ArrowUpRight);
 var AutoRouter = icon(AutoRouterIcon);
-var Settings$1 = icon(Settings$2);
-icon(Slash);
-icon(Trash2);
+var Settings$1 = icon(reactFeather.Settings);
+icon(reactFeather.Slash);
+icon(reactFeather.Trash2);
 icon(SvgWallet);
-var X = icon(X$1);
-var XOctagon = icon(XOctagon$1);
+var X = icon(reactFeather.X);
+var XOctagon = icon(reactFeather.XOctagon);
 var Reverse = icon(SvgReverse);
-var Search = icon(Search$1);
-var Check = /*#__PURE__*/_styled(icon(SvgCheck)).withConfig({
+var Search = icon(reactFeather.Search);
+var Check = /*#__PURE__*/_styled__default["default"](icon(SvgCheck)).withConfig({
   displayName: "icons__Check",
   componentId: "sc-hgxqho-2"
 })(["circle{fill:", ";stroke:none;}"], function (_ref7) {
@@ -1053,19 +1104,19 @@ var Check = /*#__PURE__*/_styled(icon(SvgCheck)).withConfig({
     color = _ref7.color;
   return theme[color !== null && color !== void 0 ? color : 'active'];
 });
-var Expando$1 = /*#__PURE__*/_styled(icon(SvgExpando)).withConfig({
+var Expando$1 = /*#__PURE__*/_styled__default["default"](icon(SvgExpando)).withConfig({
   displayName: "icons__Expando",
   componentId: "sc-hgxqho-3"
 })(["transform:", ";transition:transform ", ";"], function (_ref8) {
   var open = _ref8.open;
   return open ? 'rotate(0deg)' : 'rotate(-180deg)';
 }, AnimationSpeed.Medium);
-var WalletDisconnect = /*#__PURE__*/_styled(icon(SvgWalletDisconnect)).withConfig({
+var WalletDisconnect = /*#__PURE__*/_styled__default["default"](icon(SvgWalletDisconnect)).withConfig({
   displayName: "icons__WalletDisconnect",
   componentId: "sc-hgxqho-5"
 })(["fill:currentColor;stroke:none;"]);
-var rotate = keyframes(_templateObject2$3 || (_templateObject2$3 = _taggedTemplateLiteral(["\n  from {\n    transform: rotate(-45deg);\n  }\n  to {\n    transform: rotate(315deg);\n  }\n"])));
-var Spinner = /*#__PURE__*/_styled(icon(SvgSpinner)).withConfig({
+var rotate = _styled.keyframes(_templateObject2$3 || (_templateObject2$3 = _taggedTemplateLiteral__default["default"](["\n  from {\n    transform: rotate(-45deg);\n  }\n  to {\n    transform: rotate(315deg);\n  }\n"])));
+var Spinner = /*#__PURE__*/_styled__default["default"](icon(SvgSpinner)).withConfig({
   displayName: "icons__Spinner",
   componentId: "sc-hgxqho-6"
 })(["animation:", " 1s cubic-bezier(0.83,0,0.17,1) infinite;color:", ";fill:", ";transition:color ", "ms ease,fill ", "ms ease;#dot{fill:", ";}"], rotate, function (_ref10) {
@@ -1082,7 +1133,7 @@ var Spinner = /*#__PURE__*/_styled(icon(SvgSpinner)).withConfig({
   var theme = _ref12.theme;
   return theme.interactive;
 });
-var LargeCheck = /*#__PURE__*/_styled(icon(SvgLargeCheck)).withConfig({
+var LargeCheck = /*#__PURE__*/_styled__default["default"](icon(SvgLargeCheck)).withConfig({
   displayName: "icons__LargeCheck",
   componentId: "sc-hgxqho-7"
 })(["stroke:", ";"], function (_ref13) {
@@ -1091,7 +1142,7 @@ var LargeCheck = /*#__PURE__*/_styled(icon(SvgLargeCheck)).withConfig({
     theme = _ref13.theme;
   return theme[color];
 });
-var LargeAlert = /*#__PURE__*/_styled(LargeIcon).attrs({
+var LargeAlert = /*#__PURE__*/_styled__default["default"](LargeIcon).attrs({
   icon: AlertTriangle,
   color: 'error',
   size: 6,
@@ -1100,7 +1151,7 @@ var LargeAlert = /*#__PURE__*/_styled(LargeIcon).attrs({
   displayName: "icons__LargeAlert",
   componentId: "sc-hgxqho-8"
 })([""]);
-var LargeArrow = /*#__PURE__*/_styled(icon(SvgLargeArrow)).withConfig({
+var LargeArrow = /*#__PURE__*/_styled__default["default"](icon(SvgLargeArrow)).withConfig({
   displayName: "icons__LargeArrow",
   componentId: "sc-hgxqho-10"
 })(["stroke:", ";"], function (_ref15) {
@@ -1109,7 +1160,7 @@ var LargeArrow = /*#__PURE__*/_styled(icon(SvgLargeArrow)).withConfig({
     theme = _ref15.theme;
   return theme[color];
 });
-var Gas = /*#__PURE__*/_styled(icon(SvgGasIcon)).withConfig({
+var Gas = /*#__PURE__*/_styled__default["default"](icon(SvgGasIcon)).withConfig({
   displayName: "icons__Gas",
   componentId: "sc-hgxqho-11"
 })(["fill:", ";stroke:", ";"], function (_ref16) {
@@ -1123,7 +1174,7 @@ var Gas = /*#__PURE__*/_styled(icon(SvgGasIcon)).withConfig({
     theme = _ref17.theme;
   return theme[color];
 });
-var StyledXButton$1 = /*#__PURE__*/_styled(X).withConfig({
+var StyledXButton$1 = /*#__PURE__*/_styled__default["default"](X).withConfig({
   displayName: "icons__StyledXButton",
   componentId: "sc-hgxqho-12"
 })(["", " stroke-width:2.5px;"], iconHoverCss);
@@ -1138,24 +1189,24 @@ function ExternalLink(_ref) {
     href = _ref.href,
     _ref$rel = _ref.rel,
     rel = _ref$rel === void 0 ? 'noopener noreferrer' : _ref$rel,
-    rest = _objectWithoutProperties(_ref, _excluded$6);
-  return /*#__PURE__*/React.createElement("a", _extends$a({
+    rest = _objectWithoutProperties__default["default"](_ref, _excluded$6);
+  return /*#__PURE__*/React__default["default"].createElement("a", _extends__default["default"]({
     target: target,
     rel: rel,
     href: href
   }, rest), rest.children);
 }
 
-var BrandedFooter = /*#__PURE__*/memo(function BrandedFooter() {
-  return /*#__PURE__*/React.createElement(React.Fragment, null);
+var BrandedFooter = /*#__PURE__*/React.memo(function BrandedFooter() {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null);
 });
 
 var _excluded$5 = ["icon", "iconProps"];
-var BaseButton = /*#__PURE__*/_styled.button.withConfig({
+var BaseButton = /*#__PURE__*/_styled__default["default"].button.withConfig({
   displayName: "Button__BaseButton",
   componentId: "sc-sd2e3x-0"
 })(["background-color:transparent;border:none;border-radius:0.5rem;color:currentColor;cursor:pointer;font-size:inherit;font-weight:inherit;height:inherit;line-height:inherit;margin:0;padding:0;:enabled{transition:filter ", " linear;}:disabled{cursor:initial;filter:opacity(0.6);}"], AnimationSpeed.Fast);
-var Button$1 = _styled(BaseButton).withConfig({
+var Button$1 = _styled__default["default"](BaseButton).withConfig({
   displayName: "Button",
   componentId: "sc-sd2e3x-1"
 })(["background-color:", ";border:1px solid transparent;color:", ";:enabled:hover{background-color:", ";}"], function (_ref) {
@@ -1175,7 +1226,7 @@ var Button$1 = _styled(BaseButton).withConfig({
   return theme.onHover(theme[color]);
 });
 var transparentButton = function transparentButton(defaultColor) {
-  return _styled(BaseButton).withConfig({
+  return _styled__default["default"](BaseButton).withConfig({
     displayName: "Button__transparentButton",
     componentId: "sc-sd2e3x-2"
   })(["color:", ";:enabled:hover{color:", ";*{color:", ";}}"], function (_ref4) {
@@ -1197,20 +1248,20 @@ var transparentButton = function transparentButton(defaultColor) {
 };
 var TextButton = transparentButton('accent');
 var SecondaryButton = transparentButton('secondary');
-var StyledIconButton = /*#__PURE__*/_styled(SecondaryButton).withConfig({
+var StyledIconButton = /*#__PURE__*/_styled__default["default"](SecondaryButton).withConfig({
   displayName: "Button__StyledIconButton",
   componentId: "sc-sd2e3x-3"
 })(["height:1rem;"]);
-var IconButton = /*#__PURE__*/forwardRef(function IconButton(_ref7, ref) {
+var IconButton = /*#__PURE__*/React.forwardRef(function IconButton(_ref7, ref) {
   var Icon = _ref7.icon,
     iconProps = _ref7.iconProps,
-    props = _objectWithoutProperties(_ref7, _excluded$5);
-  return /*#__PURE__*/React.createElement(StyledIconButton, _extends$a({}, props, {
+    props = _objectWithoutProperties__default["default"](_ref7, _excluded$5);
+  return /*#__PURE__*/React__default["default"].createElement(StyledIconButton, _extends__default["default"]({}, props, {
     ref: ref
-  }), /*#__PURE__*/React.createElement(Icon, iconProps));
+  }), /*#__PURE__*/React__default["default"].createElement(Icon, iconProps));
 });
 
-var AccountButton = /*#__PURE__*/_styled(TextButton).withConfig({
+var AccountButton = /*#__PURE__*/_styled__default["default"](TextButton).withConfig({
   displayName: "ConnectedWalletChip__AccountButton",
   componentId: "sc-13itr2f-0"
 })(["filter:none;visibility:", ";"], function (_ref) {
@@ -1220,13 +1271,13 @@ var AccountButton = /*#__PURE__*/_styled(TextButton).withConfig({
 function ConnectedWalletChip(_ref2) {
   var disabled = _ref2.disabled,
     account = _ref2.account;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     hover = _useState2[0],
     setHover = _useState2[1];
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     connector = _useWeb3React.connector;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(AccountButton, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(AccountButton, {
     hidden: disabled,
     onClick: function onClick() {
       return connector.deactivate ? connector.deactivate() : connector.resetState();
@@ -1239,25 +1290,25 @@ function ConnectedWalletChip(_ref2) {
       return setHover(false);
     },
     "data-testid": "account"
-  }, hover ? /*#__PURE__*/React.createElement(Caption$1, null, /*#__PURE__*/React.createElement(Row, {
+  }, hover ? /*#__PURE__*/React__default["default"].createElement(Caption$1, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(WalletDisconnect, null), /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(WalletDisconnect, null), /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "TNawll",
     message: "Disconnect wallet"
-  }))) : /*#__PURE__*/React.createElement(Subhead2, null, /*#__PURE__*/React.createElement(Row, {
+  }))) : /*#__PURE__*/React__default["default"].createElement(Subhead2, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(IdenticonIcon, null), account === null || account === void 0 ? void 0 : account.substring(0, 6), "...", account === null || account === void 0 ? void 0 : account.substring((account === null || account === void 0 ? void 0 : account.length) - 4)))));
+  }, /*#__PURE__*/React__default["default"].createElement(IdenticonIcon, null), account === null || account === void 0 ? void 0 : account.substring(0, 6), "...", account === null || account === void 0 ? void 0 : account.substring((account === null || account === void 0 ? void 0 : account.length) - 4)))));
 }
 
 function Wallet(_ref) {
   var disabled = _ref.disabled;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     isActive = _useWeb3React.isActive;
   if (!isActive || !Boolean(account)) {
     return null;
   }
-  return /*#__PURE__*/React.createElement(ConnectedWalletChip, {
+  return /*#__PURE__*/React__default["default"].createElement(ConnectedWalletChip, {
     disabled: disabled,
     account: account
   });
@@ -1299,14 +1350,14 @@ function isWindowVisible() {
  * Returns whether the window is currently visible to the user.
  */
 function useIsWindowVisible() {
-  var _useState = useState(true),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(true),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     focused = _useState2[0],
     setFocused = _useState2[1];
-  var listener = useCallback(function () {
+  var listener = React.useCallback(function () {
     setFocused(isWindowVisible());
   }, [setFocused]);
-  useEffect(function () {
+  React.useEffect(function () {
     if (!isVisibilityStateSupported()) return undefined;
     setFocused(function (focused) {
       return isWindowVisible();
@@ -1320,9 +1371,9 @@ function useIsWindowVisible() {
 }
 
 var MISSING_PROVIDER$1 = Symbol();
-var BlockNumberContext = /*#__PURE__*/createContext(MISSING_PROVIDER$1);
+var BlockNumberContext = /*#__PURE__*/React.createContext(MISSING_PROVIDER$1);
 function useBlockNumberContext() {
-  var blockNumber = useContext(BlockNumberContext);
+  var blockNumber = React.useContext(BlockNumberContext);
   if (blockNumber === MISSING_PROVIDER$1) {
     throw new Error('BlockNumber hooks must be wrapped in a <BlockNumberProvider>');
   }
@@ -1338,18 +1389,18 @@ function useFastForwardBlockNumber() {
 }
 function Provider$7(_ref) {
   var children = _ref.children;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     activeChainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
-  var _useState = useState({
+  var _useState = React.useState({
       chainId: activeChainId
     }),
-    _useState2 = _slicedToArray(_useState, 2),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     _useState2$ = _useState2[0],
     chainId = _useState2$.chainId,
     block = _useState2$.block,
     setChainBlock = _useState2[1];
-  var onBlock = useCallback(function (block) {
+  var onBlock = React.useCallback(function (block) {
     setChainBlock(function (chainBlock) {
       if (chainBlock.chainId === activeChainId) {
         if (!chainBlock.block || chainBlock.block < block) {
@@ -1363,7 +1414,7 @@ function Provider$7(_ref) {
     });
   }, [activeChainId]);
   var isWindowVisible = useIsWindowVisible();
-  useEffect(function () {
+  React.useEffect(function () {
     if (provider && activeChainId && isWindowVisible) {
       // If chainId hasn't changed, don't clear the block. This prevents re-fetching still valid data.
       setChainBlock(function (chainBlock) {
@@ -1375,7 +1426,7 @@ function Provider$7(_ref) {
       provider.getBlockNumber().then(function (block) {
         if (stale) return;
         onBlock(block);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         if (stale) return;
         console.error("Failed to get block number for chainId ".concat(activeChainId), error);
       });
@@ -1387,7 +1438,7 @@ function Provider$7(_ref) {
     }
     return undefined;
   }, [activeChainId, provider, onBlock, setChainBlock, isWindowVisible]);
-  var value = useMemo(function () {
+  var value = React.useMemo(function () {
     return {
       value: chainId === activeChainId ? block : undefined,
       fastForward: function fastForward(update) {
@@ -1400,19 +1451,19 @@ function Provider$7(_ref) {
       }
     };
   }, [activeChainId, block, chainId]);
-  return /*#__PURE__*/React.createElement(BlockNumberContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(BlockNumberContext.Provider, {
     value: value
   }, children);
 }
 
 // The oldest block (per chain) to be considered valid.
-var oldestBlockMapAtom = atomWithImmer({});
+var oldestBlockMapAtom = immer.atomWithImmer({});
 var DEFAULT_MAX_BLOCK_AGE = 10;
 function useSetOldestValidBlock() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var updateValidBlock = useUpdateAtom(oldestBlockMapAtom);
-  return useCallback(function (block) {
+  var updateValidBlock = utils.useUpdateAtom(oldestBlockMapAtom);
+  return React.useCallback(function (block) {
     if (!chainId) return;
     updateValidBlock(function (oldestBlockMap) {
       oldestBlockMap[chainId] = Math.max(block, oldestBlockMap[chainId] || 0);
@@ -1421,12 +1472,12 @@ function useSetOldestValidBlock() {
 }
 function useGetIsValidBlock() {
   var maxBlockAge = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_MAX_BLOCK_AGE;
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     chainId = _useWeb3React2.chainId;
   var currentBlock = useBlockNumber();
-  var oldestBlockMap = useAtomValue(oldestBlockMapAtom);
+  var oldestBlockMap = utils.useAtomValue(oldestBlockMapAtom);
   var oldestBlock = chainId ? oldestBlockMap[chainId] : 0;
-  return useCallback(function (block) {
+  return React.useCallback(function (block) {
     if (!currentBlock) return false;
     if (currentBlock - block > maxBlockAge) return false;
     if (currentBlock < oldestBlock) return false;
@@ -1483,7 +1534,7 @@ var ChainName = /*#__PURE__*/function (ChainName) {
   ChainName["ZKSYNC"] = "zksync";
   return ChainName;
 }({});
-(_CHAIN_NAMES_TO_IDS = {}, _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.MAINNET, SupportedChainId.MAINNET), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.ROPSTEN, SupportedChainId.ROPSTEN), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.RINKEBY, SupportedChainId.RINKEBY), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.GOERLI, SupportedChainId.GOERLI), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.KOVAN, SupportedChainId.KOVAN), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.POLYGON, SupportedChainId.POLYGON), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.POLYGON_MUMBAI, SupportedChainId.POLYGON_MUMBAI), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.ARBITRUM_ONE, SupportedChainId.ARBITRUM_ONE), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.ARBITRUM_RINKEBY, SupportedChainId.ARBITRUM_RINKEBY), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.OPTIMISM, SupportedChainId.OPTIMISM), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.OPTIMISM_GOERLI, SupportedChainId.OPTIMISM_GOERLI), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.CELO, SupportedChainId.CELO), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.CELO_ALFAJORES, SupportedChainId.CELO_ALFAJORES), _defineProperty(_CHAIN_NAMES_TO_IDS, ChainName.BNB, SupportedChainId.BNB), _CHAIN_NAMES_TO_IDS);
+(_CHAIN_NAMES_TO_IDS = {}, _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.MAINNET, SupportedChainId.MAINNET), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.ROPSTEN, SupportedChainId.ROPSTEN), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.RINKEBY, SupportedChainId.RINKEBY), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.GOERLI, SupportedChainId.GOERLI), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.KOVAN, SupportedChainId.KOVAN), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.POLYGON, SupportedChainId.POLYGON), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.POLYGON_MUMBAI, SupportedChainId.POLYGON_MUMBAI), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.ARBITRUM_ONE, SupportedChainId.ARBITRUM_ONE), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.ARBITRUM_RINKEBY, SupportedChainId.ARBITRUM_RINKEBY), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.OPTIMISM, SupportedChainId.OPTIMISM), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.OPTIMISM_GOERLI, SupportedChainId.OPTIMISM_GOERLI), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.CELO, SupportedChainId.CELO), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.CELO_ALFAJORES, SupportedChainId.CELO_ALFAJORES), _defineProperty__default["default"](_CHAIN_NAMES_TO_IDS, ChainName.BNB, SupportedChainId.BNB), _CHAIN_NAMES_TO_IDS);
 
 /**
  * Array of all the supported chain IDs
@@ -1517,89 +1568,89 @@ function constructSameAddressMap(address) {
 
 var _objectSpread2$2, _objectSpread3, _ENS_REGISTRAR_ADDRES;
 function ownKeys$i(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$i(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$i(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$i(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$i(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$i(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$i(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var UNI_ADDRESS = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984');
-var MULTICALL_ADDRESS = _objectSpread$i(_objectSpread$i({}, constructSameAddressMap('0x1F98415757620B543A52E61c46B32eB19261F984', [SupportedChainId.OPTIMISM_GOERLI, SupportedChainId.OPTIMISM, SupportedChainId.POLYGON_MUMBAI, SupportedChainId.POLYGON])), {}, (_objectSpread2$2 = {}, _defineProperty(_objectSpread2$2, SupportedChainId.ARBITRUM_ONE, '0xadF885960B47eA2CD9B55E6DAc6B42b7Cb2806dB'), _defineProperty(_objectSpread2$2, SupportedChainId.ARBITRUM_RINKEBY, '0xa501c031958F579dB7676fF1CE78AD305794d579'), _defineProperty(_objectSpread2$2, SupportedChainId.CELO, '0x633987602DE5C4F337e3DbF265303A1080324204'), _defineProperty(_objectSpread2$2, SupportedChainId.CELO_ALFAJORES, '0x633987602DE5C4F337e3DbF265303A1080324204'), _objectSpread2$2));
-var SWAP_ROUTER_ADDRESSES = _objectSpread$i(_objectSpread$i({}, constructSameAddressMap('0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45', [SupportedChainId.OPTIMISM, SupportedChainId.OPTIMISM_GOERLI, SupportedChainId.ARBITRUM_ONE, SupportedChainId.ARBITRUM_RINKEBY, SupportedChainId.POLYGON, SupportedChainId.POLYGON_MUMBAI])), {}, (_objectSpread3 = {}, _defineProperty(_objectSpread3, SupportedChainId.CELO, '0x5615CDAb10dc425a742d643d949a7F474C01abc4'), _defineProperty(_objectSpread3, SupportedChainId.CELO_ALFAJORES, '0x5615CDAb10dc425a742d643d949a7F474C01abc4'), _objectSpread3));
-var ARGENT_WALLET_DETECTOR_ADDRESS = _defineProperty({}, SupportedChainId.MAINNET, '0xeca4B0bDBf7c55E9b7925919d03CbF8Dc82537E8');
-var ENS_REGISTRAR_ADDRESSES = (_ENS_REGISTRAR_ADDRES = {}, _defineProperty(_ENS_REGISTRAR_ADDRES, SupportedChainId.MAINNET, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty(_ENS_REGISTRAR_ADDRES, SupportedChainId.ROPSTEN, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty(_ENS_REGISTRAR_ADDRES, SupportedChainId.GOERLI, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty(_ENS_REGISTRAR_ADDRES, SupportedChainId.RINKEBY, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _ENS_REGISTRAR_ADDRES);
+var MULTICALL_ADDRESS = _objectSpread$i(_objectSpread$i({}, constructSameAddressMap('0x1F98415757620B543A52E61c46B32eB19261F984', [SupportedChainId.OPTIMISM_GOERLI, SupportedChainId.OPTIMISM, SupportedChainId.POLYGON_MUMBAI, SupportedChainId.POLYGON])), {}, (_objectSpread2$2 = {}, _defineProperty__default["default"](_objectSpread2$2, SupportedChainId.ARBITRUM_ONE, '0xadF885960B47eA2CD9B55E6DAc6B42b7Cb2806dB'), _defineProperty__default["default"](_objectSpread2$2, SupportedChainId.ARBITRUM_RINKEBY, '0xa501c031958F579dB7676fF1CE78AD305794d579'), _defineProperty__default["default"](_objectSpread2$2, SupportedChainId.CELO, '0x633987602DE5C4F337e3DbF265303A1080324204'), _defineProperty__default["default"](_objectSpread2$2, SupportedChainId.CELO_ALFAJORES, '0x633987602DE5C4F337e3DbF265303A1080324204'), _objectSpread2$2));
+var SWAP_ROUTER_ADDRESSES = _objectSpread$i(_objectSpread$i({}, constructSameAddressMap('0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45', [SupportedChainId.OPTIMISM, SupportedChainId.OPTIMISM_GOERLI, SupportedChainId.ARBITRUM_ONE, SupportedChainId.ARBITRUM_RINKEBY, SupportedChainId.POLYGON, SupportedChainId.POLYGON_MUMBAI])), {}, (_objectSpread3 = {}, _defineProperty__default["default"](_objectSpread3, SupportedChainId.CELO, '0x5615CDAb10dc425a742d643d949a7F474C01abc4'), _defineProperty__default["default"](_objectSpread3, SupportedChainId.CELO_ALFAJORES, '0x5615CDAb10dc425a742d643d949a7F474C01abc4'), _objectSpread3));
+var ARGENT_WALLET_DETECTOR_ADDRESS = _defineProperty__default["default"]({}, SupportedChainId.MAINNET, '0xeca4B0bDBf7c55E9b7925919d03CbF8Dc82537E8');
+var ENS_REGISTRAR_ADDRESSES = (_ENS_REGISTRAR_ADDRES = {}, _defineProperty__default["default"](_ENS_REGISTRAR_ADDRES, SupportedChainId.MAINNET, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty__default["default"](_ENS_REGISTRAR_ADDRES, SupportedChainId.ROPSTEN, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty__default["default"](_ENS_REGISTRAR_ADDRES, SupportedChainId.GOERLI, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _defineProperty__default["default"](_ENS_REGISTRAR_ADDRES, SupportedChainId.RINKEBY, '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'), _ENS_REGISTRAR_ADDRES);
 
 var _USDC, _UNI, _objectSpread2$1, _USDC2;
 function ownKeys$h(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$h(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$h(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$h(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _createSuper$8(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$8(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _objectSpread$h(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$h(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$h(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _createSuper$8(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$8(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$8() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var USDC_MAINNET = new Token(SupportedChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C');
-var USDC_ROPSTEN = new Token(SupportedChainId.ROPSTEN, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'USDC', 'USD//C');
-var USDC_RINKEBY = new Token(SupportedChainId.RINKEBY, '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b', 6, 'tUSDC', 'test USD//C');
-var USDC_GOERLI = new Token(SupportedChainId.GOERLI, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'USDC', 'USD//C');
-var USDC_KOVAN = new Token(SupportedChainId.KOVAN, '0x31eeb2d0f9b6fd8642914ab10f4dd473677d80df', 6, 'USDC', 'USD//C');
-var USDC_OPTIMISM = new Token(SupportedChainId.OPTIMISM, '0x7F5c764cBc14f9669B88837ca1490cCa17c31607', 6, 'USDC', 'USD//C');
-var USDC_OPTIMISM_GOERLI = new Token(SupportedChainId.OPTIMISM_GOERLI, '0x7E07E15D2a87A24492740D16f5bdF58c16db0c4E', 6, 'USDC', 'USD//C');
-var USDC_ARBITRUM = new Token(SupportedChainId.ARBITRUM_ONE, '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', 6, 'USDC', 'USD//C');
-var USDC_ARBITRUM_RINKEBY = new Token(SupportedChainId.ARBITRUM_RINKEBY, '0x09b98f8b2395d076514037ff7d39a091a536206c', 6, 'USDC', 'USD//C');
-var USDC_POLYGON = new Token(SupportedChainId.POLYGON, '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 6, 'USDC', 'USD//C');
-var USDC_POLYGON_MUMBAI = new Token(SupportedChainId.POLYGON_MUMBAI, '0xe11a86849d99f524cac3e7a0ec1241828e332c62', 6, 'USDC', 'USD//C');
-var PORTAL_USDC_CELO = new Token(SupportedChainId.CELO, '0x37f750B7cC259A2f741AF45294f6a16572CF5cAd', 6, 'USDCet', 'USDC (Portal from Ethereum)');
-var USDC_CELO_ALFAJORES = new Token(SupportedChainId.CELO_ALFAJORES, '0x41F4a5d2632b019Ae6CE9625bE3c9CaC143AcC7D', 6, 'USDC', 'USD//C');
-var USDC_FANTOM_CHAIN = new Token(SupportedChainId.FANTOM, '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', 6, 'USDC', 'USD//C');
-var USDC_CANTO_CHAIN = new Token(SupportedChainId.CANTO, '0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd', 6, 'USDC', 'USD//C');
-var USDC_ZKSYNC_CHAIN = new Token(SupportedChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD//C');
-var USDC_AVAX_CHAIN = new Token(SupportedChainId.AVAX, '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E', 6, 'USDC', 'USD//C');
-var AMPL = new Token(SupportedChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth');
-var DAI = new Token(SupportedChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin');
-var DAI_ARBITRUM_ONE = new Token(SupportedChainId.ARBITRUM_ONE, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai stable coin');
-var DAI_OPTIMISM = new Token(SupportedChainId.OPTIMISM, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai stable coin');
-var USDC_BNB_CHAIN = new Token(SupportedChainId.BNB, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'USDC');
-(_USDC = {}, _defineProperty(_USDC, SupportedChainId.MAINNET, USDC_MAINNET), _defineProperty(_USDC, SupportedChainId.ARBITRUM_ONE, USDC_ARBITRUM), _defineProperty(_USDC, SupportedChainId.OPTIMISM, USDC_OPTIMISM), _defineProperty(_USDC, SupportedChainId.ARBITRUM_RINKEBY, USDC_ARBITRUM_RINKEBY), _defineProperty(_USDC, SupportedChainId.OPTIMISM_GOERLI, USDC_OPTIMISM_GOERLI), _defineProperty(_USDC, SupportedChainId.POLYGON, USDC_POLYGON), _defineProperty(_USDC, SupportedChainId.POLYGON_MUMBAI, USDC_POLYGON_MUMBAI), _defineProperty(_USDC, SupportedChainId.CELO, PORTAL_USDC_CELO), _defineProperty(_USDC, SupportedChainId.CELO_ALFAJORES, USDC_CELO_ALFAJORES), _defineProperty(_USDC, SupportedChainId.GOERLI, USDC_GOERLI), _defineProperty(_USDC, SupportedChainId.RINKEBY, USDC_RINKEBY), _defineProperty(_USDC, SupportedChainId.KOVAN, USDC_KOVAN), _defineProperty(_USDC, SupportedChainId.ROPSTEN, USDC_ROPSTEN), _defineProperty(_USDC, SupportedChainId.BNB, USDC_BNB_CHAIN), _defineProperty(_USDC, SupportedChainId.AVAX, USDC_AVAX_CHAIN), _defineProperty(_USDC, SupportedChainId.FANTOM, USDC_FANTOM_CHAIN), _defineProperty(_USDC, SupportedChainId.ZKSYNC, USDC_ZKSYNC_CHAIN), _defineProperty(_USDC, SupportedChainId.CANTO, USDC_CANTO_CHAIN), _USDC);
-var DAI_POLYGON = new Token(SupportedChainId.POLYGON, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin');
-var USDT_POLYGON = new Token(SupportedChainId.POLYGON, '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 6, 'USDT', 'Tether USD');
-new Token(SupportedChainId.POLYGON, '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', 8, 'WBTC', 'Wrapped BTC');
-var USDT = new Token(SupportedChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD');
-var USDT_ARBITRUM_ONE = new Token(SupportedChainId.ARBITRUM_ONE, '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', 6, 'USDT', 'Tether USD');
-var USDT_OPTIMISM = new Token(SupportedChainId.OPTIMISM, '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58', 6, 'USDT', 'Tether USD');
-var WBTC = new Token(SupportedChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC');
-var WBTC_ARBITRUM_ONE = new Token(SupportedChainId.ARBITRUM_ONE, '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f', 8, 'WBTC', 'Wrapped BTC');
-var WBTC_OPTIMISM = new Token(SupportedChainId.OPTIMISM, '0x68f180fcCe6836688e9084f035309E29Bf0A2095', 8, 'WBTC', 'Wrapped BTC');
-var FEI = new Token(SupportedChainId.MAINNET, '0x956F47F50A910163D8BF957Cf5846D573E7f87CA', 18, 'FEI', 'Fei USD');
-var TRIBE = new Token(SupportedChainId.MAINNET, '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B', 18, 'TRIBE', 'Tribe');
-var FRAX = new Token(SupportedChainId.MAINNET, '0x853d955aCEf822Db058eb8505911ED77F175b99e', 18, 'FRAX', 'Frax');
-var FXS = new Token(SupportedChainId.MAINNET, '0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0', 18, 'FXS', 'Frax Share');
-var renBTC = new Token(SupportedChainId.MAINNET, '0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D', 8, 'renBTC', 'renBTC');
-var ETH2X_FLI = new Token(SupportedChainId.MAINNET, '0xAa6E8127831c9DE45ae56bB1b0d4D4Da6e5665BD', 18, 'ETH2x-FLI', 'ETH 2x Flexible Leverage Index');
-var sETH2 = new Token(SupportedChainId.MAINNET, '0xFe2e637202056d30016725477c5da089Ab0A043A', 18, 'sETH2', 'StakeWise Staked ETH2');
-var rETH2 = new Token(SupportedChainId.MAINNET, '0x20BC832ca081b91433ff6c17f85701B6e92486c5', 18, 'rETH2', 'StakeWise Reward ETH2');
-var SWISE = new Token(SupportedChainId.MAINNET, '0x48C3399719B582dD63eB5AADf12A40B4C3f52FA2', 18, 'SWISE', 'StakeWise');
-new Token(SupportedChainId.POLYGON_MUMBAI, '0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa', 18, 'WETH', 'Wrapped Ether');
-var WETH_POLYGON = new Token(SupportedChainId.POLYGON, '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', 18, 'WETH', 'Wrapped Ether');
-var CELO_CELO = new Token(SupportedChainId.CELO, '0x471EcE3750Da237f93B8E339c536989b8978a438', 18, 'CELO', 'Celo');
-var CUSD_CELO = new Token(SupportedChainId.CELO, '0x765DE816845861e75A25fCA122bb6898B8B1282a', 18, 'cUSD', 'Celo Dollar');
-var CEUR_CELO = new Token(SupportedChainId.CELO, '0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73', 18, 'cEUR', 'Celo Euro Stablecoin');
-var PORTAL_ETH_CELO = new Token(SupportedChainId.CELO, '0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207', 18, 'ETH', 'Portal Ether');
-var CMC02_CELO = new Token(SupportedChainId.CELO, '0x32A9FE697a32135BFd313a6Ac28792DaE4D9979d', 18, 'cMCO2', 'Celo Moss Carbon Credit');
-var CELO_CELO_ALFAJORES = new Token(SupportedChainId.CELO_ALFAJORES, '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9', 18, 'CELO', 'Celo');
-new Token(SupportedChainId.CELO_ALFAJORES, '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1', 18, 'CUSD', 'Celo Dollar');
-new Token(SupportedChainId.CELO_ALFAJORES, '0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F', 18, 'CEUR', 'Celo Euro Stablecoin');
-var USDT_BNB_CHAIN = new Token(SupportedChainId.BNB, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'USDT');
-new Token(SupportedChainId.BNB, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum');
-new Token(SupportedChainId.BNB, '0xCC42724C6683B7E57334c4E856f4c9965ED682bD', 18, 'MATIC', 'Matic');
-new Token(SupportedChainId.BNB, '0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40', 18, 'FRAX', 'FRAX');
-new Token(SupportedChainId.BNB, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'BTCB');
-new Token(SupportedChainId.BNB, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'Cake');
-new Token(SupportedChainId.BNB, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'BUSD');
-new Token(SupportedChainId.BNB, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'DAI');
+var USDC_MAINNET = new sdkCore.Token(SupportedChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C');
+var USDC_ROPSTEN = new sdkCore.Token(SupportedChainId.ROPSTEN, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'USDC', 'USD//C');
+var USDC_RINKEBY = new sdkCore.Token(SupportedChainId.RINKEBY, '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b', 6, 'tUSDC', 'test USD//C');
+var USDC_GOERLI = new sdkCore.Token(SupportedChainId.GOERLI, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'USDC', 'USD//C');
+var USDC_KOVAN = new sdkCore.Token(SupportedChainId.KOVAN, '0x31eeb2d0f9b6fd8642914ab10f4dd473677d80df', 6, 'USDC', 'USD//C');
+var USDC_OPTIMISM = new sdkCore.Token(SupportedChainId.OPTIMISM, '0x7F5c764cBc14f9669B88837ca1490cCa17c31607', 6, 'USDC', 'USD//C');
+var USDC_OPTIMISM_GOERLI = new sdkCore.Token(SupportedChainId.OPTIMISM_GOERLI, '0x7E07E15D2a87A24492740D16f5bdF58c16db0c4E', 6, 'USDC', 'USD//C');
+var USDC_ARBITRUM = new sdkCore.Token(SupportedChainId.ARBITRUM_ONE, '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', 6, 'USDC', 'USD//C');
+var USDC_ARBITRUM_RINKEBY = new sdkCore.Token(SupportedChainId.ARBITRUM_RINKEBY, '0x09b98f8b2395d076514037ff7d39a091a536206c', 6, 'USDC', 'USD//C');
+var USDC_POLYGON = new sdkCore.Token(SupportedChainId.POLYGON, '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 6, 'USDC', 'USD//C');
+var USDC_POLYGON_MUMBAI = new sdkCore.Token(SupportedChainId.POLYGON_MUMBAI, '0xe11a86849d99f524cac3e7a0ec1241828e332c62', 6, 'USDC', 'USD//C');
+var PORTAL_USDC_CELO = new sdkCore.Token(SupportedChainId.CELO, '0x37f750B7cC259A2f741AF45294f6a16572CF5cAd', 6, 'USDCet', 'USDC (Portal from Ethereum)');
+var USDC_CELO_ALFAJORES = new sdkCore.Token(SupportedChainId.CELO_ALFAJORES, '0x41F4a5d2632b019Ae6CE9625bE3c9CaC143AcC7D', 6, 'USDC', 'USD//C');
+var USDC_FANTOM_CHAIN = new sdkCore.Token(SupportedChainId.FANTOM, '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', 6, 'USDC', 'USD//C');
+var USDC_CANTO_CHAIN = new sdkCore.Token(SupportedChainId.CANTO, '0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd', 6, 'USDC', 'USD//C');
+var USDC_ZKSYNC_CHAIN = new sdkCore.Token(SupportedChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD//C');
+var USDC_AVAX_CHAIN = new sdkCore.Token(SupportedChainId.AVAX, '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E', 6, 'USDC', 'USD//C');
+var AMPL = new sdkCore.Token(SupportedChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth');
+var DAI = new sdkCore.Token(SupportedChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin');
+var DAI_ARBITRUM_ONE = new sdkCore.Token(SupportedChainId.ARBITRUM_ONE, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai stable coin');
+var DAI_OPTIMISM = new sdkCore.Token(SupportedChainId.OPTIMISM, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai stable coin');
+var USDC_BNB_CHAIN = new sdkCore.Token(SupportedChainId.BNB, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'USDC');
+(_USDC = {}, _defineProperty__default["default"](_USDC, SupportedChainId.MAINNET, USDC_MAINNET), _defineProperty__default["default"](_USDC, SupportedChainId.ARBITRUM_ONE, USDC_ARBITRUM), _defineProperty__default["default"](_USDC, SupportedChainId.OPTIMISM, USDC_OPTIMISM), _defineProperty__default["default"](_USDC, SupportedChainId.ARBITRUM_RINKEBY, USDC_ARBITRUM_RINKEBY), _defineProperty__default["default"](_USDC, SupportedChainId.OPTIMISM_GOERLI, USDC_OPTIMISM_GOERLI), _defineProperty__default["default"](_USDC, SupportedChainId.POLYGON, USDC_POLYGON), _defineProperty__default["default"](_USDC, SupportedChainId.POLYGON_MUMBAI, USDC_POLYGON_MUMBAI), _defineProperty__default["default"](_USDC, SupportedChainId.CELO, PORTAL_USDC_CELO), _defineProperty__default["default"](_USDC, SupportedChainId.CELO_ALFAJORES, USDC_CELO_ALFAJORES), _defineProperty__default["default"](_USDC, SupportedChainId.GOERLI, USDC_GOERLI), _defineProperty__default["default"](_USDC, SupportedChainId.RINKEBY, USDC_RINKEBY), _defineProperty__default["default"](_USDC, SupportedChainId.KOVAN, USDC_KOVAN), _defineProperty__default["default"](_USDC, SupportedChainId.ROPSTEN, USDC_ROPSTEN), _defineProperty__default["default"](_USDC, SupportedChainId.BNB, USDC_BNB_CHAIN), _defineProperty__default["default"](_USDC, SupportedChainId.AVAX, USDC_AVAX_CHAIN), _defineProperty__default["default"](_USDC, SupportedChainId.FANTOM, USDC_FANTOM_CHAIN), _defineProperty__default["default"](_USDC, SupportedChainId.ZKSYNC, USDC_ZKSYNC_CHAIN), _defineProperty__default["default"](_USDC, SupportedChainId.CANTO, USDC_CANTO_CHAIN), _USDC);
+var DAI_POLYGON = new sdkCore.Token(SupportedChainId.POLYGON, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin');
+var USDT_POLYGON = new sdkCore.Token(SupportedChainId.POLYGON, '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 6, 'USDT', 'Tether USD');
+new sdkCore.Token(SupportedChainId.POLYGON, '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', 8, 'WBTC', 'Wrapped BTC');
+var USDT = new sdkCore.Token(SupportedChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD');
+var USDT_ARBITRUM_ONE = new sdkCore.Token(SupportedChainId.ARBITRUM_ONE, '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', 6, 'USDT', 'Tether USD');
+var USDT_OPTIMISM = new sdkCore.Token(SupportedChainId.OPTIMISM, '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58', 6, 'USDT', 'Tether USD');
+var WBTC = new sdkCore.Token(SupportedChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC');
+var WBTC_ARBITRUM_ONE = new sdkCore.Token(SupportedChainId.ARBITRUM_ONE, '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f', 8, 'WBTC', 'Wrapped BTC');
+var WBTC_OPTIMISM = new sdkCore.Token(SupportedChainId.OPTIMISM, '0x68f180fcCe6836688e9084f035309E29Bf0A2095', 8, 'WBTC', 'Wrapped BTC');
+var FEI = new sdkCore.Token(SupportedChainId.MAINNET, '0x956F47F50A910163D8BF957Cf5846D573E7f87CA', 18, 'FEI', 'Fei USD');
+var TRIBE = new sdkCore.Token(SupportedChainId.MAINNET, '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B', 18, 'TRIBE', 'Tribe');
+var FRAX = new sdkCore.Token(SupportedChainId.MAINNET, '0x853d955aCEf822Db058eb8505911ED77F175b99e', 18, 'FRAX', 'Frax');
+var FXS = new sdkCore.Token(SupportedChainId.MAINNET, '0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0', 18, 'FXS', 'Frax Share');
+var renBTC = new sdkCore.Token(SupportedChainId.MAINNET, '0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D', 8, 'renBTC', 'renBTC');
+var ETH2X_FLI = new sdkCore.Token(SupportedChainId.MAINNET, '0xAa6E8127831c9DE45ae56bB1b0d4D4Da6e5665BD', 18, 'ETH2x-FLI', 'ETH 2x Flexible Leverage Index');
+var sETH2 = new sdkCore.Token(SupportedChainId.MAINNET, '0xFe2e637202056d30016725477c5da089Ab0A043A', 18, 'sETH2', 'StakeWise Staked ETH2');
+var rETH2 = new sdkCore.Token(SupportedChainId.MAINNET, '0x20BC832ca081b91433ff6c17f85701B6e92486c5', 18, 'rETH2', 'StakeWise Reward ETH2');
+var SWISE = new sdkCore.Token(SupportedChainId.MAINNET, '0x48C3399719B582dD63eB5AADf12A40B4C3f52FA2', 18, 'SWISE', 'StakeWise');
+new sdkCore.Token(SupportedChainId.POLYGON_MUMBAI, '0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa', 18, 'WETH', 'Wrapped Ether');
+var WETH_POLYGON = new sdkCore.Token(SupportedChainId.POLYGON, '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', 18, 'WETH', 'Wrapped Ether');
+var CELO_CELO = new sdkCore.Token(SupportedChainId.CELO, '0x471EcE3750Da237f93B8E339c536989b8978a438', 18, 'CELO', 'Celo');
+var CUSD_CELO = new sdkCore.Token(SupportedChainId.CELO, '0x765DE816845861e75A25fCA122bb6898B8B1282a', 18, 'cUSD', 'Celo Dollar');
+var CEUR_CELO = new sdkCore.Token(SupportedChainId.CELO, '0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73', 18, 'cEUR', 'Celo Euro Stablecoin');
+var PORTAL_ETH_CELO = new sdkCore.Token(SupportedChainId.CELO, '0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207', 18, 'ETH', 'Portal Ether');
+var CMC02_CELO = new sdkCore.Token(SupportedChainId.CELO, '0x32A9FE697a32135BFd313a6Ac28792DaE4D9979d', 18, 'cMCO2', 'Celo Moss Carbon Credit');
+var CELO_CELO_ALFAJORES = new sdkCore.Token(SupportedChainId.CELO_ALFAJORES, '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9', 18, 'CELO', 'Celo');
+new sdkCore.Token(SupportedChainId.CELO_ALFAJORES, '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1', 18, 'CUSD', 'Celo Dollar');
+new sdkCore.Token(SupportedChainId.CELO_ALFAJORES, '0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F', 18, 'CEUR', 'Celo Euro Stablecoin');
+var USDT_BNB_CHAIN = new sdkCore.Token(SupportedChainId.BNB, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'USDT');
+new sdkCore.Token(SupportedChainId.BNB, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum');
+new sdkCore.Token(SupportedChainId.BNB, '0xCC42724C6683B7E57334c4E856f4c9965ED682bD', 18, 'MATIC', 'Matic');
+new sdkCore.Token(SupportedChainId.BNB, '0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40', 18, 'FRAX', 'FRAX');
+new sdkCore.Token(SupportedChainId.BNB, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'BTCB');
+new sdkCore.Token(SupportedChainId.BNB, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'Cake');
+new sdkCore.Token(SupportedChainId.BNB, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'BUSD');
+new sdkCore.Token(SupportedChainId.BNB, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'DAI');
 function isBnbChain(chainId) {
   return chainId === SupportedChainId.BNB;
 }
 var BnbChainNativeCurrency = /*#__PURE__*/function (_NativeCurrency) {
-  _inherits(BnbChainNativeCurrency, _NativeCurrency);
+  _inherits__default["default"](BnbChainNativeCurrency, _NativeCurrency);
   var _super = _createSuper$8(BnbChainNativeCurrency);
   function BnbChainNativeCurrency(chainId) {
-    _classCallCheck(this, BnbChainNativeCurrency);
+    _classCallCheck__default["default"](this, BnbChainNativeCurrency);
     if (!isBnbChain(chainId)) throw new Error('Not BNB Chain');
     return _super.call(this, chainId, 18, 'BNB', 'BNB');
   }
-  _createClass(BnbChainNativeCurrency, [{
+  _createClass__default["default"](BnbChainNativeCurrency, [{
     key: "equals",
     value: function equals(other) {
       return other.isNative && other.chainId === this.chainId;
@@ -1609,14 +1660,14 @@ var BnbChainNativeCurrency = /*#__PURE__*/function (_NativeCurrency) {
     get: function get() {
       if (!isBnbChain(this.chainId)) throw new Error('Not BNB Chain');
       var wrapped = WRAPPED_NATIVE_CURRENCY[this.chainId];
-      invariant(wrapped instanceof Token);
+      invariant__default["default"](wrapped instanceof sdkCore.Token);
       return wrapped;
     }
   }]);
   return BnbChainNativeCurrency;
-}(NativeCurrency);
-var UNI = (_UNI = {}, _defineProperty(_UNI, SupportedChainId.MAINNET, new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap')), _defineProperty(_UNI, SupportedChainId.RINKEBY, new Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap')), _defineProperty(_UNI, SupportedChainId.ROPSTEN, new Token(SupportedChainId.ROPSTEN, UNI_ADDRESS[3], 18, 'UNI', 'Uniswap')), _defineProperty(_UNI, SupportedChainId.GOERLI, new Token(SupportedChainId.GOERLI, UNI_ADDRESS[5], 18, 'UNI', 'Uniswap')), _defineProperty(_UNI, SupportedChainId.KOVAN, new Token(SupportedChainId.KOVAN, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap')), _UNI);
-var WRAPPED_NATIVE_CURRENCY = _objectSpread$h(_objectSpread$h({}, WETH9), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, SupportedChainId.CELO, CELO_CELO), _defineProperty(_objectSpread2$1, SupportedChainId.CELO_ALFAJORES, CELO_CELO_ALFAJORES), _defineProperty(_objectSpread2$1, SupportedChainId.OPTIMISM, new Token(SupportedChainId.OPTIMISM, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether')), _defineProperty(_objectSpread2$1, SupportedChainId.OPTIMISM_GOERLI, new Token(SupportedChainId.OPTIMISM_GOERLI, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether')), _defineProperty(_objectSpread2$1, SupportedChainId.ARBITRUM_ONE, new Token(SupportedChainId.ARBITRUM_ONE, '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18, 'WETH', 'Wrapped Ether')), _defineProperty(_objectSpread2$1, SupportedChainId.ARBITRUM_RINKEBY, new Token(SupportedChainId.ARBITRUM_RINKEBY, '0xB47e6A5f8b33b3F17603C83a0535A9dcD7E32681', 18, 'WETH', 'Wrapped Ether')), _defineProperty(_objectSpread2$1, SupportedChainId.POLYGON, new Token(SupportedChainId.POLYGON, '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', 18, 'WMATIC', 'Wrapped MATIC')), _defineProperty(_objectSpread2$1, SupportedChainId.POLYGON_MUMBAI, new Token(SupportedChainId.POLYGON_MUMBAI, '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', 18, 'WMATIC', 'Wrapped MATIC')), _defineProperty(_objectSpread2$1, SupportedChainId.BNB, new Token(SupportedChainId.BNB, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')), _objectSpread2$1));
+}(sdkCore.NativeCurrency);
+var UNI = (_UNI = {}, _defineProperty__default["default"](_UNI, SupportedChainId.MAINNET, new sdkCore.Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap')), _defineProperty__default["default"](_UNI, SupportedChainId.RINKEBY, new sdkCore.Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap')), _defineProperty__default["default"](_UNI, SupportedChainId.ROPSTEN, new sdkCore.Token(SupportedChainId.ROPSTEN, UNI_ADDRESS[3], 18, 'UNI', 'Uniswap')), _defineProperty__default["default"](_UNI, SupportedChainId.GOERLI, new sdkCore.Token(SupportedChainId.GOERLI, UNI_ADDRESS[5], 18, 'UNI', 'Uniswap')), _defineProperty__default["default"](_UNI, SupportedChainId.KOVAN, new sdkCore.Token(SupportedChainId.KOVAN, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap')), _UNI);
+var WRAPPED_NATIVE_CURRENCY = _objectSpread$h(_objectSpread$h({}, sdkCore.WETH9), {}, (_objectSpread2$1 = {}, _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.CELO, CELO_CELO), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.CELO_ALFAJORES, CELO_CELO_ALFAJORES), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.OPTIMISM, new sdkCore.Token(SupportedChainId.OPTIMISM, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.OPTIMISM_GOERLI, new sdkCore.Token(SupportedChainId.OPTIMISM_GOERLI, '0x4200000000000000000000000000000000000006', 18, 'WETH', 'Wrapped Ether')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.ARBITRUM_ONE, new sdkCore.Token(SupportedChainId.ARBITRUM_ONE, '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 18, 'WETH', 'Wrapped Ether')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.ARBITRUM_RINKEBY, new sdkCore.Token(SupportedChainId.ARBITRUM_RINKEBY, '0xB47e6A5f8b33b3F17603C83a0535A9dcD7E32681', 18, 'WETH', 'Wrapped Ether')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.POLYGON, new sdkCore.Token(SupportedChainId.POLYGON, '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', 18, 'WMATIC', 'Wrapped MATIC')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.POLYGON_MUMBAI, new sdkCore.Token(SupportedChainId.POLYGON_MUMBAI, '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', 18, 'WMATIC', 'Wrapped MATIC')), _defineProperty__default["default"](_objectSpread2$1, SupportedChainId.BNB, new sdkCore.Token(SupportedChainId.BNB, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')), _objectSpread2$1));
 function isCelo(chainId) {
   return chainId === SupportedChainId.CELO_ALFAJORES || chainId === SupportedChainId.CELO;
 }
@@ -1634,14 +1685,14 @@ function isMatic(chainId) {
   return chainId === SupportedChainId.POLYGON_MUMBAI || chainId === SupportedChainId.POLYGON;
 }
 var MaticNativeCurrency = /*#__PURE__*/function (_NativeCurrency2) {
-  _inherits(MaticNativeCurrency, _NativeCurrency2);
+  _inherits__default["default"](MaticNativeCurrency, _NativeCurrency2);
   var _super2 = _createSuper$8(MaticNativeCurrency);
   function MaticNativeCurrency(chainId) {
-    _classCallCheck(this, MaticNativeCurrency);
+    _classCallCheck__default["default"](this, MaticNativeCurrency);
     if (!isMatic(chainId)) throw new Error('Not matic');
     return _super2.call(this, chainId, 18, 'MATIC', 'Polygon Matic');
   }
-  _createClass(MaticNativeCurrency, [{
+  _createClass__default["default"](MaticNativeCurrency, [{
     key: "equals",
     value: function equals(other) {
       return other.isNative && other.chainId === this.chainId;
@@ -1651,20 +1702,20 @@ var MaticNativeCurrency = /*#__PURE__*/function (_NativeCurrency2) {
     get: function get() {
       if (!isMatic(this.chainId)) throw new Error('Not matic');
       var wrapped = WRAPPED_NATIVE_CURRENCY[this.chainId];
-      invariant(wrapped instanceof Token);
+      invariant__default["default"](wrapped instanceof sdkCore.Token);
       return wrapped;
     }
   }]);
   return MaticNativeCurrency;
-}(NativeCurrency);
+}(sdkCore.NativeCurrency);
 var ExtendedEther = /*#__PURE__*/function (_Ether) {
-  _inherits(ExtendedEther, _Ether);
+  _inherits__default["default"](ExtendedEther, _Ether);
   var _super3 = _createSuper$8(ExtendedEther);
   function ExtendedEther() {
-    _classCallCheck(this, ExtendedEther);
+    _classCallCheck__default["default"](this, ExtendedEther);
     return _super3.apply(this, arguments);
   }
-  _createClass(ExtendedEther, [{
+  _createClass__default["default"](ExtendedEther, [{
     key: "wrapped",
     get: function get() {
       var wrapped = WRAPPED_NATIVE_CURRENCY[this.chainId];
@@ -1679,8 +1730,8 @@ var ExtendedEther = /*#__PURE__*/function (_Ether) {
     }
   }]);
   return ExtendedEther;
-}(Ether);
-_defineProperty(ExtendedEther, "_cachedExtendedEther", {});
+}(sdkCore.Ether);
+_defineProperty__default["default"](ExtendedEther, "_cachedExtendedEther", {});
 var cachedNativeCurrency = {};
 function nativeOnChain(chainId) {
   if (cachedNativeCurrency[chainId]) return cachedNativeCurrency[chainId];
@@ -1697,7 +1748,7 @@ function nativeOnChain(chainId) {
   return cachedNativeCurrency[chainId] = nativeCurrency;
 }
 ({
-  USDC: (_USDC2 = {}, _defineProperty(_USDC2, SupportedChainId.MAINNET, USDC_MAINNET.address), _defineProperty(_USDC2, SupportedChainId.ARBITRUM_ONE, USDC_ARBITRUM.address), _defineProperty(_USDC2, SupportedChainId.OPTIMISM, USDC_OPTIMISM.address), _defineProperty(_USDC2, SupportedChainId.ARBITRUM_RINKEBY, USDC_ARBITRUM_RINKEBY.address), _defineProperty(_USDC2, SupportedChainId.OPTIMISM_GOERLI, USDC_OPTIMISM_GOERLI.address), _defineProperty(_USDC2, SupportedChainId.POLYGON, USDC_POLYGON.address), _defineProperty(_USDC2, SupportedChainId.POLYGON_MUMBAI, USDC_POLYGON_MUMBAI.address), _defineProperty(_USDC2, SupportedChainId.GOERLI, USDC_GOERLI.address), _defineProperty(_USDC2, SupportedChainId.RINKEBY, USDC_RINKEBY.address), _defineProperty(_USDC2, SupportedChainId.KOVAN, USDC_KOVAN.address), _defineProperty(_USDC2, SupportedChainId.ROPSTEN, USDC_ROPSTEN.address), _defineProperty(_USDC2, SupportedChainId.CELO, PORTAL_USDC_CELO.address), _defineProperty(_USDC2, SupportedChainId.CELO_ALFAJORES, USDC_CELO_ALFAJORES.address), _USDC2)
+  USDC: (_USDC2 = {}, _defineProperty__default["default"](_USDC2, SupportedChainId.MAINNET, USDC_MAINNET.address), _defineProperty__default["default"](_USDC2, SupportedChainId.ARBITRUM_ONE, USDC_ARBITRUM.address), _defineProperty__default["default"](_USDC2, SupportedChainId.OPTIMISM, USDC_OPTIMISM.address), _defineProperty__default["default"](_USDC2, SupportedChainId.ARBITRUM_RINKEBY, USDC_ARBITRUM_RINKEBY.address), _defineProperty__default["default"](_USDC2, SupportedChainId.OPTIMISM_GOERLI, USDC_OPTIMISM_GOERLI.address), _defineProperty__default["default"](_USDC2, SupportedChainId.POLYGON, USDC_POLYGON.address), _defineProperty__default["default"](_USDC2, SupportedChainId.POLYGON_MUMBAI, USDC_POLYGON_MUMBAI.address), _defineProperty__default["default"](_USDC2, SupportedChainId.GOERLI, USDC_GOERLI.address), _defineProperty__default["default"](_USDC2, SupportedChainId.RINKEBY, USDC_RINKEBY.address), _defineProperty__default["default"](_USDC2, SupportedChainId.KOVAN, USDC_KOVAN.address), _defineProperty__default["default"](_USDC2, SupportedChainId.ROPSTEN, USDC_ROPSTEN.address), _defineProperty__default["default"](_USDC2, SupportedChainId.CELO, PORTAL_USDC_CELO.address), _defineProperty__default["default"](_USDC2, SupportedChainId.CELO_ALFAJORES, USDC_CELO_ALFAJORES.address), _USDC2)
 });
 
 /**
@@ -1709,9 +1760,9 @@ function tryParseCurrencyAmount(value, currency) {
     return undefined;
   }
   try {
-    var typedValueParsed = parseUnits(value, currency.decimals).toString();
+    var typedValueParsed = units.parseUnits(value, currency.decimals).toString();
     if (typedValueParsed !== '0') {
-      return CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(typedValueParsed));
+      return sdkCore.CurrencyAmount.fromRawAmount(currency, JSBI__default["default"].BigInt(typedValueParsed));
     }
   } catch (error) {
     // fails if the user specifies too many decimal places of precision (or maybe exceed max uint?)
@@ -1724,7 +1775,7 @@ var _STABLECOIN_AMOUNT_OU;
 
 // Stablecoin amounts used when calculating spot price for a given currency.
 // The amount is large enough to filter low liquidity pairs.
-var STABLECOIN_AMOUNT_OUT = (_STABLECOIN_AMOUNT_OU = {}, _defineProperty(_STABLECOIN_AMOUNT_OU, SupportedChainId.MAINNET, CurrencyAmount.fromRawAmount(USDC_MAINNET, 100000e6)), _defineProperty(_STABLECOIN_AMOUNT_OU, SupportedChainId.ARBITRUM_ONE, CurrencyAmount.fromRawAmount(USDC_ARBITRUM, 10000e6)), _defineProperty(_STABLECOIN_AMOUNT_OU, SupportedChainId.OPTIMISM, CurrencyAmount.fromRawAmount(DAI_OPTIMISM, 10000e18)), _defineProperty(_STABLECOIN_AMOUNT_OU, SupportedChainId.POLYGON, CurrencyAmount.fromRawAmount(USDC_POLYGON, 10000e6)), _defineProperty(_STABLECOIN_AMOUNT_OU, SupportedChainId.CELO, CurrencyAmount.fromRawAmount(CUSD_CELO, 10000e18)), _STABLECOIN_AMOUNT_OU);
+var STABLECOIN_AMOUNT_OUT = (_STABLECOIN_AMOUNT_OU = {}, _defineProperty__default["default"](_STABLECOIN_AMOUNT_OU, SupportedChainId.MAINNET, sdkCore.CurrencyAmount.fromRawAmount(USDC_MAINNET, 100000e6)), _defineProperty__default["default"](_STABLECOIN_AMOUNT_OU, SupportedChainId.ARBITRUM_ONE, sdkCore.CurrencyAmount.fromRawAmount(USDC_ARBITRUM, 10000e6)), _defineProperty__default["default"](_STABLECOIN_AMOUNT_OU, SupportedChainId.OPTIMISM, sdkCore.CurrencyAmount.fromRawAmount(DAI_OPTIMISM, 10000e18)), _defineProperty__default["default"](_STABLECOIN_AMOUNT_OU, SupportedChainId.POLYGON, sdkCore.CurrencyAmount.fromRawAmount(USDC_POLYGON, 10000e6)), _defineProperty__default["default"](_STABLECOIN_AMOUNT_OU, SupportedChainId.CELO, sdkCore.CurrencyAmount.fromRawAmount(CUSD_CELO, 10000e18)), _STABLECOIN_AMOUNT_OU);
 
 /**
  *
@@ -1733,10 +1784,10 @@ var STABLECOIN_AMOUNT_OUT = (_STABLECOIN_AMOUNT_OU = {}, _defineProperty(_STABLE
  */
 function useStablecoinAmountFromFiatValue(fiatValue) {
   var _STABLECOIN_AMOUNT_OU2;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var stablecoin = chainId ? (_STABLECOIN_AMOUNT_OU2 = STABLECOIN_AMOUNT_OUT[chainId]) === null || _STABLECOIN_AMOUNT_OU2 === void 0 ? void 0 : _STABLECOIN_AMOUNT_OU2.currency : undefined;
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (fiatValue === null || fiatValue === undefined || !chainId || !stablecoin) {
       return undefined;
     }
@@ -1758,7 +1809,7 @@ function useStablecoinAmountFromFiatValue(fiatValue) {
  * @param delay if null, the callback will not be invoked
  */
 function useTimeout(callback, delay) {
-  useEffect(function () {
+  React.useEffect(function () {
     if (delay === null) return;
     var timeout = setTimeout(callback, delay);
     return function () {
@@ -1772,20 +1823,20 @@ var Field = /*#__PURE__*/function (Field) {
   Field["OUTPUT"] = "OUTPUT";
   return Field;
 }({});
-var initialSwap = _defineProperty({
-  type: TradeType.EXACT_INPUT,
+var initialSwap = _defineProperty__default["default"]({
+  type: sdkCore.TradeType.EXACT_INPUT,
   amount: ''
 }, Field.INPUT, nativeOnChain(SupportedChainId.MAINNET));
-var controlledAtom$1 = atom(undefined);
-var stateAtom$1 = atomWithImmer(initialSwap);
-var swapAtom = atom(function (get) {
+var controlledAtom$1 = jotai.atom(undefined);
+var stateAtom$1 = immer.atomWithImmer(initialSwap);
+var swapAtom = jotai.atom(function (get) {
   var controlled = get(controlledAtom$1);
   return controlled ? controlled : get(stateAtom$1);
 }, stateAtom$1.write);
 
 // If set to a transaction hash, that transaction will display in a status dialog.
-var displayTxHashAtom = atom(undefined);
-var feeOptionsAtom = atom(undefined);
+var displayTxHashAtom = jotai.atom(undefined);
+var feeOptionsAtom = jotai.atom(undefined);
 
 /** An integration hook called when the user selects a new token. */
 
@@ -1816,10 +1867,10 @@ var feeOptionsAtom = atom(undefined);
 
 /** An integration hook called when the confirms a swap, but before it is submitted. */
 
-var swapEventHandlersAtom = atom({});
-var swapRouterUrlAtom = atom(undefined);
+var swapEventHandlersAtom = jotai.atom({});
+var swapRouterUrlAtom = jotai.atom(undefined);
 
-function _createSuper$7(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$7(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$7(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$7(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$7() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var TradeState = /*#__PURE__*/function (TradeState) {
   TradeState[TradeState["LOADING"] = 0] = "LOADING";
@@ -1838,14 +1889,14 @@ var QuoteState = /*#__PURE__*/function (QuoteState) {
   return QuoteState;
 }({});
 var InterfaceTrade = /*#__PURE__*/function (_Trade) {
-  _inherits(InterfaceTrade, _Trade);
+  _inherits__default["default"](InterfaceTrade, _Trade);
   var _super = _createSuper$7(InterfaceTrade);
   function InterfaceTrade() {
-    _classCallCheck(this, InterfaceTrade);
+    _classCallCheck__default["default"](this, InterfaceTrade);
     return _super.apply(this, arguments);
   }
-  return _createClass(InterfaceTrade);
-}(Trade$1);
+  return _createClass__default["default"](InterfaceTrade);
+}(routerSdk.Trade);
 
 /**
  * Transforms a Routing API quote into an array of routes that can be used to
@@ -1872,11 +1923,11 @@ function computeRoutes(tokenInIsNative, tokenOutIsNative, routes) {
       var isOnlyV2 = isVersionedRoute(PoolType.V2Pool, route);
       var isOnlyV3 = isVersionedRoute(PoolType.V3Pool, route);
       return {
-        routev3: isOnlyV3 ? new Route$1(route.map(parsePool), parsedCurrencyIn, parsedCurrencyOut) : null,
-        routev2: isOnlyV2 ? new Route$2(route.map(parsePair), parsedCurrencyIn, parsedCurrencyOut) : null,
-        mixedRoute: !isOnlyV3 && !isOnlyV2 ? new MixedRouteSDK(route.map(parsePoolOrPair), parsedCurrencyIn, parsedCurrencyOut) : null,
-        inputAmount: CurrencyAmount.fromRawAmount(parsedCurrencyIn, rawAmountIn),
-        outputAmount: CurrencyAmount.fromRawAmount(parsedCurrencyOut, rawAmountOut)
+        routev3: isOnlyV3 ? new v3Sdk.Route(route.map(parsePool), parsedCurrencyIn, parsedCurrencyOut) : null,
+        routev2: isOnlyV2 ? new v2Sdk.Route(route.map(parsePair), parsedCurrencyIn, parsedCurrencyOut) : null,
+        mixedRoute: !isOnlyV3 && !isOnlyV2 ? new routerSdk.MixedRouteSDK(route.map(parsePoolOrPair), parsedCurrencyIn, parsedCurrencyOut) : null,
+        inputAmount: sdkCore.CurrencyAmount.fromRawAmount(parsedCurrencyIn, rawAmountIn),
+        outputAmount: sdkCore.CurrencyAmount.fromRawAmount(parsedCurrencyOut, rawAmountOut)
       };
     });
   } catch (e) {
@@ -1943,7 +1994,7 @@ var parseToken = function parseToken(_ref4) {
     chainId = _ref4.chainId,
     decimals = _ref4.decimals,
     symbol = _ref4.symbol;
-  return new Token(chainId, address, parseInt(decimals.toString()), symbol);
+  return new sdkCore.Token(chainId, address, parseInt(decimals.toString()), symbol);
 };
 var parsePool = function parsePool(_ref5) {
   var fee = _ref5.fee,
@@ -1952,12 +2003,12 @@ var parsePool = function parsePool(_ref5) {
     tickCurrent = _ref5.tickCurrent,
     tokenIn = _ref5.tokenIn,
     tokenOut = _ref5.tokenOut;
-  return new Pool$1(parseToken(tokenIn), parseToken(tokenOut), parseInt(fee), sqrtRatioX96, liquidity, parseInt(tickCurrent));
+  return new v3Sdk.Pool(parseToken(tokenIn), parseToken(tokenOut), parseInt(fee), sqrtRatioX96, liquidity, parseInt(tickCurrent));
 };
 var parsePair = function parsePair(_ref6) {
   var reserve0 = _ref6.reserve0,
     reserve1 = _ref6.reserve1;
-  return new Pair(CurrencyAmount.fromRawAmount(parseToken(reserve0.token), reserve0.quotient), CurrencyAmount.fromRawAmount(parseToken(reserve1.token), reserve1.quotient));
+  return new v2Sdk.Pair(sdkCore.CurrencyAmount.fromRawAmount(parseToken(reserve0.token), reserve0.quotient), sdkCore.CurrencyAmount.fromRawAmount(parseToken(reserve1.token), reserve1.quotient));
 };
 var parsePoolOrPair = function parsePoolOrPair(pool) {
   return pool.type === PoolType.V3Pool ? parsePool(pool) : parsePair(pool);
@@ -1982,7 +2033,7 @@ function serializeGetQuoteArgs(args) {
     if (NON_SERIALIZABLE_KEYS.includes(key)) {
       return undefined;
     }
-    if (isPlainObject(value)) {
+    if (toolkit.isPlainObject(value)) {
       return Object.keys(value).sort().reduce(function (acc, key) {
         acc[key] = value[key];
         return acc;
@@ -2011,10 +2062,10 @@ function useGetQuoteArgs(_ref2, quoteConfig) {
     amountSpecified = _ref2.amountSpecified,
     currencyIn = _ref2.currencyIn,
     currencyOut = _ref2.currencyOut;
-  var routerUrl = useAtomValue(swapRouterUrlAtom);
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var routerUrl = utils.useAtomValue(swapRouterUrlAtom);
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onSwapQuote = _useAtomValue.onSwapQuote;
-  var args = useMemo(function () {
+  var args = React.useMemo(function () {
     var _amountSpecified$quot;
     if (!provider || tradeType === undefined) return null;
     if (!currencyIn || !currencyOut || currencyIn.equals(currencyOut)) return null;
@@ -2038,8 +2089,8 @@ function useGetQuoteArgs(_ref2, quoteConfig) {
     };
   }, [amountSpecified === null || amountSpecified === void 0 ? void 0 : amountSpecified.quotient, currencyIn, currencyOut, onSwapQuote, provider, quoteConfig, routerUrl, tradeType]);
   var isWindowVisible = useIsWindowVisible();
-  if (quoteConfig.type === QuoteType.SKIP || !isWindowVisible) return skipToken;
-  return args !== null && args !== void 0 ? args : skipToken;
+  if (quoteConfig.type === QuoteType.SKIP || !isWindowVisible) return react.skipToken;
+  return args !== null && args !== void 0 ? args : react.skipToken;
 }
 
 var parser = {};
@@ -2069,7 +2120,7 @@ var moo = {exports: {}};
       return o && toString.call(o) === '[object RegExp]';
     }
     function isObject(o) {
-      return o && _typeof(o) === 'object' && !isRegExp(o) && !Array.isArray(o);
+      return o && _typeof__default["default"](o) === 'object' && !isRegExp(o) && !Array.isArray(o);
     }
     function reEscape(s) {
       return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -2739,7 +2790,7 @@ var moo = {exports: {}};
           return src.split(':')[1].trim();
         }
       },
-      "case": {
+      case: {
         lineBreaks: true,
         match: /[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*(?:=[0-9]+|(?:[\0-\x08\x0E-\x1F0-9A-Z_a-z\x7F-\x84\x86-\xA0\xA8\xAA\xAD\xAF\xB2-\xB5\xB7-\xBA\xBC-\xBE\xC0-\xD6\xD8-\xF6\xF8-\u200D\u202A-\u202F\u203F\u2040\u2054\u205F-\u218F\u2460-\u24FF\u2776-\u2793\u2C00-\u2DFF\u2E80-\u3000\u3004-\u3007\u3021-\u302F\u3031-\uD7FF\uE000-\uFD3D\uFD40-\uFE44\uFE47-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*\{/,
         push: 'body',
@@ -2753,12 +2804,12 @@ var moo = {exports: {}};
       }
     }
   };
-  exports.lexer = moo_1["default"].states(exports.states);
+  exports.lexer = moo_1.default.states(exports.states);
 })(lexer);
 
-function _createSuper$6(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$6(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$6(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$6(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$6() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$4(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$4(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$4(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$4(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$4(o, minLen); }
 function _arrayLikeToArray$4(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 /**
@@ -2895,25 +2946,25 @@ var defaultPluralKeys = ['zero', 'one', 'two', 'few', 'many', 'other'];
  * @public
  */
 var ParseError = /*#__PURE__*/function (_Error) {
-  _inherits(ParseError, _Error);
+  _inherits__default["default"](ParseError, _Error);
   var _super = _createSuper$6(ParseError);
   /** @internal */
   function ParseError(lt, msg) {
-    _classCallCheck(this, ParseError);
+    _classCallCheck__default["default"](this, ParseError);
     return _super.call(this, lexer_js_1.lexer.formatError(lt, msg));
   }
-  return _createClass(ParseError);
-}( /*#__PURE__*/_wrapNativeSuper(Error));
+  return _createClass__default["default"](ParseError);
+}( /*#__PURE__*/_wrapNativeSuper__default["default"](Error));
 parser.ParseError = ParseError;
 var Parser = /*#__PURE__*/function () {
   function Parser(src, opt) {
-    _classCallCheck(this, Parser);
+    _classCallCheck__default["default"](this, Parser);
     this.lexer = lexer_js_1.lexer.reset(src);
     this.cardinalKeys = opt && opt.cardinal || defaultPluralKeys;
     this.ordinalKeys = opt && opt.ordinal || defaultPluralKeys;
     this.strict = opt && opt.strict || false;
   }
-  _createClass(Parser, [{
+  _createClass__default["default"](Parser, [{
     key: "parse",
     value: function parse() {
       return this.parseBody(false, true);
@@ -3422,8 +3473,8 @@ function setupI18n(params = {}) {
 const i18n = setupI18n();
 
 function ownKeys$g(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$g(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _createSuper$5(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$5(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _objectSpread$g(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$g(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$g(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _createSuper$5(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$5(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$5() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var DEFAULT_ERROR_HEADER = i18n._(
 /*i18n*/
@@ -3444,35 +3495,35 @@ var DEFAULT_DISMISSABLE_ERROR_ACTION = i18n._(
   message: "Dismiss"
 });
 var WidgetError = /*#__PURE__*/function (_Error) {
-  _inherits(WidgetError, _Error);
+  _inherits__default["default"](WidgetError, _Error);
   var _super = _createSuper$5(WidgetError);
   function WidgetError(config) {
     var _config$header, _config$action;
     var _this;
-    _classCallCheck(this, WidgetError);
+    _classCallCheck__default["default"](this, WidgetError);
     console.trace();
     _this = _super.call(this, config.message);
     /** The original error, if this is a wrapped error. */
-    _defineProperty(_assertThisInitialized(_this), "dismissable", false);
+    _defineProperty__default["default"](_assertThisInitialized__default["default"](_this), "dismissable", false);
     _this.header = (_config$header = config.header) !== null && _config$header !== void 0 ? _config$header : DEFAULT_ERROR_HEADER;
     _this.action = (_config$action = config.action) !== null && _config$action !== void 0 ? _config$action : DEFAULT_ERROR_ACTION;
     _this.error = config.error;
     _this.name = 'WidgetError';
     return _this;
   }
-  return _createClass(WidgetError);
-}( /*#__PURE__*/_wrapNativeSuper(Error));
+  return _createClass__default["default"](WidgetError);
+}( /*#__PURE__*/_wrapNativeSuper__default["default"](Error));
 var UnknownError = /*#__PURE__*/function (_WidgetError) {
-  _inherits(UnknownError, _WidgetError);
+  _inherits__default["default"](UnknownError, _WidgetError);
   var _super2 = _createSuper$5(UnknownError);
   function UnknownError(config) {
     var _this2;
-    _classCallCheck(this, UnknownError);
+    _classCallCheck__default["default"](this, UnknownError);
     _this2 = _super2.call(this, config);
     _this2.name = 'UnknownError';
     return _this2;
   }
-  return _createClass(UnknownError);
+  return _createClass__default["default"](UnknownError);
 }(WidgetError);
 
 /**
@@ -3481,16 +3532,16 @@ var UnknownError = /*#__PURE__*/function (_WidgetError) {
  * @example widgetPromise.catch((reason: WidgetError) => console.error(reason.error))
  */
 var WidgetPromise = /*#__PURE__*/function (_Promise) {
-  _inherits(WidgetPromise, _Promise);
+  _inherits__default["default"](WidgetPromise, _Promise);
   var _super3 = _createSuper$5(WidgetPromise);
   function WidgetPromise() {
-    _classCallCheck(this, WidgetPromise);
+    _classCallCheck__default["default"](this, WidgetPromise);
     return _super3.apply(this, arguments);
   }
-  _createClass(WidgetPromise, [{
+  _createClass__default["default"](WidgetPromise, [{
     key: "catch",
     value: function _catch(onrejected) {
-      return _get(_getPrototypeOf(WidgetPromise.prototype), "catch", this).call(this, onrejected);
+      return _get__default["default"](_getPrototypeOf__default["default"](WidgetPromise.prototype), "catch", this).call(this, onrejected);
     }
   }], [{
     key: "from",
@@ -3503,7 +3554,7 @@ var WidgetPromise = /*#__PURE__*/function (_Promise) {
     onrejected) {
       return ('then' in value ? value : value()).then(onfulfilled !== null && onfulfilled !== void 0 ? onfulfilled : function (v) {
         return v;
-      })["catch"](function (reason) {
+      }).catch(function (reason) {
         try {
           onrejected(reason);
         } catch (error) {
@@ -3520,32 +3571,32 @@ var WidgetPromise = /*#__PURE__*/function (_Promise) {
     }
   }]);
   return WidgetPromise;
-}( /*#__PURE__*/_wrapNativeSuper(Promise));
+}( /*#__PURE__*/_wrapNativeSuper__default["default"](Promise));
 
 /** Integration errors are considered fatal. They are caused by invalid integrator configuration. */
 var IntegrationError = /*#__PURE__*/function (_WidgetError2) {
-  _inherits(IntegrationError, _WidgetError2);
+  _inherits__default["default"](IntegrationError, _WidgetError2);
   var _super4 = _createSuper$5(IntegrationError);
   function IntegrationError(message) {
     var _this3;
-    _classCallCheck(this, IntegrationError);
+    _classCallCheck__default["default"](this, IntegrationError);
     _this3 = _super4.call(this, {
       message: message
     });
     _this3.name = 'IntegrationError';
     return _this3;
   }
-  return _createClass(IntegrationError);
+  return _createClass__default["default"](IntegrationError);
 }(WidgetError);
 
 /** Dismissable errors are not be considered fatal by the ErrorBoundary. */
 var DismissableError = /*#__PURE__*/function (_WidgetError3) {
-  _inherits(DismissableError, _WidgetError3);
+  _inherits__default["default"](DismissableError, _WidgetError3);
   var _super5 = _createSuper$5(DismissableError);
   function DismissableError(config) {
     var _config$action2, _config$header2;
     var _this4;
-    _classCallCheck(this, DismissableError);
+    _classCallCheck__default["default"](this, DismissableError);
     _this4 = _super5.call(this, _objectSpread$g(_objectSpread$g({}, config), {}, {
       action: (_config$action2 = config.action) !== null && _config$action2 !== void 0 ? _config$action2 : DEFAULT_DISMISSABLE_ERROR_ACTION,
       header: (_config$header2 = config.header) !== null && _config$header2 !== void 0 ? _config$header2 : DEFAULT_ERROR_HEADER
@@ -3554,14 +3605,14 @@ var DismissableError = /*#__PURE__*/function (_WidgetError3) {
     _this4.dismissable = true;
     return _this4;
   }
-  return _createClass(DismissableError);
+  return _createClass__default["default"](DismissableError);
 }(WidgetError);
 var UserRejectedRequestError = /*#__PURE__*/function (_DismissableError) {
-  _inherits(UserRejectedRequestError, _DismissableError);
+  _inherits__default["default"](UserRejectedRequestError, _DismissableError);
   var _super6 = _createSuper$5(UserRejectedRequestError);
   function UserRejectedRequestError() {
     var _this5;
-    _classCallCheck(this, UserRejectedRequestError);
+    _classCallCheck__default["default"](this, UserRejectedRequestError);
     _this5 = _super6.call(this, {
       header: i18n._(
       /*i18n*/
@@ -3579,27 +3630,27 @@ var UserRejectedRequestError = /*#__PURE__*/function (_DismissableError) {
     _this5.name = 'UserRejectedRequestError';
     return _this5;
   }
-  return _createClass(UserRejectedRequestError);
+  return _createClass__default["default"](UserRejectedRequestError);
 }(DismissableError);
 
 /** Connection errors are considered fatal. They are caused by wallet integrations. */
 var ConnectionError = /*#__PURE__*/function (_WidgetError4) {
-  _inherits(ConnectionError, _WidgetError4);
+  _inherits__default["default"](ConnectionError, _WidgetError4);
   var _super7 = _createSuper$5(ConnectionError);
   function ConnectionError(config) {
     var _this6;
-    _classCallCheck(this, ConnectionError);
+    _classCallCheck__default["default"](this, ConnectionError);
     _this6 = _super7.call(this, config);
     _this6.name = 'ConnectionError';
     return _this6;
   }
-  return _createClass(ConnectionError);
+  return _createClass__default["default"](ConnectionError);
 }(WidgetError);
 var MetaMaskConnectionError = /*#__PURE__*/function (_ConnectionError) {
-  _inherits(MetaMaskConnectionError, _ConnectionError);
+  _inherits__default["default"](MetaMaskConnectionError, _ConnectionError);
   var _super8 = _createSuper$5(MetaMaskConnectionError);
   function MetaMaskConnectionError() {
-    _classCallCheck(this, MetaMaskConnectionError);
+    _classCallCheck__default["default"](this, MetaMaskConnectionError);
     return _super8.call(this, {
       header: i18n._(
       /*i18n*/
@@ -3621,32 +3672,32 @@ var MetaMaskConnectionError = /*#__PURE__*/function (_ConnectionError) {
       })
     });
   }
-  return _createClass(MetaMaskConnectionError);
+  return _createClass__default["default"](MetaMaskConnectionError);
 }(ConnectionError);
 
 function isExactInput(tradeType) {
-  return tradeType === TradeType.EXACT_INPUT;
+  return tradeType === sdkCore.TradeType.EXACT_INPUT;
 }
 function invertTradeType(tradeType) {
   switch (tradeType) {
-    case TradeType.EXACT_INPUT:
-      return TradeType.EXACT_OUTPUT;
-    case TradeType.EXACT_OUTPUT:
-      return TradeType.EXACT_INPUT;
+    case sdkCore.TradeType.EXACT_INPUT:
+      return sdkCore.TradeType.EXACT_OUTPUT;
+    case sdkCore.TradeType.EXACT_OUTPUT:
+      return sdkCore.TradeType.EXACT_INPUT;
   }
 }
 function toTradeType(modifiedField) {
   switch (modifiedField) {
     case Field.INPUT:
-      return TradeType.EXACT_INPUT;
+      return sdkCore.TradeType.EXACT_INPUT;
     case Field.OUTPUT:
-      return TradeType.EXACT_OUTPUT;
+      return sdkCore.TradeType.EXACT_OUTPUT;
   }
 }
 
 function ownKeys$f(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$f(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var protocols = [Protocol.V2, Protocol.V3, Protocol.MIXED];
+function _objectSpread$f(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$f(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$f(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var protocols = [routerSdk.Protocol.V2, routerSdk.Protocol.V3, routerSdk.Protocol.MIXED];
 
 // routing API quote query params: https://github.com/Uniswap/routing-api/blob/main/lib/handlers/quote/schema/quote-schema.ts
 var DEFAULT_QUERY_PARAMS = {
@@ -3662,7 +3713,7 @@ var baseQuery = function baseQuery() {
     }
   };
 };
-var routing = createApi({
+var routing = react.createApi({
   reducerPath: 'routing',
   baseQuery: baseQuery,
   serializeQueryArgs: serializeGetQuoteQueryArgs,
@@ -3670,14 +3721,14 @@ var routing = createApi({
     return {
       getTradeQuote: build.query({
         onQueryStarted: function onQueryStarted(args, _ref) {
-          return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          return _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
             var _args$onQuote;
             var queryFulfilled;
-            return _regeneratorRuntime.wrap(function _callee$(_context) {
+            return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
                   queryFulfilled = _ref.queryFulfilled;
-                  if (!(args === skipToken)) {
+                  if (!(args === react.skipToken)) {
                     _context.next = 3;
                     break;
                   }
@@ -3688,7 +3739,7 @@ var routing = createApi({
                     return data;
                   }, function (error) {
                     var queryError = error.error;
-                    if (queryError && _typeof(queryError) === 'object' && 'status' in queryError) {
+                    if (queryError && _typeof__default["default"](queryError) === 'object' && 'status' in queryError) {
                       var parsedError = queryError;
                       switch (parsedError.status) {
                         case 'CUSTOM_ERROR':
@@ -3719,12 +3770,12 @@ var routing = createApi({
         },
         // Explicitly typing the return type enables typechecking of return values.
         queryFn: function queryFn(args) {
-          return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+          return _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2() {
             var tokenInAddress, tokenInChainId, tokenOutAddress, tokenOutChainId, amount, tradeType, type, query, response, data, quoteData, tradeResult, _ref3, _error$message, clientSideSmartOrderRouter, quoteResult, _tradeResult, _ref4, _error$message2;
-            return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+            return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
               while (1) switch (_context2.prev = _context2.next) {
                 case 0:
-                  if (!(args === skipToken)) {
+                  if (!(args === react.skipToken)) {
                     _context2.next = 2;
                     break;
                   }
@@ -3746,7 +3797,7 @@ var routing = createApi({
                   _context2.prev = 3;
                   tokenInAddress = args.tokenInAddress, tokenInChainId = args.tokenInChainId, tokenOutAddress = args.tokenOutAddress, tokenOutChainId = args.tokenOutChainId, amount = args.amount, tradeType = args.tradeType;
                   type = isExactInput(tradeType) ? 'exactIn' : 'exactOut';
-                  query = qs.stringify(_objectSpread$f(_objectSpread$f({}, DEFAULT_QUERY_PARAMS), {}, {
+                  query = qs__default["default"].stringify(_objectSpread$f(_objectSpread$f({}, DEFAULT_QUERY_PARAMS), {}, {
                     tokenInAddress: tokenInAddress,
                     tokenInChainId: tokenInChainId,
                     tokenOutAddress: tokenOutAddress,
@@ -3771,7 +3822,7 @@ var routing = createApi({
                   } catch (_unused) {}
 
                   // NO_ROUTE should be treated as a valid response to prevent retries.
-                  if (!(_typeof(data) === 'object' && data.errorCode === 'NO_ROUTE')) {
+                  if (!(_typeof__default["default"](data) === 'object' && data.errorCode === 'NO_ROUTE')) {
                     _context2.next = 17;
                     break;
                   }
@@ -3797,7 +3848,7 @@ var routing = createApi({
                   console.warn("GetQuote failed on routing API, falling back to client: ".concat((_ref3 = (_error$message = _context2.t0 === null || _context2.t0 === void 0 ? void 0 : _context2.t0.message) !== null && _error$message !== void 0 ? _error$message : _context2.t0 === null || _context2.t0 === void 0 ? void 0 : _context2.t0.detail) !== null && _ref3 !== void 0 ? _ref3 : _context2.t0));
                 case 28:
                   _context2.next = 30;
-                  return import('./clientSideSmartOrderRouter-336c303c.js');
+                  return Promise.resolve().then(function () { return require('./clientSideSmartOrderRouter-4f77ad73.cjs'); });
                 case 30:
                   clientSideSmartOrderRouter = _context2.sent;
                   _context2.prev = 31;
@@ -3868,7 +3919,7 @@ var TRADE_LOADING = {
  * @param currencyOut the output currency
  */
 function useRouterTrade(tradeType, amountSpecified, currencyIn, currencyOut, quoteConfig) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     provider = _useWeb3React.provider;
   var queryArgs = useGetQuoteArgs({
     provider: provider,
@@ -3877,7 +3928,7 @@ function useRouterTrade(tradeType, amountSpecified, currencyIn, currencyOut, quo
     currencyIn: currencyIn,
     currencyOut: currencyOut
   }, quoteConfig);
-  var pollingInterval = useMemo(function () {
+  var pollingInterval = React.useMemo(function () {
     if (!amountSpecified) return Infinity;
     switch (quoteConfig.type) {
       // PRICE fetching is informational and costly, so it is done less frequently.
@@ -3903,9 +3954,9 @@ function useRouterTrade(tradeType, amountSpecified, currencyIn, currencyOut, quo
   var _useLazyGetTradeQuote = useLazyGetTradeQuoteQuery({
       pollingInterval: pollingInterval
     }),
-    _useLazyGetTradeQuote2 = _slicedToArray(_useLazyGetTradeQuote, 1),
+    _useLazyGetTradeQuote2 = _slicedToArray__default["default"](_useLazyGetTradeQuote, 1),
     trigger = _useLazyGetTradeQuote2[0];
-  var request = useCallback(function () {
+  var request = React.useCallback(function () {
     var _trigger = trigger(queryArgs, /*preferCacheValue=*/true),
       refetch = _trigger.refetch;
     if (fulfilledTimeStamp && Date.now() - fulfilledTimeStamp > pollingInterval) {
@@ -3916,8 +3967,8 @@ function useRouterTrade(tradeType, amountSpecified, currencyIn, currencyOut, quo
   var isCurrent = currentTradeResult === tradeResult;
   var isValidBlock = useIsValidBlock(Number(tradeResult === null || tradeResult === void 0 ? void 0 : tradeResult.blockNumber));
   var gasUseEstimateUSD = useStablecoinAmountFromFiatValue(tradeResult === null || tradeResult === void 0 ? void 0 : tradeResult.gasUseEstimateUSD);
-  return useMemo(function () {
-    if (!amountSpecified || isError || queryArgs === skipToken) {
+  return React.useMemo(function () {
+    if (!amountSpecified || isError || queryArgs === react.skipToken) {
       return TRADE_INVALID;
     } else if ((tradeResult === null || tradeResult === void 0 ? void 0 : tradeResult.state) === QuoteState.NOT_FOUND && isCurrent) {
       return TRADE_NOT_FOUND;
@@ -6115,7 +6166,7 @@ var WETH_ABI = [
 // returns the checksummed address if the address is valid, otherwise returns false
 function isAddress(value) {
   try {
-    return getAddress(value);
+    return address.getAddress(value);
   } catch (_unused) {
     return false;
   }
@@ -6133,10 +6184,10 @@ function getProviderOrSigner(provider, account) {
 
 // account is optional
 function getContract(address, ABI, provider, account) {
-  if (!isAddress(address) || address === AddressZero) {
+  if (!isAddress(address) || address === constants.AddressZero) {
     throw Error("Invalid 'address' parameter '".concat(address, "'."));
   }
-  return new Contract(address, ABI, getProviderOrSigner(provider, account));
+  return new contracts.Contract(address, ABI, getProviderOrSigner(provider, account));
 }
 
 var MulticallABI = UniswapInterfaceMulticallJson.abi;
@@ -6144,11 +6195,11 @@ var MulticallABI = UniswapInterfaceMulticallJson.abi;
 // returns null on errors
 function useContract(addressOrAddressMap, ABI) {
   var withSignerIfPossible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     provider = _useWeb3React.provider,
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId;
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!addressOrAddressMap || !ABI || !provider || !chainId) return null;
     var address;
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap;else address = addressOrAddressMap[chainId];
@@ -6166,7 +6217,7 @@ function useTokenContract(tokenAddress, withSignerIfPossible) {
 }
 function useWETHContract(withSignerIfPossible) {
   var _WRAPPED_NATIVE_CURRE;
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     chainId = _useWeb3React2.chainId;
   return useContract(chainId ? (_WRAPPED_NATIVE_CURRE = WRAPPED_NATIVE_CURRENCY[chainId]) === null || _WRAPPED_NATIVE_CURRE === void 0 ? void 0 : _WRAPPED_NATIVE_CURRE.address : undefined, WETH_ABI, withSignerIfPossible);
 }
@@ -6189,13 +6240,13 @@ function useInterfaceMulticall() {
   return useContract(MULTICALL_ADDRESS, MulticallABI, false);
 }
 
-var multicall = createMulticall();
+var multicall = reduxMulticall.createMulticall();
 function MulticallUpdater() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var latestBlockNumber = useBlockNumber();
   var contract = useInterfaceMulticall();
-  return /*#__PURE__*/React.createElement(multicall.Updater, {
+  return /*#__PURE__*/React__default["default"].createElement(multicall.Updater, {
     chainId: chainId,
     latestBlockNumber: latestBlockNumber,
     contract: contract
@@ -6234,7 +6285,7 @@ function useSingleContractMultipleData() {
   return (_multicall$hooks3 = multicall.hooks).useSingleContractMultipleData.apply(_multicall$hooks3, [chainId, latestBlock].concat(args));
 }
 function useCallContext() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var latestBlock = useBlockNumber();
   return {
@@ -6247,10 +6298,10 @@ function useCallContext() {
  * Returns a map of the given addresses to their eventually consistent ETH balances.
  */
 function useNativeCurrencyBalances(uncheckedAddresses) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var multicallContract = useInterfaceMulticall();
-  var validAddressInputs = useMemo(function () {
+  var validAddressInputs = React.useMemo(function () {
     return uncheckedAddresses ? uncheckedAddresses.map(isAddress).filter(function (a) {
       return a !== false;
     }).sort().map(function (addr) {
@@ -6258,18 +6309,18 @@ function useNativeCurrencyBalances(uncheckedAddresses) {
     }) : [];
   }, [uncheckedAddresses]);
   var results = useSingleContractMultipleData(multicallContract, 'getEthBalance', validAddressInputs);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return validAddressInputs.reduce(function (memo, _ref, i) {
       var _results$i, _results$i$result;
-      var _ref2 = _slicedToArray(_ref, 1),
+      var _ref2 = _slicedToArray__default["default"](_ref, 1),
         address = _ref2[0];
       var value = results === null || results === void 0 ? void 0 : (_results$i = results[i]) === null || _results$i === void 0 ? void 0 : (_results$i$result = _results$i.result) === null || _results$i$result === void 0 ? void 0 : _results$i$result[0];
-      if (value && chainId) memo[address] = CurrencyAmount.fromRawAmount(nativeOnChain(chainId), JSBI.BigInt(value.toString()));
+      if (value && chainId) memo[address] = sdkCore.CurrencyAmount.fromRawAmount(nativeOnChain(chainId), JSBI__default["default"].BigInt(value.toString()));
       return memo;
     }, {});
   }, [validAddressInputs, chainId, results]);
 }
-var ERC20Interface = new Interface(ERC20ABI);
+var ERC20Interface = new abi$1.Interface(ERC20ABI);
 var tokenBalancesGasRequirement = {
   gasRequired: 185000
 };
@@ -6278,32 +6329,32 @@ var tokenBalancesGasRequirement = {
  * Returns a map of token addresses to their eventually consistent token balances for a single account.
  */
 function useTokenBalancesWithLoadingIndicator(address, tokens) {
-  var validatedTokens = useMemo(function () {
+  var validatedTokens = React.useMemo(function () {
     var _tokens$filter;
     return (_tokens$filter = tokens === null || tokens === void 0 ? void 0 : tokens.filter(function (t) {
       return isAddress(t === null || t === void 0 ? void 0 : t.address) !== false;
     })) !== null && _tokens$filter !== void 0 ? _tokens$filter : [];
   }, [tokens]);
-  var validatedTokenAddresses = useMemo(function () {
+  var validatedTokenAddresses = React.useMemo(function () {
     return validatedTokens.map(function (vt) {
       return vt.address;
     });
   }, [validatedTokens]);
-  var balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20Interface, 'balanceOf', useMemo(function () {
+  var balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20Interface, 'balanceOf', React.useMemo(function () {
     return [address];
   }, [address]), tokenBalancesGasRequirement);
-  var anyLoading = useMemo(function () {
+  var anyLoading = React.useMemo(function () {
     return balances.some(function (callState) {
       return callState.loading;
     });
   }, [balances]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return [address && validatedTokens.length > 0 ? validatedTokens.reduce(function (memo, token, i) {
       var _balances$i, _balances$i$result;
       var value = balances === null || balances === void 0 ? void 0 : (_balances$i = balances[i]) === null || _balances$i === void 0 ? void 0 : (_balances$i$result = _balances$i.result) === null || _balances$i$result === void 0 ? void 0 : _balances$i$result[0];
-      var amount = value ? JSBI.BigInt(value.toString()) : undefined;
+      var amount = value ? JSBI__default["default"].BigInt(value.toString()) : undefined;
       if (amount) {
-        memo[token.address] = CurrencyAmount.fromRawAmount(token, amount);
+        memo[token.address] = sdkCore.CurrencyAmount.fromRawAmount(token, amount);
       }
       return memo;
     }, {}) : {}, anyLoading];
@@ -6313,7 +6364,7 @@ function useTokenBalances(address, tokens) {
   return useTokenBalancesWithLoadingIndicator(address, tokens)[0];
 }
 function useCurrencyBalances(account, currencies) {
-  var tokens = useMemo(function () {
+  var tokens = React.useMemo(function () {
     var _currencies$filter;
     return (_currencies$filter = currencies === null || currencies === void 0 ? void 0 : currencies.filter(function (currency) {
       var _currency$isToken;
@@ -6321,16 +6372,16 @@ function useCurrencyBalances(account, currencies) {
     })) !== null && _currencies$filter !== void 0 ? _currencies$filter : [];
   }, [currencies]);
   var tokenBalances = useTokenBalances(account, tokens);
-  var containsETH = useMemo(function () {
+  var containsETH = React.useMemo(function () {
     var _currencies$some;
     return (_currencies$some = currencies === null || currencies === void 0 ? void 0 : currencies.some(function (currency) {
       return currency === null || currency === void 0 ? void 0 : currency.isNative;
     })) !== null && _currencies$some !== void 0 ? _currencies$some : false;
   }, [currencies]);
-  var ethBalance = useNativeCurrencyBalances(useMemo(function () {
+  var ethBalance = useNativeCurrencyBalances(React.useMemo(function () {
     return containsETH ? [account] : [];
   }, [containsETH, account]));
-  return useMemo(function () {
+  return React.useMemo(function () {
     var _currencies$map;
     return (_currencies$map = currencies === null || currencies === void 0 ? void 0 : currencies.map(function (currency) {
       if (!account || !currency) return undefined;
@@ -6341,16 +6392,16 @@ function useCurrencyBalances(account, currencies) {
   }, [account, currencies, ethBalance, tokenBalances]);
 }
 function useCurrencyBalance(account, currency) {
-  return useCurrencyBalances(account, useMemo(function () {
+  return useCurrencyBalances(account, React.useMemo(function () {
     return [currency];
   }, [currency]))[0];
 }
 
 function useOnSupportedNetwork(chainId) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     activeChainId = _useWeb3React.chainId;
   chainId = chainId || activeChainId;
-  return useMemo(function () {
+  return React.useMemo(function () {
     return Boolean(chainId && ALL_SUPPORTED_CHAIN_IDS.includes(chainId));
   }, [chainId]);
 }
@@ -6374,7 +6425,7 @@ var NetworkType = /*#__PURE__*/function (NetworkType) {
   NetworkType[NetworkType["L2"] = 1] = "L2";
   return NetworkType;
 }({});
-var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainId.MAINNET, {
+var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.MAINNET, {
   networkType: NetworkType.L1,
   docs: 'https://docs.uniswap.org/',
   explorer: 'https://etherscan.io/',
@@ -6387,7 +6438,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
     decimals: 18
   },
   color: '#627EEA'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.RINKEBY, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.RINKEBY, {
   networkType: NetworkType.L1,
   docs: 'https://docs.uniswap.org/',
   explorer: 'https://rinkeby.etherscan.io/',
@@ -6400,7 +6451,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
     decimals: 18
   },
   color: '#FB118E'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.ROPSTEN, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.ROPSTEN, {
   networkType: NetworkType.L1,
   docs: 'https://docs.uniswap.org/',
   explorer: 'https://ropsten.etherscan.io/',
@@ -6413,7 +6464,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
     decimals: 18
   },
   color: '#A08116'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.KOVAN, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.KOVAN, {
   networkType: NetworkType.L1,
   docs: 'https://docs.uniswap.org/',
   explorer: 'https://kovan.etherscan.io/',
@@ -6426,7 +6477,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
     decimals: 18
   },
   color: '#FF0420'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.GOERLI, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.GOERLI, {
   networkType: NetworkType.L1,
   docs: 'https://docs.uniswap.org/',
   explorer: 'https://goerli.etherscan.io/',
@@ -6439,7 +6490,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
     decimals: 18
   },
   color: '#209853'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.OPTIMISM, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.OPTIMISM, {
   networkType: NetworkType.L2,
   blockWaitMsBeforeWarning: 1500000,
   bridge: 'https://app.optimism.io/bridge',
@@ -6457,7 +6508,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#FF0420',
   backgroundColor: '#ff042029'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.OPTIMISM_GOERLI, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.OPTIMISM_GOERLI, {
   networkType: NetworkType.L2,
   blockWaitMsBeforeWarning: 1500000,
   bridge: 'https://app.optimism.io/bridge',
@@ -6479,7 +6530,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#FF0420',
   backgroundColor: '#ff042029'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.ARBITRUM_ONE, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.ARBITRUM_ONE, {
   networkType: NetworkType.L2,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://bridge.arbitrum.io/',
@@ -6496,7 +6547,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#28A0F0',
   backgroundColor: '#28a0f029'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.ARBITRUM_RINKEBY, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.ARBITRUM_RINKEBY, {
   networkType: NetworkType.L2,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://bridge.arbitrum.io/',
@@ -6513,7 +6564,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#28A0F0',
   backgroundColor: '#28a0f029'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.POLYGON, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.POLYGON, {
   networkType: NetworkType.L1,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://wallet.polygon.technology/login?redirectTo=%2Fpolygon%2Fbridge',
@@ -6532,7 +6583,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#A457FF',
   backgroundColor: '#a457ff29'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.POLYGON_MUMBAI, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.POLYGON_MUMBAI, {
   networkType: NetworkType.L1,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://wallet.polygon.technology/login?redirectTo=%2Fpolygon%2Fbridge',
@@ -6551,7 +6602,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#A457FF',
   backgroundColor: '#a457ff29'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.CELO, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.CELO, {
   networkType: NetworkType.L1,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://www.portalbridge.com/#/transfer',
@@ -6570,7 +6621,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#35D07F',
   backgroundColor: '#34d07f1f'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.CELO_ALFAJORES, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.CELO_ALFAJORES, {
   networkType: NetworkType.L1,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://www.portalbridge.com/#/transfer',
@@ -6590,7 +6641,7 @@ var CHAIN_INFO = (_CHAIN_INFO = {}, _defineProperty(_CHAIN_INFO, SupportedChainI
   },
   color: '#35D07F',
   backgroundColor: '#34d07f1f'
-}), _defineProperty(_CHAIN_INFO, SupportedChainId.BNB, {
+}), _defineProperty__default["default"](_CHAIN_INFO, SupportedChainId.BNB, {
   networkType: NetworkType.L1,
   blockWaitMsBeforeWarning: 600000,
   bridge: 'https://cbridge.celer.network/1/56',
@@ -6635,9 +6686,9 @@ var TransactionType = /*#__PURE__*/function (TransactionType) {
   TransactionType[TransactionType["UNWRAP"] = 3] = "UNWRAP";
   return TransactionType;
 }({});
-var transactionsAtom = atomWithImmer({});
+var transactionsAtom = immer.atomWithImmer({});
 
-function _createSuper$4(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$4(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$4(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$4(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$4() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function wait(ms) {
   return new Promise(function (resolve) {
@@ -6652,35 +6703,35 @@ function waitRandom(min, max) {
  * This error is thrown if the function is cancelled before completing
  */
 var CancelledError = /*#__PURE__*/function (_Error) {
-  _inherits(CancelledError, _Error);
+  _inherits__default["default"](CancelledError, _Error);
   var _super = _createSuper$4(CancelledError);
   function CancelledError() {
     var _this;
-    _classCallCheck(this, CancelledError);
+    _classCallCheck__default["default"](this, CancelledError);
     _this = _super.call(this, 'Cancelled');
-    _defineProperty(_assertThisInitialized(_this), "isCancelledError", true);
+    _defineProperty__default["default"](_assertThisInitialized__default["default"](_this), "isCancelledError", true);
     return _this;
   }
-  return _createClass(CancelledError);
-}( /*#__PURE__*/_wrapNativeSuper(Error));
+  return _createClass__default["default"](CancelledError);
+}( /*#__PURE__*/_wrapNativeSuper__default["default"](Error));
 /**
  * Throw this error if the function should retry
  */
 var RetryableError = /*#__PURE__*/function (_Error2) {
-  _inherits(RetryableError, _Error2);
+  _inherits__default["default"](RetryableError, _Error2);
   var _super2 = _createSuper$4(RetryableError);
   function RetryableError() {
     var _this2;
-    _classCallCheck(this, RetryableError);
+    _classCallCheck__default["default"](this, RetryableError);
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
     _this2 = _super2.call.apply(_super2, [this].concat(args));
-    _defineProperty(_assertThisInitialized(_this2), "isRetryableError", true);
+    _defineProperty__default["default"](_assertThisInitialized__default["default"](_this2), "isRetryableError", true);
     return _this2;
   }
-  return _createClass(RetryableError);
-}( /*#__PURE__*/_wrapNativeSuper(Error));
+  return _createClass__default["default"](RetryableError);
+}( /*#__PURE__*/_wrapNativeSuper__default["default"](Error));
 /**
  * Retries the function that returns the promise until the promise successfully resolves up to n retries
  * @param fn function to retry
@@ -6695,9 +6746,9 @@ function retry(fn, _ref) {
   var completed = false;
   var rejectCancelled;
   var promise = new Promise( /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(resolve, reject) {
+    var _ref2 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(resolve, reject) {
       var result;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             rejectCancelled = reject;
@@ -6775,19 +6826,19 @@ function shouldCheck(lastBlockNumber, tx) {
     return true;
   }
 }
-var RETRY_OPTIONS_BY_CHAIN_ID = (_RETRY_OPTIONS_BY_CHA = {}, _defineProperty(_RETRY_OPTIONS_BY_CHA, SupportedChainId.ARBITRUM_ONE, {
+var RETRY_OPTIONS_BY_CHAIN_ID = (_RETRY_OPTIONS_BY_CHA = {}, _defineProperty__default["default"](_RETRY_OPTIONS_BY_CHA, SupportedChainId.ARBITRUM_ONE, {
   n: 10,
   minWait: 250,
   maxWait: 1000
-}), _defineProperty(_RETRY_OPTIONS_BY_CHA, SupportedChainId.ARBITRUM_RINKEBY, {
+}), _defineProperty__default["default"](_RETRY_OPTIONS_BY_CHA, SupportedChainId.ARBITRUM_RINKEBY, {
   n: 10,
   minWait: 250,
   maxWait: 1000
-}), _defineProperty(_RETRY_OPTIONS_BY_CHA, SupportedChainId.OPTIMISM_GOERLI, {
+}), _defineProperty__default["default"](_RETRY_OPTIONS_BY_CHA, SupportedChainId.OPTIMISM_GOERLI, {
   n: 10,
   minWait: 250,
   maxWait: 1000
-}), _defineProperty(_RETRY_OPTIONS_BY_CHA, SupportedChainId.OPTIMISM, {
+}), _defineProperty__default["default"](_RETRY_OPTIONS_BY_CHA, SupportedChainId.OPTIMISM, {
   n: 10,
   minWait: 250,
   maxWait: 1000
@@ -6801,12 +6852,12 @@ function Updater(_ref) {
   var pendingTransactions = _ref.pendingTransactions,
     onCheck = _ref.onCheck,
     onReceipt = _ref.onReceipt;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
   var lastBlockNumber = useBlockNumber();
   var fastForwardBlockNumber = useFastForwardBlockNumber();
-  var getReceipt = useCallback(function (hash) {
+  var getReceipt = React.useCallback(function (hash) {
     var _RETRY_OPTIONS_BY_CHA2;
     if (!provider || !chainId) throw new Error('No library or chainId');
     var retryOptions = (_RETRY_OPTIONS_BY_CHA2 = RETRY_OPTIONS_BY_CHAIN_ID[chainId]) !== null && _RETRY_OPTIONS_BY_CHA2 !== void 0 ? _RETRY_OPTIONS_BY_CHA2 : DEFAULT_RETRY_OPTIONS;
@@ -6820,7 +6871,7 @@ function Updater(_ref) {
       });
     }, retryOptions);
   }, [chainId, provider]);
-  useEffect(function () {
+  React.useEffect(function () {
     if (!chainId || !provider || !lastBlockNumber) return;
     var cancels = Object.keys(pendingTransactions).filter(function (hash) {
       return shouldCheck(lastBlockNumber, pendingTransactions[hash]);
@@ -6843,7 +6894,7 @@ function Updater(_ref) {
             blockNumber: lastBlockNumber
           });
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         if (!error.isCancelledError) {
           console.warn("Failed to get transaction receipt for ".concat(hash), error);
         }
@@ -6860,24 +6911,24 @@ function Updater(_ref) {
 }
 
 function ownKeys$e(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$e(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$e(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$e(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$e(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function isTransactionRecent(transaction) {
   return Date.now() - transaction.addedTime < 86400000;
 }
 function usePendingTransactions() {
   var _ref;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var txs = useAtomValue(transactionsAtom);
+  var txs = utils.useAtomValue(transactionsAtom);
   return (_ref = chainId ? txs[chainId] : null) !== null && _ref !== void 0 ? _ref : {};
 }
 function useAddTransactionInfo() {
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     chainId = _useWeb3React2.chainId;
   var blockNumber = useBlockNumber();
-  var updateTxs = useUpdateAtom(transactionsAtom);
-  return useCallback(function (info) {
-    invariant(chainId);
+  var updateTxs = utils.useUpdateAtom(transactionsAtom);
+  return React.useCallback(function (info) {
+    invariant__default["default"](chainId);
     var txChainId = chainId;
     var hash = info.response.hash;
     updateTxs(function (chainTxs) {
@@ -6895,9 +6946,9 @@ function useAddTransactionInfo() {
 /** Returns the hash of a pending approval transaction, if it exists. */
 function usePendingApproval(token, spender) {
   var _Object$values$find;
-  var _useWeb3React3 = useWeb3React(),
+  var _useWeb3React3 = core.useWeb3React(),
     chainId = _useWeb3React3.chainId;
-  var txs = useAtomValue(transactionsAtom);
+  var txs = utils.useAtomValue(transactionsAtom);
   if (!chainId || !token || !spender) return undefined;
   var chainTxs = txs[chainId];
   if (!chainTxs) return undefined;
@@ -6913,8 +6964,8 @@ function TransactionsUpdater(_ref2) {
     onTxSuccess = _ref2.onTxSuccess,
     onTxFail = _ref2.onTxFail;
   var currentPendingTxs = usePendingTransactions();
-  var updateTxs = useUpdateAtom(transactionsAtom);
-  var onCheck = useCallback(function (_ref3) {
+  var updateTxs = utils.useUpdateAtom(transactionsAtom);
+  var onCheck = React.useCallback(function (_ref3) {
     var chainId = _ref3.chainId,
       hash = _ref3.hash,
       blockNumber = _ref3.blockNumber;
@@ -6926,7 +6977,7 @@ function TransactionsUpdater(_ref2) {
       }
     });
   }, [updateTxs]);
-  var onReceipt = useCallback(function (_ref4) {
+  var onReceipt = React.useCallback(function (_ref4) {
     var chainId = _ref4.chainId,
       hash = _ref4.hash,
       receipt = _ref4.receipt;
@@ -6945,8 +6996,8 @@ function TransactionsUpdater(_ref2) {
       }));
     }
   }, [updateTxs, onTxFail, onTxSuccess, currentPendingTxs]);
-  var oldPendingTxs = useRef({});
-  useEffect(function () {
+  var oldPendingTxs = React.useRef({});
+  React.useEffect(function () {
     var newPendingTxHashes = Object.keys(currentPendingTxs);
     var oldPendingTxHashes = new Set(Object.keys(oldPendingTxs.current));
     if (newPendingTxHashes.length !== oldPendingTxHashes.size) {
@@ -6959,7 +7010,7 @@ function TransactionsUpdater(_ref2) {
       oldPendingTxs.current = currentPendingTxs;
     }
   }, [currentPendingTxs, onTxSubmit]);
-  return /*#__PURE__*/React.createElement(Updater, {
+  return /*#__PURE__*/React__default["default"].createElement(Updater, {
     pendingTransactions: currentPendingTxs,
     onCheck: onCheck,
     onReceipt: onReceipt
@@ -6974,15 +7025,15 @@ function TransactionsUpdater(_ref2) {
  */
 function useInterval(callback, delay) {
   var leading = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-  var savedCallback = useRef();
+  var savedCallback = React.useRef();
 
   // Remember the latest callback.
-  useEffect(function () {
+  React.useEffect(function () {
     savedCallback.current = callback;
   }, [callback]);
 
   // Set up the interval.
-  useEffect(function () {
+  React.useEffect(function () {
     function tick() {
       var current = savedCallback.current;
       current && current();
@@ -7085,8 +7136,8 @@ function isUserRejection(error) {
  * This wraps those arguments so that the handler is called before the event is executed, for more accurate instrumentation.
  */
 function usePerfEventHandler(name, args, callback) {
-  var perfHandler = useAtomValue(swapEventHandlersAtom)[name];
-  return useCallback(function () {
+  var perfHandler = utils.useAtomValue(swapEventHandlersAtom)[name];
+  return React.useCallback(function () {
     // Use Promise.resolve().then to defer the execution of the callback until after the perfHandler has executed.
     // This ensures that the perfHandler can capture the beginning of the callback's execution.
     var event = Promise.resolve().then(callback);
@@ -7098,35 +7149,35 @@ function usePerfEventHandler(name, args, callback) {
 }
 
 function ownKeys$d(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$d(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$d(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$d(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var PERMIT_EXPIRATION = 2592000000;
 var PERMIT_SIG_EXPIRATION = 1800000;
 function toDeadline(expiration) {
   return Math.floor((Date.now() + expiration) / 1000);
 }
 function usePermitAllowance(token, owner, spender) {
-  var contract = useContract(PERMIT2_ADDRESS, PERMIT2_ABI);
-  var inputs = useMemo(function () {
+  var contract = useContract(permit2Sdk.PERMIT2_ADDRESS, PERMIT2_ABI);
+  var inputs = React.useMemo(function () {
     return [owner, token === null || token === void 0 ? void 0 : token.address, spender];
   }, [owner, spender, token === null || token === void 0 ? void 0 : token.address]);
 
   // If there is no allowance yet, re-check next observed block.
   // This guarantees that the permitAllowance is synced upon submission and updated upon being synced.
-  var _useState = useState(),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     blocksPerFetch = _useState2[0],
     setBlocksPerFetch = _useState2[1];
   var result = useSingleCallResult(contract, 'allowance', inputs, {
     blocksPerFetch: blocksPerFetch
   }).result;
   var rawAmount = result === null || result === void 0 ? void 0 : result.amount.toString(); // convert to a string before using in a hook, to avoid spurious rerenders
-  var allowance = useMemo(function () {
-    return token && rawAmount ? CurrencyAmount.fromRawAmount(token, rawAmount) : undefined;
+  var allowance = React.useMemo(function () {
+    return token && rawAmount ? sdkCore.CurrencyAmount.fromRawAmount(token, rawAmount) : undefined;
   }, [token, rawAmount]);
-  useEffect(function () {
+  React.useEffect(function () {
     return setBlocksPerFetch(allowance !== null && allowance !== void 0 && allowance.equalTo(0) ? 1 : undefined);
   }, [allowance]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       permitAllowance: allowance,
       expiration: result === null || result === void 0 ? void 0 : result.expiration,
@@ -7135,14 +7186,14 @@ function usePermitAllowance(token, owner, spender) {
   }, [allowance, result === null || result === void 0 ? void 0 : result.expiration, result === null || result === void 0 ? void 0 : result.nonce]);
 }
 function useUpdatePermitAllowance(token, spender, nonce, onPermitSignature) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
-  var updatePermitAllowance = useCallback(function () {
-    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var updatePermitAllowance = React.useCallback(function () {
+    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
       var permit, _AllowanceTransfer$ge, domain, types, values, signature;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (chainId) {
@@ -7178,16 +7229,16 @@ function useUpdatePermitAllowance(token, spender, nonce, onPermitSignature) {
             permit = {
               details: {
                 token: token.address,
-                amount: MaxAllowanceTransferAmount,
+                amount: permit2Sdk.MaxAllowanceTransferAmount,
                 expiration: toDeadline(PERMIT_EXPIRATION),
                 nonce: nonce
               },
               spender: spender,
               sigDeadline: toDeadline(PERMIT_SIG_EXPIRATION)
             };
-            _AllowanceTransfer$ge = AllowanceTransfer.getPermitData(permit, PERMIT2_ADDRESS, chainId), domain = _AllowanceTransfer$ge.domain, types = _AllowanceTransfer$ge.types, values = _AllowanceTransfer$ge.values; // Use conedison's signTypedData for better x-wallet compatibility.
+            _AllowanceTransfer$ge = permit2Sdk.AllowanceTransfer.getPermitData(permit, permit2Sdk.PERMIT2_ADDRESS, chainId), domain = _AllowanceTransfer$ge.domain, types = _AllowanceTransfer$ge.types, values = _AllowanceTransfer$ge.values; // Use conedison's signTypedData for better x-wallet compatibility.
             _context.next = 14;
-            return signTypedData(provider.getSigner(account), domain, types, values);
+            return signing.signTypedData(provider.getSigner(account), domain, types, values);
           case 14:
             signature = _context.sent;
             onPermitSignature === null || onPermitSignature === void 0 ? void 0 : onPermitSignature(_objectSpread$d(_objectSpread$d({}, permit), {}, {
@@ -7209,7 +7260,7 @@ function useUpdatePermitAllowance(token, spender, nonce, onPermitSignature) {
           id: "hhGrAC",
           message: "{symbol} permit allowance failed: {0}",
           values: {
-            "0": (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
+            0: (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
             symbol: symbol
           }
         }),
@@ -7217,7 +7268,7 @@ function useUpdatePermitAllowance(token, spender, nonce, onPermitSignature) {
       });
     });
   }, [account, chainId, nonce, onPermitSignature, provider, spender, token]);
-  var args = useMemo(function () {
+  var args = React.useMemo(function () {
     return token && spender ? {
       token: token,
       spender: spender
@@ -7236,14 +7287,14 @@ function calculateGasMargin(value) {
 
 function useTokenAllowance(token, owner, spender) {
   var contract = useTokenContract(token === null || token === void 0 ? void 0 : token.address, false);
-  var inputs = useMemo(function () {
+  var inputs = React.useMemo(function () {
     return [owner, spender];
   }, [owner, spender]);
 
   // If there is no allowance yet, re-check next observed block.
   // This guarantees that the tokenAllowance is marked isSyncing upon approval and updated upon being synced.
-  var _useState = useState(),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     blocksPerFetch = _useState2[0],
     setBlocksPerFetch = _useState2[1];
   var _ref = useSingleCallResult(contract, 'allowance', inputs, {
@@ -7252,13 +7303,13 @@ function useTokenAllowance(token, owner, spender) {
     result = _ref.result,
     isSyncing = _ref.syncing;
   var rawAmount = result === null || result === void 0 ? void 0 : result.toString(); // convert to a string before using in a hook, to avoid spurious rerenders
-  var allowance = useMemo(function () {
-    return token && rawAmount ? CurrencyAmount.fromRawAmount(token, rawAmount) : undefined;
+  var allowance = React.useMemo(function () {
+    return token && rawAmount ? sdkCore.CurrencyAmount.fromRawAmount(token, rawAmount) : undefined;
   }, [token, rawAmount]);
-  useEffect(function () {
+  React.useEffect(function () {
     return setBlocksPerFetch(allowance !== null && allowance !== void 0 && allowance.equalTo(0) ? 1 : undefined);
   }, [allowance]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       tokenAllowance: allowance,
       isSyncing: isSyncing
@@ -7267,10 +7318,10 @@ function useTokenAllowance(token, owner, spender) {
 }
 function useUpdateTokenAllowance(amount, spender) {
   var contract = useTokenContract(amount === null || amount === void 0 ? void 0 : amount.currency.address);
-  var updateTokenAllowance = useCallback(function () {
-    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var updateTokenAllowance = React.useCallback(function () {
+    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
       var allowance, estimatedGas, gasLimit, response;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (amount) {
@@ -7291,9 +7342,9 @@ function useUpdateTokenAllowance(amount, spender) {
             }
             throw new Error('missing spender');
           case 6:
-            allowance = MaxUint256.toString();
+            allowance = sdkCore.MaxUint256.toString();
             _context.next = 9;
-            return contract.estimateGas.approve(spender, allowance)["catch"](function () {
+            return contract.estimateGas.approve(spender, allowance).catch(function () {
               // Fallback for tokens which restrict approval amounts:
               allowance = amount.quotient.toString();
               return contract.estimateGas.approve(spender, allowance);
@@ -7329,7 +7380,7 @@ function useUpdateTokenAllowance(amount, spender) {
           id: "R0FX6s",
           message: "{symbol} token allowance failed: {0}",
           values: {
-            "0": (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
+            0: (_message = error === null || error === void 0 ? void 0 : error.message) !== null && _message !== void 0 ? _message : error,
             symbol: symbol
           }
         }),
@@ -7337,7 +7388,7 @@ function useUpdateTokenAllowance(amount, spender) {
       });
     });
   }, [amount, contract, spender]);
-  var args = useMemo(function () {
+  var args = React.useMemo(function () {
     return amount && spender ? {
       token: amount.currency,
       spender: spender
@@ -7359,14 +7410,14 @@ var AllowanceState = /*#__PURE__*/function (AllowanceState) {
   return AllowanceState;
 }({});
 function usePermit2Allowance(amount, spender) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var token = amount === null || amount === void 0 ? void 0 : amount.currency;
-  var _useTokenAllowance = useTokenAllowance(token, account, PERMIT2_ADDRESS),
+  var _useTokenAllowance = useTokenAllowance(token, account, permit2Sdk.PERMIT2_ADDRESS),
     tokenAllowance = _useTokenAllowance.tokenAllowance,
     isApprovalSyncing = _useTokenAllowance.isSyncing;
-  var updateTokenAllowance = useUpdateTokenAllowance(amount, PERMIT2_ADDRESS);
-  var isApproved = useMemo(function () {
+  var updateTokenAllowance = useUpdateTokenAllowance(amount, permit2Sdk.PERMIT2_ADDRESS);
+  var isApproved = React.useMemo(function () {
     if (!amount || !tokenAllowance) return false;
     return tokenAllowance.greaterThan(amount) || tokenAllowance.equalTo(amount);
   }, [amount, tokenAllowance]);
@@ -7374,13 +7425,13 @@ function usePermit2Allowance(amount, spender) {
   // Marks approval as loading from the time it is submitted (pending), until it has confirmed and another block synced.
   // This avoids re-prompting the user for an already-submitted but not-yet-observed approval, by marking it loading
   // until it has been re-observed. It wll sync immediately, because confirmation fast-forwards the block number.
-  var _useState = useState(ApprovalState$1.SYNCED),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(ApprovalState$1.SYNCED),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     approvalState = _useState2[0],
     setApprovalState = _useState2[1];
-  var isApprovalPending = Boolean(usePendingApproval(token, PERMIT2_ADDRESS));
+  var isApprovalPending = Boolean(usePendingApproval(token, permit2Sdk.PERMIT2_ADDRESS));
   var isApprovalLoading = approvalState !== ApprovalState$1.SYNCED || isApprovalPending;
-  useEffect(function () {
+  React.useEffect(function () {
     if (isApprovalPending) {
       setApprovalState(ApprovalState$1.PENDING);
     } else {
@@ -7396,19 +7447,19 @@ function usePermit2Allowance(amount, spender) {
   }, [isApprovalPending, isApprovalSyncing]);
 
   // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
-  var _useState3 = useState(Date.now()),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(Date.now()),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     now = _useState4[0],
     setNow = _useState4[1];
   // Calculate now such that the signature will still be valid for the submitting block.
   useInterval(function () {
     return setNow((Date.now() + STANDARD_L1_BLOCK_TIME) / 1000);
   }, STANDARD_L1_BLOCK_TIME, true);
-  var _useState5 = useState(),
-    _useState6 = _slicedToArray(_useState5, 2),
+  var _useState5 = React.useState(),
+    _useState6 = _slicedToArray__default["default"](_useState5, 2),
     signature = _useState6[0],
     setSignature = _useState6[1];
-  var isSigned = useMemo(function () {
+  var isSigned = React.useMemo(function () {
     if (!amount || !signature) return false;
     return signature.details.token === (token === null || token === void 0 ? void 0 : token.address) && signature.spender === spender && signature.sigDeadline >= now;
   }, [amount, now, signature, spender, token === null || token === void 0 ? void 0 : token.address]);
@@ -7417,16 +7468,16 @@ function usePermit2Allowance(amount, spender) {
     permitExpiration = _usePermitAllowance.expiration,
     nonce = _usePermitAllowance.nonce;
   var updatePermitAllowance = useUpdatePermitAllowance(token, spender, nonce, setSignature);
-  var isPermitted = useMemo(function () {
+  var isPermitted = React.useMemo(function () {
     if (!amount || !permitAllowance || !permitExpiration) return false;
     return (permitAllowance.greaterThan(amount) || permitAllowance.equalTo(amount)) && permitExpiration >= now;
   }, [amount, now, permitAllowance, permitExpiration]);
   var shouldRequestApproval = !(isApproved || isApprovalLoading);
   var shouldRequestSignature = !(isPermitted || isSigned);
   var addTransactionInfo = useAddTransactionInfo();
-  var approveAndPermit = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var approveAndPermit = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
     var info;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (!shouldRequestApproval) {
@@ -7451,7 +7502,7 @@ function usePermit2Allowance(amount, spender) {
       }
     }, _callee);
   })), [addTransactionInfo, shouldRequestApproval, shouldRequestSignature, updatePermitAllowance, updateTokenAllowance]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (token) {
       if (!tokenAllowance || !permitAllowance) {
         return {
@@ -7487,26 +7538,26 @@ var DEFAULT_DEADLINE_FROM_NOW = 60 * 30;
 var L2_DEADLINE_FROM_NOW = 60 * 5;
 
 // used for rewards deadlines
-JSBI.BigInt(60 * 60 * 24 * 7);
-JSBI.BigInt(0);
+JSBI__default["default"].BigInt(60 * 60 * 24 * 7);
+JSBI__default["default"].BigInt(0);
 
 // one basis JSBI.BigInt
-var BIPS_BASE = JSBI.BigInt(10000);
-new Percent(JSBI.BigInt(1), BIPS_BASE);
+var BIPS_BASE = JSBI__default["default"].BigInt(10000);
+new sdkCore.Percent(JSBI__default["default"].BigInt(1), BIPS_BASE);
 
 // used for warning states
-new Percent(JSBI.BigInt(100), BIPS_BASE); // 1%
-var ALLOWED_PRICE_IMPACT_MEDIUM = new Percent(JSBI.BigInt(300), BIPS_BASE); // 3%
-var ALLOWED_PRICE_IMPACT_HIGH = new Percent(JSBI.BigInt(500), BIPS_BASE); // 5%
+new sdkCore.Percent(JSBI__default["default"].BigInt(100), BIPS_BASE); // 1%
+var ALLOWED_PRICE_IMPACT_MEDIUM = new sdkCore.Percent(JSBI__default["default"].BigInt(300), BIPS_BASE); // 3%
+var ALLOWED_PRICE_IMPACT_HIGH = new sdkCore.Percent(JSBI__default["default"].BigInt(500), BIPS_BASE); // 5%
 // if the price slippage exceeds this number, force the user to type 'confirm' to execute
-new Percent(JSBI.BigInt(1000), BIPS_BASE); // 10%
+new sdkCore.Percent(JSBI__default["default"].BigInt(1000), BIPS_BASE); // 10%
 // for non expert mode disable swaps above this
-new Percent(JSBI.BigInt(1500), BIPS_BASE); // 15%
+new sdkCore.Percent(JSBI__default["default"].BigInt(1500), BIPS_BASE); // 15%
 
-new Percent(JSBI.BigInt(50), BIPS_BASE);
-var ZERO_PERCENT = new Percent('0');
-new Percent(JSBI.BigInt(200), BIPS_BASE);
-var ONE_HUNDRED_PERCENT = new Percent('1');
+new sdkCore.Percent(JSBI__default["default"].BigInt(50), BIPS_BASE);
+var ZERO_PERCENT = new sdkCore.Percent('0');
+new sdkCore.Percent(JSBI__default["default"].BigInt(200), BIPS_BASE);
+var ONE_HUNDRED_PERCENT = new sdkCore.Percent('1');
 
 // gas margin to ensure successful transactions
 var TX_GAS_MARGIN = 0.2;
@@ -7514,12 +7565,12 @@ var TX_GAS_MARGIN = 0.2;
 function computeFiatValuePriceImpact(fiatValueInput, fiatValueOutput) {
   if (!fiatValueOutput || !fiatValueInput) return undefined;
   if (!fiatValueInput.currency.equals(fiatValueOutput.currency)) return undefined;
-  if (JSBI.equal(fiatValueInput.quotient, JSBI.BigInt(0))) return undefined;
+  if (JSBI__default["default"].equal(fiatValueInput.quotient, JSBI__default["default"].BigInt(0))) return undefined;
   var pct = ONE_HUNDRED_PERCENT.subtract(fiatValueOutput.divide(fiatValueInput));
-  return new Percent(pct.numerator, pct.denominator);
+  return new sdkCore.Percent(pct.numerator, pct.denominator);
 }
 
-function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$3(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$3(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
 function _arrayLikeToArray$3(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function computeRealizedPriceImpact(trade) {
@@ -7533,7 +7584,7 @@ function getPriceImpactWarning(priceImpact) {
 }
 function getFeeAmount(pool) {
   // Pair's (ie V2) FeeAmounts are always equivalent to FeeAmount.MEDIUM: 30 bips.
-  if (pool instanceof Pair) return FeeAmount.MEDIUM;
+  if (pool instanceof v2Sdk.Pair) return v3Sdk.FeeAmount.MEDIUM;
   return pool.fee;
 }
 
@@ -7549,10 +7600,10 @@ function computeRealizedLPFeePercent(trade) {
       var _swap$inputAmount$div = swap.inputAmount.divide(trade.inputAmount),
         numerator = _swap$inputAmount$div.numerator,
         denominator = _swap$inputAmount$div.denominator;
-      var overallPercent = new Percent(numerator, denominator);
+      var overallPercent = new sdkCore.Percent(numerator, denominator);
       var routeRealizedLPFeePercent = overallPercent.multiply(ONE_HUNDRED_PERCENT.subtract(swap.route.pools.reduce(function (currentFee, pool) {
         var fee = getFeeAmount(pool);
-        return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(new Fraction(fee, 1000000)));
+        return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(new sdkCore.Fraction(fee, 1000000)));
       }, ONE_HUNDRED_PERCENT)));
       percent = percent.add(routeRealizedLPFeePercent);
     }
@@ -7561,7 +7612,7 @@ function computeRealizedLPFeePercent(trade) {
   } finally {
     _iterator.f();
   }
-  return new Percent(percent.numerator, percent.denominator);
+  return new sdkCore.Percent(percent.numerator, percent.denominator);
 }
 
 /* eslint-disable @typescript-eslint/ban-types */
@@ -7576,10 +7627,10 @@ function pickAtom(anAtom, key) {
   var setter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (draft, update) {
     return update;
   };
-  return atom(function (get) {
+  return jotai.atom(function (get) {
     return get(anAtom)[key];
   }, function (get, set, update) {
-    return set(withImmer(anAtom), function (value) {
+    return set(immer.withImmer(anAtom), function (value) {
       var derived = setter(value[key], update);
       value[key] = derived;
     });
@@ -7596,9 +7647,9 @@ var initialSettings = {
   // automatically set to use that url. Otherwise, it will fallback to client side routing.
   routerPreference: RouterPreference.API
 };
-var controlledAtom = atom(undefined);
-var stateAtom = atomWithReset(initialSettings);
-var settingsAtom = atom(function (get) {
+var controlledAtom = jotai.atom(undefined);
+var stateAtom = utils.atomWithReset(initialSettings);
+var settingsAtom = jotai.atom(function (get) {
   var controlled = get(controlledAtom);
   return controlled ? controlled : get(stateAtom);
 }, stateAtom.write);
@@ -7620,31 +7671,31 @@ function useUSDCPrice(currency) {
   var chainId = currency === null || currency === void 0 ? void 0 : currency.chainId;
   var amountOut = chainId ? STABLECOIN_AMOUNT_OUT[chainId] : undefined;
   var stablecoin = amountOut === null || amountOut === void 0 ? void 0 : amountOut.currency;
-  var _useAtom = useAtom(routerPreferenceAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 1),
+  var _useAtom = jotai.useAtom(routerPreferenceAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 1),
     routerPreference = _useAtom2[0];
-  var trade = useRouterTrade(TradeType.EXACT_OUTPUT, amountOut, currency, stablecoin, {
+  var trade = useRouterTrade(sdkCore.TradeType.EXACT_OUTPUT, amountOut, currency, stablecoin, {
     type: QuoteType.PRICE,
     preference: routerPreference
   });
-  var price = useMemo(function () {
+  var price = React.useMemo(function () {
     if (!currency || !stablecoin) {
       return undefined;
     }
 
     // handle usdc
     if (currency !== null && currency !== void 0 && currency.wrapped.equals(stablecoin)) {
-      return new Price$1(stablecoin, stablecoin, '1', '1');
+      return new sdkCore.Price(stablecoin, stablecoin, '1', '1');
     }
     if (trade !== null && trade !== void 0 && trade.trade) {
       var _trade$trade$routes$ = trade.trade.routes[0].midPrice,
         numerator = _trade$trade$routes$.numerator,
         denominator = _trade$trade$routes$.denominator;
-      return new Price$1(currency, stablecoin, denominator, numerator);
+      return new sdkCore.Price(currency, stablecoin, denominator, numerator);
     }
     return undefined;
   }, [currency, stablecoin, trade.trade]);
-  var lastPrice = useRef(price);
+  var lastPrice = React.useRef(price);
   if (!price || !lastPrice.current || !price.equalTo(lastPrice.current)) {
     lastPrice.current = price;
   }
@@ -7652,7 +7703,7 @@ function useUSDCPrice(currency) {
 }
 function useUSDCValue(currencyAmount) {
   var price = useUSDCPrice(currencyAmount === null || currencyAmount === void 0 ? void 0 : currencyAmount.currency);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!price || !currencyAmount) return;
     try {
       return price.quote(currencyAmount);
@@ -7663,7 +7714,7 @@ function useUSDCValue(currencyAmount) {
 }
 
 function usePriceImpact(trade) {
-  return useMemo(function () {
+  return React.useMemo(function () {
     var marketPriceImpact = trade ? computeRealizedPriceImpact(trade) : undefined;
     return marketPriceImpact ? {
       percent: marketPriceImpact,
@@ -7675,7 +7726,7 @@ function useFiatValueChange(trade) {
   var _ref = [useUSDCValue(trade === null || trade === void 0 ? void 0 : trade.inputAmount), useUSDCValue(trade === null || trade === void 0 ? void 0 : trade.outputAmount)],
     inputUSDCValue = _ref[0],
     outputUSDCValue = _ref[1];
-  return useMemo(function () {
+  return React.useMemo(function () {
     var fiatPriceImpact = computeFiatValuePriceImpact(inputUSDCValue, outputUSDCValue);
     if (!fiatPriceImpact) {
       return undefined;
@@ -7688,9 +7739,9 @@ function useFiatValueChange(trade) {
 }
 
 function useNativeCurrency() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  return useMemo(function () {
+  return React.useMemo(function () {
     return chainId ? nativeOnChain(chainId) :
     // display mainnet when not connected
     nativeOnChain(SupportedChainId.MAINNET);
@@ -7711,11 +7762,11 @@ function isZero(hexNumberString) {
  */
 // modified from https://usehooks.com/useDebounce/
 function useDebounce(value, delay) {
-  var _useState = useState(value),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(value),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     debouncedValue = _useState2[0],
     setDebouncedValue = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     // Update debounced value after delay
     var handler = setTimeout(function () {
       setDebouncedValue(value);
@@ -7737,8 +7788,8 @@ function useDebounce(value, delay) {
 function useENSAddress(ensName) {
   var _resolverAddress$resu;
   var debouncedName = useDebounce(ensName, 200);
-  var ensNodeArgument = useMemo(function () {
-    return [!debouncedName ? undefined : namehash(debouncedName)];
+  var ensNodeArgument = React.useMemo(function () {
+    return [!debouncedName ? undefined : utils$1.namehash(debouncedName)];
   }, [debouncedName]);
   var registrarContract = useENSRegistrarContract(false);
   var resolverAddress = useSingleCallResult(registrarContract, 'resolver', ensNodeArgument);
@@ -7746,7 +7797,7 @@ function useENSAddress(ensName) {
   var resolverContract = useENSResolverContract(resolverAddressResult && !isZero(resolverAddressResult) ? resolverAddressResult : undefined, false);
   var addr = useSingleCallResult(resolverContract, 'addr', ensNodeArgument);
   var changed = debouncedName !== ensName;
-  return useMemo(function () {
+  return React.useMemo(function () {
     var _addr$result$, _addr$result;
     return {
       address: changed ? null : (_addr$result$ = (_addr$result = addr.result) === null || _addr$result === void 0 ? void 0 : _addr$result[0]) !== null && _addr$result$ !== void 0 ? _addr$result$ : null,
@@ -7776,18 +7827,18 @@ function useGasPrice() {
     address = _useENSAddress.address;
   var contract = useContract(address !== null && address !== void 0 ? address : undefined, CHAIN_DATA_ABI, false);
   var resultStr = (_useSingleCallResult$ = useSingleCallResult(contract, 'latestAnswer').result) === null || _useSingleCallResult$ === void 0 ? void 0 : (_useSingleCallResult$2 = _useSingleCallResult$[0]) === null || _useSingleCallResult$2 === void 0 ? void 0 : _useSingleCallResult$2.toString();
-  return useMemo(function () {
-    return typeof resultStr === 'string' ? JSBI.BigInt(resultStr) : undefined;
+  return React.useMemo(function () {
+    return typeof resultStr === 'string' ? JSBI__default["default"].BigInt(resultStr) : undefined;
   }, [resultStr]);
 }
 
-function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$2(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$2(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$2(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen); }
 function _arrayLikeToArray$2(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-var V3_SWAP_DEFAULT_SLIPPAGE = new Percent(50, 10000); // .50%
-var ONE_TENTHS_PERCENT = new Percent(10, 10000); // .10%
+var V3_SWAP_DEFAULT_SLIPPAGE = new sdkCore.Percent(50, 10000); // .50%
+var ONE_TENTHS_PERCENT = new sdkCore.Percent(10, 10000); // .10%
 var DEFAULT_AUTO_SLIPPAGE = ONE_TENTHS_PERCENT;
-var GAS_ESTIMATE_BUFFER = new Percent(10, 100); // 10%
+var GAS_ESTIMATE_BUFFER = new sdkCore.Percent(10, 100); // 10%
 
 // Base costs regardless of how many hops in the route
 var V3_SWAP_BASE_GAS_ESTIMATE = 100000;
@@ -7814,21 +7865,21 @@ function guesstimateGas(trade) {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var route = _step.value.route;
-        if (route.protocol === Protocol.V2) {
+        if (route.protocol === routerSdk.Protocol.V2) {
           gas += V2_SWAP_BASE_GAS_ESTIMATE + route.pools.length * V2_SWAP_HOP_GAS_ESTIMATE;
-        } else if (route.protocol === Protocol.V3) {
+        } else if (route.protocol === routerSdk.Protocol.V3) {
           // V3 gas costs scale on initialized ticks being crossed, but we don't have that data here.
           // We bake in some tick crossings into the base 100k cost.
           gas += V3_SWAP_BASE_GAS_ESTIMATE + route.pools.length * V3_SWAP_HOP_GAS_ESTIMATE;
-        } else if (route.protocol === Protocol.MIXED) {
-          var sections = partitionMixedRouteByProtocol(route);
+        } else if (route.protocol === routerSdk.Protocol.MIXED) {
+          var sections = routerSdk.partitionMixedRouteByProtocol(route);
           gas += sections.reduce(function (gas, section) {
             if (section.every(function (pool) {
-              return pool instanceof Pool$1;
+              return pool instanceof v3Sdk.Pool;
             })) {
               return gas + V3_SWAP_BASE_GAS_ESTIMATE + section.length * V3_SWAP_HOP_GAS_ESTIMATE;
             } else if (section.every(function (pool) {
-              return pool instanceof Pair;
+              return pool instanceof v2Sdk.Pair;
             })) {
               return gas + V2_SWAP_BASE_GAS_ESTIMATE + (section.length - 1) * V2_SWAP_HOP_GAS_ESTIMATE;
             } else {
@@ -7850,8 +7901,8 @@ function guesstimateGas(trade) {
   }
   return undefined;
 }
-var MIN_AUTO_SLIPPAGE_TOLERANCE = new Percent(5, 1000); // 0.5%
-var MAX_AUTO_SLIPPAGE_TOLERANCE = new Percent(25, 100); // 25%
+var MIN_AUTO_SLIPPAGE_TOLERANCE = new sdkCore.Percent(5, 1000); // 0.5%
+var MAX_AUTO_SLIPPAGE_TOLERANCE = new sdkCore.Percent(25, 100); // 25%
 
 /**
  * Returns slippage tolerance based on values from current trade, gas estimates from api, and active network.
@@ -7861,7 +7912,7 @@ function useAutoSlippageTolerance() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
     trade = _ref.trade,
     gasUseEstimateUSD = _ref.gasUseEstimateUSD;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var onL2 = chainId && L2_CHAIN_IDS.includes(chainId);
   var outputDollarValue = useUSDCValue(trade === null || trade === void 0 ? void 0 : trade.outputAmount);
@@ -7869,10 +7920,10 @@ function useAutoSlippageTolerance() {
   var gasEstimate = guesstimateGas(trade);
   var nativeCurrency = useNativeCurrency();
   var nativeCurrencyPrice = useUSDCPrice((_ref2 = trade && nativeCurrency) !== null && _ref2 !== void 0 ? _ref2 : undefined);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!trade || onL2) return DEFAULT_AUTO_SLIPPAGE;
-    var nativeGasCost = nativeGasPrice && typeof gasEstimate === 'number' ? JSBI.multiply(nativeGasPrice, JSBI.BigInt(gasEstimate)) : undefined;
-    var dollarGasCost = nativeCurrency && nativeGasCost && nativeCurrencyPrice ? nativeCurrencyPrice.quote(CurrencyAmount.fromRawAmount(nativeCurrency, nativeGasCost)) : undefined;
+    var nativeGasCost = nativeGasPrice && typeof gasEstimate === 'number' ? JSBI__default["default"].multiply(nativeGasPrice, JSBI__default["default"].BigInt(gasEstimate)) : undefined;
+    var dollarGasCost = nativeCurrency && nativeGasCost && nativeCurrencyPrice ? nativeCurrencyPrice.quote(sdkCore.CurrencyAmount.fromRawAmount(nativeCurrency, nativeGasCost)) : undefined;
 
     // if valid estimate from api and using api trade, use gas estimate from api
     // NOTE - dont use gas estimate for L2s yet - need to verify accuracy
@@ -7882,7 +7933,7 @@ function useAutoSlippageTolerance() {
       // the rationale is that a user will not want their trade to fail for a loss due to slippage that is less than
       // the cost of the gas of the failed transaction
       var fraction = dollarCostToUse.asFraction.divide(outputDollarValue.asFraction);
-      var result = new Percent(fraction.numerator, fraction.denominator);
+      var result = new sdkCore.Percent(fraction.numerator, fraction.denominator);
       if (result.greaterThan(MAX_AUTO_SLIPPAGE_TOLERANCE)) {
         return MAX_AUTO_SLIPPAGE_TOLERANCE;
       }
@@ -7899,7 +7950,7 @@ function toPercent(maxSlippage) {
   if (!maxSlippage) return undefined;
   if (Number.isNaN(maxSlippage)) return undefined;
   var numerator = Math.floor(Number(maxSlippage) * 100);
-  return new Percent(numerator, 10000);
+  return new sdkCore.Percent(numerator, 10000);
 }
 var DEFAULT_SLIPPAGE = {
   auto: true,
@@ -7908,12 +7959,12 @@ var DEFAULT_SLIPPAGE = {
 
 /** Returns the allowed slippage, and whether it is auto-slippage. */
 function useSlippage(trade) {
-  var slippage = useAtomValue(slippageAtom);
+  var slippage = utils.useAtomValue(slippageAtom);
   var autoSlippage = useAutoSlippageTolerance(slippage.auto ? trade : undefined);
-  var maxSlippage = useMemo(function () {
+  var maxSlippage = React.useMemo(function () {
     return toPercent(slippage.max);
   }, [slippage.max]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     var auto = slippage.auto || !slippage.max;
     var allowed = slippage.auto ? autoSlippage : maxSlippage !== null && maxSlippage !== void 0 ? maxSlippage : autoSlippage;
     var warning = auto ? undefined : getSlippageWarning(allowed);
@@ -7927,26 +7978,26 @@ function useSlippage(trade) {
     };
   }, [autoSlippage, maxSlippage, slippage]);
 }
-var MAX_VALID_SLIPPAGE = new Percent(1, 2);
-var MIN_HIGH_SLIPPAGE = new Percent(1, 100);
+var MAX_VALID_SLIPPAGE = new sdkCore.Percent(1, 2);
+var MIN_HIGH_SLIPPAGE = new sdkCore.Percent(1, 100);
 function getSlippageWarning(slippage) {
   if (slippage !== null && slippage !== void 0 && slippage.greaterThan(MAX_VALID_SLIPPAGE)) return 'error';
   if (slippage !== null && slippage !== void 0 && slippage.greaterThan(MIN_HIGH_SLIPPAGE)) return 'warning';
   return;
 }
 function formatSlippage(slippage) {
-  return formatPriceImpact(slippage.allowed);
+  return format.formatPriceImpact(slippage.allowed);
 }
 
 // Flags are sticky settings - they cannot be changed without remounting the Widget.
 
-var flagsAtom = atom({});
+var flagsAtom = jotai.atom({});
 function useInitialFlags(_ref) {
   var brandedFooter = _ref.brandedFooter,
     permit2 = _ref.permit2;
   // Only grab the initial flags on mount - ignore exhaustive-deps.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  return useMemo(function () {
+  return React.useMemo(function () {
     return [[flagsAtom, {
       brandedFooter: brandedFooter,
       permit2: permit2
@@ -7955,18 +8006,18 @@ function useInitialFlags(_ref) {
 }
 function useBrandedFooter() {
   var _useAtomValue$branded;
-  return (_useAtomValue$branded = useAtomValue(flagsAtom).brandedFooter) !== null && _useAtomValue$branded !== void 0 ? _useAtomValue$branded : true;
+  return (_useAtomValue$branded = utils.useAtomValue(flagsAtom).brandedFooter) !== null && _useAtomValue$branded !== void 0 ? _useAtomValue$branded : true;
 }
 function usePermit2() {
   var _useAtomValue$permit;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var permit2 = (_useAtomValue$permit = useAtomValue(flagsAtom).permit2) !== null && _useAtomValue$permit !== void 0 ? _useAtomValue$permit : false;
+  var permit2 = (_useAtomValue$permit = utils.useAtomValue(flagsAtom).permit2) !== null && _useAtomValue$permit !== void 0 ? _useAtomValue$permit : false;
   try {
     // Detect if the Universal Router is not yet deployed to chainId.
     // This is necessary so that we can fallback correctly on chains without a Universal Router deployment.
     // It will be removed once Universal Router is deployed on all supported chains.
-    chainId && UNIVERSAL_ROUTER_ADDRESS(chainId);
+    chainId && universalRouterSdk.UNIVERSAL_ROUTER_ADDRESS(chainId);
     return permit2;
   } catch (_unused) {
     return false;
@@ -7975,19 +8026,19 @@ function usePermit2() {
 
 function useIsArgentWallet() {
   var _call$result;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var argentWalletDetector = useArgentWalletDetectorContract();
-  var inputs = useMemo(function () {
+  var inputs = React.useMemo(function () {
     return [account !== null && account !== void 0 ? account : undefined];
   }, [account]);
-  var call = useSingleCallResult(argentWalletDetector, 'isArgentWallet', inputs, NEVER_RELOAD);
+  var call = useSingleCallResult(argentWalletDetector, 'isArgentWallet', inputs, reduxMulticall.NEVER_RELOAD);
   return Boolean(call === null || call === void 0 ? void 0 : (_call$result = call.result) === null || _call$result === void 0 ? void 0 : _call$result[0]);
 }
 
 var _SupportedChainId$MAI$1, _SupportedChainId$ROP, _PERMITTABLE_TOKENS;
 function ownKeys$c(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$c(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$c(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$c(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var PermitType = /*#__PURE__*/function (PermitType) {
   PermitType[PermitType["AMOUNT"] = 1] = "AMOUNT";
   PermitType[PermitType["ALLOWED"] = 2] = "ALLOWED";
@@ -7997,18 +8048,18 @@ var PermitType = /*#__PURE__*/function (PermitType) {
 // 20 minutes to submit after signing
 var PERMIT_VALIDITY_BUFFER = 20 * 60;
 // todo: read this information from extensions on token lists or elsewhere (permit registry?)
-var PERMITTABLE_TOKENS = (_PERMITTABLE_TOKENS = {}, _defineProperty(_PERMITTABLE_TOKENS, SupportedChainId.MAINNET, (_SupportedChainId$MAI$1 = {}, _defineProperty(_SupportedChainId$MAI$1, USDC_MAINNET.address, {
+var PERMITTABLE_TOKENS = (_PERMITTABLE_TOKENS = {}, _defineProperty__default["default"](_PERMITTABLE_TOKENS, SupportedChainId.MAINNET, (_SupportedChainId$MAI$1 = {}, _defineProperty__default["default"](_SupportedChainId$MAI$1, USDC_MAINNET.address, {
   type: PermitType.AMOUNT,
   name: 'USD Coin',
   version: '2'
-}), _defineProperty(_SupportedChainId$MAI$1, DAI.address, {
+}), _defineProperty__default["default"](_SupportedChainId$MAI$1, DAI.address, {
   type: PermitType.ALLOWED,
   name: 'Dai Stablecoin',
   version: '1'
-}), _defineProperty(_SupportedChainId$MAI$1, UNI[SupportedChainId.MAINNET].address, {
+}), _defineProperty__default["default"](_SupportedChainId$MAI$1, UNI[SupportedChainId.MAINNET].address, {
   type: PermitType.AMOUNT,
   name: 'Uniswap'
-}), _SupportedChainId$MAI$1)), _defineProperty(_PERMITTABLE_TOKENS, SupportedChainId.RINKEBY, _defineProperty({
+}), _SupportedChainId$MAI$1)), _defineProperty__default["default"](_PERMITTABLE_TOKENS, SupportedChainId.RINKEBY, _defineProperty__default["default"]({
   '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735': {
     type: PermitType.ALLOWED,
     name: 'Dai Stablecoin',
@@ -8017,17 +8068,17 @@ var PERMITTABLE_TOKENS = (_PERMITTABLE_TOKENS = {}, _defineProperty(_PERMITTABLE
 }, UNI[SupportedChainId.RINKEBY].address, {
   type: PermitType.AMOUNT,
   name: 'Uniswap'
-})), _defineProperty(_PERMITTABLE_TOKENS, SupportedChainId.ROPSTEN, (_SupportedChainId$ROP = {}, _defineProperty(_SupportedChainId$ROP, UNI[SupportedChainId.ROPSTEN].address, {
+})), _defineProperty__default["default"](_PERMITTABLE_TOKENS, SupportedChainId.ROPSTEN, (_SupportedChainId$ROP = {}, _defineProperty__default["default"](_SupportedChainId$ROP, UNI[SupportedChainId.ROPSTEN].address, {
   type: PermitType.AMOUNT,
   name: 'Uniswap'
-}), _defineProperty(_SupportedChainId$ROP, '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', {
+}), _defineProperty__default["default"](_SupportedChainId$ROP, '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', {
   type: PermitType.AMOUNT,
   name: 'USD Coin',
   version: '2'
-}), _SupportedChainId$ROP)), _defineProperty(_PERMITTABLE_TOKENS, SupportedChainId.GOERLI, _defineProperty({}, UNI[SupportedChainId.GOERLI].address, {
+}), _SupportedChainId$ROP)), _defineProperty__default["default"](_PERMITTABLE_TOKENS, SupportedChainId.GOERLI, _defineProperty__default["default"]({}, UNI[SupportedChainId.GOERLI].address, {
   type: PermitType.AMOUNT,
   name: 'Uniswap'
-})), _defineProperty(_PERMITTABLE_TOKENS, SupportedChainId.KOVAN, _defineProperty({}, UNI[SupportedChainId.KOVAN].address, {
+})), _defineProperty__default["default"](_PERMITTABLE_TOKENS, SupportedChainId.KOVAN, _defineProperty__default["default"]({}, UNI[SupportedChainId.KOVAN].address, {
   type: PermitType.AMOUNT,
   name: 'Uniswap'
 })), _PERMITTABLE_TOKENS);
@@ -8095,23 +8146,23 @@ var PERMIT_ALLOWED_TYPE = [{
 }];
 function usePermit(currencyAmount, spender, transactionDeadline, overridePermitInfo) {
   var _currencyAmount$curre, _PERMITTABLE_TOKENS$c;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
   var tokenAddress = currencyAmount !== null && currencyAmount !== void 0 && (_currencyAmount$curre = currencyAmount.currency) !== null && _currencyAmount$curre !== void 0 && _currencyAmount$curre.isToken ? currencyAmount.currency.address : undefined;
   var eip2612Contract = useEIP2612Contract(tokenAddress);
   var isArgentWallet = useIsArgentWallet();
-  var nonceInputs = useMemo(function () {
+  var nonceInputs = React.useMemo(function () {
     return [account !== null && account !== void 0 ? account : undefined];
   }, [account]);
   var tokenNonceState = useSingleCallResult(eip2612Contract, 'nonces', nonceInputs);
   var permitInfo = overridePermitInfo !== null && overridePermitInfo !== void 0 ? overridePermitInfo : chainId && tokenAddress ? (_PERMITTABLE_TOKENS$c = PERMITTABLE_TOKENS[chainId]) === null || _PERMITTABLE_TOKENS$c === void 0 ? void 0 : _PERMITTABLE_TOKENS$c[tokenAddress] : undefined;
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     signatureData = _useState2[0],
     setSignatureData = _useState2[1];
-  return useMemo(function () {
+  return React.useMemo(function () {
     var _tokenNonceState$resu, _tokenNonceState$resu2;
     if (isArgentWallet || !currencyAmount || !eip2612Contract || !account || !chainId || !transactionDeadline || !provider || !tokenNonceState.valid || !tokenAddress || !spender || !permitInfo) {
       return {
@@ -8124,14 +8175,14 @@ function usePermit(currencyAmount, spender, transactionDeadline, overridePermitI
         state: PermitState.LOADING
       };
     }
-    var isSignatureDataValid = signatureData && signatureData.owner === account && signatureData.deadline >= transactionDeadline.toNumber() && signatureData.tokenAddress === tokenAddress && signatureData.nonce === nonceNumber && signatureData.spender === spender && ('allowed' in signatureData || JSBI.greaterThanOrEqual(JSBI.BigInt(signatureData.amount), currencyAmount.quotient));
+    var isSignatureDataValid = signatureData && signatureData.owner === account && signatureData.deadline >= transactionDeadline.toNumber() && signatureData.tokenAddress === tokenAddress && signatureData.nonce === nonceNumber && signatureData.spender === spender && ('allowed' in signatureData || JSBI__default["default"].greaterThanOrEqual(JSBI__default["default"].BigInt(signatureData.amount), currencyAmount.quotient));
     return {
       state: isSignatureDataValid ? PermitState.SIGNED : PermitState.NOT_SIGNED,
       signatureData: isSignatureDataValid ? signatureData : undefined,
       sign: function () {
-        var _sign = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+        var _sign = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
           var allowed, signatureDeadline, value, message, domain, data;
-          return _regeneratorRuntime.wrap(function _callee$(_context) {
+          return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 allowed = permitInfo.type === PermitType.ALLOWED;
@@ -8169,7 +8220,7 @@ function usePermit(currencyAmount, spender, transactionDeadline, overridePermitI
                   primaryType: 'Permit',
                   message: message
                 });
-                return _context.abrupt("return", provider.send('eth_signTypedData_v4', [account, data]).then(splitSignature).then(function (signature) {
+                return _context.abrupt("return", provider.send('eth_signTypedData_v4', [account, data]).then(bytes.splitSignature).then(function (signature) {
                   setSignatureData(_objectSpread$c(_objectSpread$c({
                     v: signature.v,
                     r: signature.r,
@@ -8208,14 +8259,14 @@ function useCurrentBlockTimestamp() {
   var _useSingleCallResult, _useSingleCallResult$, _useSingleCallResult$2;
   var multicall = useInterfaceMulticall();
   var resultStr = (_useSingleCallResult = useSingleCallResult(multicall, 'getCurrentBlockTimestamp')) === null || _useSingleCallResult === void 0 ? void 0 : (_useSingleCallResult$ = _useSingleCallResult.result) === null || _useSingleCallResult$ === void 0 ? void 0 : (_useSingleCallResult$2 = _useSingleCallResult$[0]) === null || _useSingleCallResult$2 === void 0 ? void 0 : _useSingleCallResult$2.toString();
-  return useMemo(function () {
-    return typeof resultStr === 'string' ? BigNumber.from(resultStr) : undefined;
+  return React.useMemo(function () {
+    return typeof resultStr === 'string' ? bignumber.BigNumber.from(resultStr) : undefined;
   }, [resultStr]);
 }
 
 /** Returns the default transaction TTL for the chain, in minutes. */
 function useDefaultTransactionTtl() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   if (chainId && L2_CHAIN_IDS.includes(chainId)) return L2_DEADLINE_FROM_NOW / 60;
   return DEFAULT_DEADLINE_FROM_NOW / 60;
@@ -8223,13 +8274,13 @@ function useDefaultTransactionTtl() {
 
 /** Returns the user-inputted transaction TTL, in minutes. */
 function useTransactionTtl() {
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onTransactionDeadlineChange = _useAtomValue.onTransactionDeadlineChange;
-  var _useAtom = useAtom(transactionTtlAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(transactionTtlAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     ttl = _useAtom2[0],
     setTtlBase = _useAtom2[1];
-  var setTtl = useCallback(function (ttl) {
+  var setTtl = React.useCallback(function (ttl) {
     onTransactionDeadlineChange === null || onTransactionDeadlineChange === void 0 ? void 0 : onTransactionDeadlineChange(ttl);
     setTtlBase(ttl);
   }, [onTransactionDeadlineChange, setTtlBase]);
@@ -8239,11 +8290,11 @@ function useTransactionTtl() {
 // combines the block timestamp with the user setting to give the deadline that should be used for any submitted transaction
 function useTransactionDeadline() {
   var _useTransactionTtl = useTransactionTtl(),
-    _useTransactionTtl2 = _slicedToArray(_useTransactionTtl, 1),
+    _useTransactionTtl2 = _slicedToArray__default["default"](_useTransactionTtl, 1),
     ttl = _useTransactionTtl2[0];
   var defaultTtl = useDefaultTransactionTtl();
   var blockTimestamp = useCurrentBlockTimestamp();
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!blockTimestamp) return undefined;
     return blockTimestamp.add((ttl || defaultTtl /* in seconds */) * 60);
   }, [blockTimestamp, defaultTtl, ttl]);
@@ -8258,13 +8309,13 @@ var ApprovalState = /*#__PURE__*/function (ApprovalState) {
 }({});
 function useApprovalStateForSpender(amountToApprove, spender, useIsPendingApproval) {
   var _amountToApprove$curr;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var token = amountToApprove !== null && amountToApprove !== void 0 && (_amountToApprove$curr = amountToApprove.currency) !== null && _amountToApprove$curr !== void 0 && _amountToApprove$curr.isToken ? amountToApprove.currency : undefined;
   var _useTokenAllowance = useTokenAllowance(token, account !== null && account !== void 0 ? account : undefined, spender),
     tokenAllowance = _useTokenAllowance.tokenAllowance;
   var pendingApproval = useIsPendingApproval(token, spender);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN;
     if (amountToApprove.currency.isNative) return ApprovalState.APPROVED;
     // we might not have enough data to know whether or not we need to approve
@@ -8276,16 +8327,16 @@ function useApprovalStateForSpender(amountToApprove, spender, useIsPendingApprov
 }
 function useApproval(amountToApprove, spender, useIsPendingApproval) {
   var _amountToApprove$curr2;
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     chainId = _useWeb3React2.chainId;
   var token = amountToApprove !== null && amountToApprove !== void 0 && (_amountToApprove$curr2 = amountToApprove.currency) !== null && _amountToApprove$curr2 !== void 0 && _amountToApprove$curr2.isToken ? amountToApprove.currency : undefined;
 
   // check the current approval status
   var approvalState = useApprovalStateForSpender(amountToApprove, spender, useIsPendingApproval);
   var tokenContract = useTokenContract(token === null || token === void 0 ? void 0 : token.address);
-  var approve = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var approve = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
     var logFailure, useExact, estimatedGas;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           logFailure = function _logFailure(error) {
@@ -8330,14 +8381,14 @@ function useApproval(amountToApprove, spender, useIsPendingApproval) {
         case 23:
           useExact = false;
           _context.next = 26;
-          return tokenContract.estimateGas.approve(spender, MaxUint256$1)["catch"](function () {
+          return tokenContract.estimateGas.approve(spender, constants.MaxUint256).catch(function () {
             // general fallback for tokens which restrict approval amounts
             useExact = true;
             return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString());
           });
         case 26:
           estimatedGas = _context.sent;
-          return _context.abrupt("return", tokenContract.approve(spender, useExact ? amountToApprove.quotient.toString() : MaxUint256$1, {
+          return _context.abrupt("return", tokenContract.approve(spender, useExact ? amountToApprove.quotient.toString() : constants.MaxUint256, {
             gasLimit: calculateGasMargin(estimatedGas)
           }).then(function (response) {
             return {
@@ -8345,7 +8396,7 @@ function useApproval(amountToApprove, spender, useIsPendingApproval) {
               tokenAddress: token.address,
               spenderAddress: spender
             };
-          })["catch"](function (error) {
+          }).catch(function (error) {
             logFailure(error);
             throw error;
           }));
@@ -8371,14 +8422,14 @@ var SwapApprovalState = /*#__PURE__*/function (SwapApprovalState) {
  * Considers both standard approval and ERC20 permit.
  */
 function useSwapApproval(amount) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var deadline = useTransactionDeadline();
   var spender = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined;
 
   // Check EIP-20 approval.
   var _useApproval = useApproval(amount, spender, useIsPendingApproval),
-    _useApproval2 = _slicedToArray(_useApproval, 2),
+    _useApproval2 = _slicedToArray__default["default"](_useApproval, 2),
     approval = _useApproval2[0],
     approve = _useApproval2[1];
 
@@ -8389,12 +8440,12 @@ function useSwapApproval(amount) {
     sign = _usePermit.sign;
 
   // If permit is supported, sign a permit; if not, submit an approval.
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onSwapApprove = _useAtomValue.onSwapApprove;
-  var approveOrSign = useMemo(function () {
+  var approveOrSign = React.useMemo(function () {
     if (approval !== ApprovalState.NOT_APPROVED && permitState !== PermitState.NOT_SIGNED) return;
-    return /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
@@ -8439,7 +8490,7 @@ function useSwapApproval(amount) {
       }, _callee, null, [[0, 18], [2, 7]]);
     }));
   }, [approval, approve, onSwapApprove, permitState, sign]);
-  var state = useMemo(function () {
+  var state = React.useMemo(function () {
     if (approval === ApprovalState.PENDING) {
       return SwapApprovalState.PENDING_APPROVAL;
     } else if (permitState === PermitState.LOADING) {
@@ -8460,12 +8511,12 @@ function useSwapApproval(amount) {
 }
 
 function useWrapType() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var _useAtomValue = useAtomValue(swapAtom),
+  var _useAtomValue = utils.useAtomValue(swapAtom),
     inputCurrency = _useAtomValue[Field.INPUT],
     outputCurrency = _useAtomValue[Field.OUTPUT];
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (chainId && inputCurrency && outputCurrency) {
       var _WRAPPED_NATIVE_CURRE, _WRAPPED_NATIVE_CURRE2;
       if (inputCurrency.isNative && (_WRAPPED_NATIVE_CURRE = WRAPPED_NATIVE_CURRENCY[chainId]) !== null && _WRAPPED_NATIVE_CURRE !== void 0 && _WRAPPED_NATIVE_CURRE.equals(outputCurrency)) {
@@ -8483,16 +8534,16 @@ function useIsWrap() {
 }
 function useWrapCallback() {
   var wrappedNativeCurrencyContract = useWETHContract();
-  var _useAtomValue2 = useAtomValue(swapAtom),
+  var _useAtomValue2 = utils.useAtomValue(swapAtom),
     amount = _useAtomValue2.amount,
     inputCurrency = _useAtomValue2[Field.INPUT];
   var wrapType = useWrapType();
-  var parsedAmountIn = useMemo(function () {
+  var parsedAmountIn = React.useMemo(function () {
     return tryParseCurrencyAmount(amount, inputCurrency !== null && inputCurrency !== void 0 ? inputCurrency : undefined);
   }, [inputCurrency, amount]);
-  var wrapCallback = useCallback(function () {
-    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var wrapCallback = React.useCallback(function () {
+    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (parsedAmountIn) {
@@ -8556,13 +8607,13 @@ function useWrapCallback() {
       });
     });
   }, [parsedAmountIn, wrappedNativeCurrencyContract, wrapType]);
-  var args = useMemo(function () {
+  var args = React.useMemo(function () {
     return parsedAmountIn && {
       amount: parsedAmountIn
     };
   }, [parsedAmountIn]);
   var callback = usePerfEventHandler('onWrapSend', args, wrapCallback);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       callback: callback,
       type: wrapType
@@ -8582,13 +8633,13 @@ var ChainError = /*#__PURE__*/function (ChainError) {
 /** Returns the best computed swap (trade/wrap). */
 function useComputeSwapInfo() {
   var _trade$trade3, _trade$trade4;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     isActivating = _useWeb3React.isActivating,
     isActive = _useWeb3React.isActive;
   var isSupported = useOnSupportedNetwork();
-  var _useAtomValue = useAtomValue(swapAtom),
+  var _useAtomValue = utils.useAtomValue(swapAtom),
     type = _useAtomValue.type,
     amount = _useAtomValue.amount,
     currencyIn = _useAtomValue[Field.INPUT],
@@ -8597,18 +8648,18 @@ function useComputeSwapInfo() {
   var chainIdIn = currencyIn === null || currencyIn === void 0 ? void 0 : currencyIn.chainId;
   var chainIdOut = currencyOut === null || currencyOut === void 0 ? void 0 : currencyOut.chainId;
   var tokenChainId = chainIdIn || chainIdOut;
-  var error = useMemo(function () {
+  var error = React.useMemo(function () {
     if (!isActive) return isActivating ? ChainError.ACTIVATING_CHAIN : ChainError.UNCONNECTED_CHAIN;
     if (!isSupported) return ChainError.UNSUPPORTED_CHAIN;
     if (chainIdIn && chainIdOut && chainIdIn !== chainIdOut) return ChainError.MISMATCHED_TOKEN_CHAINS;
     if (chainId && tokenChainId && chainId !== tokenChainId) return ChainError.MISMATCHED_CHAINS;
     return;
   }, [chainId, chainIdIn, chainIdOut, isActivating, isActive, isSupported, tokenChainId]);
-  var parsedAmount = useMemo(function () {
+  var parsedAmount = React.useMemo(function () {
     return tryParseCurrencyAmount(amount, isExactInput(type) ? currencyIn : currencyOut);
   }, [amount, currencyIn, currencyOut, type]);
-  var _useAtom = useAtom(routerPreferenceAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 1),
+  var _useAtom = jotai.useAtom(routerPreferenceAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 1),
     routerPreference = _useAtom2[0];
   var trade = useRouterTrade(type, parsedAmount, currencyIn, currencyOut, isWrap || error ? {
     type: QuoteType.SKIP
@@ -8618,21 +8669,21 @@ function useComputeSwapInfo() {
   });
 
   // Use the parsed amount when applicable (exact amounts and wraps) immediately responsive UI.
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       var _trade$trade, _trade$trade2;
       if (isWrap) {
         return isExactInput(type) ? [parsedAmount, tryParseCurrencyAmount(amount, currencyOut)] : [tryParseCurrencyAmount(amount, currencyIn), parsedAmount];
       }
       return isExactInput(type) ? [parsedAmount, (_trade$trade = trade.trade) === null || _trade$trade === void 0 ? void 0 : _trade$trade.outputAmount] : [(_trade$trade2 = trade.trade) === null || _trade$trade2 === void 0 ? void 0 : _trade$trade2.inputAmount, parsedAmount];
     }, [amount, currencyIn, currencyOut, isWrap, parsedAmount, (_trade$trade3 = trade.trade) === null || _trade$trade3 === void 0 ? void 0 : _trade$trade3.inputAmount, (_trade$trade4 = trade.trade) === null || _trade$trade4 === void 0 ? void 0 : _trade$trade4.outputAmount, type]),
-    _useMemo2 = _slicedToArray(_useMemo, 2),
+    _useMemo2 = _slicedToArray__default["default"](_useMemo, 2),
     amountIn = _useMemo2[0],
     amountOut = _useMemo2[1];
-  var currencies = useMemo(function () {
+  var currencies = React.useMemo(function () {
     return [currencyIn, currencyOut];
   }, [currencyIn, currencyOut]);
   var _useCurrencyBalances = useCurrencyBalances(account, currencies),
-    _useCurrencyBalances2 = _slicedToArray(_useCurrencyBalances, 2),
+    _useCurrencyBalances2 = _slicedToArray__default["default"](_useCurrencyBalances, 2),
     balanceIn = _useCurrencyBalances2[0],
     balanceOut = _useCurrencyBalances2[1];
   var _ref = [useUSDCValue(amountIn), useUSDCValue(amountOut)],
@@ -8648,68 +8699,68 @@ function useComputeSwapInfo() {
   var impact = usePriceImpact(trade.trade);
   var fiatValueChange = useFiatValueChange(trade.trade);
   var permit2Enabled = usePermit2();
-  var maximumAmountIn = useMemo(function () {
+  var maximumAmountIn = React.useMemo(function () {
     var _trade$trade5;
     var maximumAmountIn = (_trade$trade5 = trade.trade) === null || _trade$trade5 === void 0 ? void 0 : _trade$trade5.maximumAmountIn(slippage.allowed);
     return maximumAmountIn !== null && maximumAmountIn !== void 0 && maximumAmountIn.currency.isToken ? maximumAmountIn : undefined;
   }, [slippage.allowed, trade.trade]);
   var approval = useSwapApproval(permit2Enabled ? undefined : maximumAmountIn);
-  var allowance = usePermit2Allowance(permit2Enabled ? maximumAmountIn : undefined, permit2Enabled && chainId ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined);
-  return useMemo(function () {
+  var allowance = usePermit2Allowance(permit2Enabled ? maximumAmountIn : undefined, permit2Enabled && chainId ? universalRouterSdk.UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined);
+  return React.useMemo(function () {
     var _ref2;
-    return _ref2 = {}, _defineProperty(_ref2, Field.INPUT, {
+    return _ref2 = {}, _defineProperty__default["default"](_ref2, Field.INPUT, {
       currency: currencyIn,
       amount: amountIn,
       balance: balanceIn,
       usdc: usdcIn
-    }), _defineProperty(_ref2, Field.OUTPUT, {
+    }), _defineProperty__default["default"](_ref2, Field.OUTPUT, {
       currency: currencyOut,
       amount: amountOut,
       balance: balanceOut,
       usdc: usdcOut
-    }), _defineProperty(_ref2, "error", error), _defineProperty(_ref2, "trade", trade), _defineProperty(_ref2, "approval", approval), _defineProperty(_ref2, "allowance", allowance), _defineProperty(_ref2, "slippage", slippage), _defineProperty(_ref2, "impact", impact), _defineProperty(_ref2, "fiatValueChange", fiatValueChange), _ref2;
+    }), _defineProperty__default["default"](_ref2, "error", error), _defineProperty__default["default"](_ref2, "trade", trade), _defineProperty__default["default"](_ref2, "approval", approval), _defineProperty__default["default"](_ref2, "allowance", allowance), _defineProperty__default["default"](_ref2, "slippage", slippage), _defineProperty__default["default"](_ref2, "impact", impact), _defineProperty__default["default"](_ref2, "fiatValueChange", fiatValueChange), _ref2;
   }, [allowance, amountIn, amountOut, approval, balanceIn, balanceOut, currencyIn, currencyOut, error, fiatValueChange, impact, slippage, trade, usdcIn, usdcOut]);
 }
-var DEFAULT_SWAP_INFO = (_DEFAULT_SWAP_INFO = {}, _defineProperty(_DEFAULT_SWAP_INFO, Field.INPUT, {}), _defineProperty(_DEFAULT_SWAP_INFO, Field.OUTPUT, {}), _defineProperty(_DEFAULT_SWAP_INFO, "error", ChainError.UNCONNECTED_CHAIN), _defineProperty(_DEFAULT_SWAP_INFO, "trade", {
+var DEFAULT_SWAP_INFO = (_DEFAULT_SWAP_INFO = {}, _defineProperty__default["default"](_DEFAULT_SWAP_INFO, Field.INPUT, {}), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, Field.OUTPUT, {}), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, "error", ChainError.UNCONNECTED_CHAIN), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, "trade", {
   state: TradeState.INVALID,
   trade: undefined
-}), _defineProperty(_DEFAULT_SWAP_INFO, "approval", {
+}), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, "approval", {
   state: SwapApprovalState.APPROVED
-}), _defineProperty(_DEFAULT_SWAP_INFO, "allowance", {
+}), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, "allowance", {
   state: AllowanceState.LOADING
-}), _defineProperty(_DEFAULT_SWAP_INFO, "slippage", DEFAULT_SLIPPAGE), _DEFAULT_SWAP_INFO);
-var SwapInfoContext = /*#__PURE__*/createContext(DEFAULT_SWAP_INFO);
+}), _defineProperty__default["default"](_DEFAULT_SWAP_INFO, "slippage", DEFAULT_SLIPPAGE), _DEFAULT_SWAP_INFO);
+var SwapInfoContext = /*#__PURE__*/React.createContext(DEFAULT_SWAP_INFO);
 function SwapInfoProvider(_ref3) {
   var children = _ref3.children;
   var swapInfo = useComputeSwapInfo();
-  var swap = useAtomValue(swapAtom);
-  var lastQuotedSwap = useRef(null);
-  var _useAtomValue2 = useAtomValue(swapEventHandlersAtom),
+  var swap = utils.useAtomValue(swapAtom);
+  var lastQuotedSwap = React.useRef(null);
+  var _useAtomValue2 = utils.useAtomValue(swapEventHandlersAtom),
     onInitialSwapQuote = _useAtomValue2.onInitialSwapQuote;
-  useEffect(function () {
+  React.useEffect(function () {
     if (swap === lastQuotedSwap.current) return;
     if (swapInfo.trade.state === TradeState.VALID && swapInfo.trade.trade) {
       lastQuotedSwap.current = swap;
       onInitialSwapQuote === null || onInitialSwapQuote === void 0 ? void 0 : onInitialSwapQuote(swapInfo.trade.trade);
     }
   }, [onInitialSwapQuote, swap, swapInfo.trade.state, swapInfo.trade.trade]);
-  return /*#__PURE__*/React.createElement(SwapInfoContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(SwapInfoContext.Provider, {
     value: swapInfo
   }, children);
 }
 
 /** Requires that SwapInfoUpdater be installed in the DOM tree. **/
 function useSwapInfo() {
-  return useContext(SwapInfoContext);
+  return React.useContext(SwapInfoContext);
 }
 
 function useSyncController(_ref) {
   var value = _ref.value,
     settings = _ref.settings;
   // Log an error if the component changes from uncontrolled to controlled (or vice versa).
-  var isSwapControlled = useRef(Boolean(value));
-  var isSettingsControlled = useRef(Boolean(settings));
-  useEffect(function () {
+  var isSwapControlled = React.useRef(Boolean(value));
+  var isSettingsControlled = React.useRef(Boolean(settings));
+  React.useEffect(function () {
     if (Boolean(value) !== isSwapControlled.current) {
       warnOnControlChange({
         state: 'swap',
@@ -8723,15 +8774,15 @@ function useSyncController(_ref) {
       });
     }
   }, [settings, value]);
-  var _useAtom = useAtom(controlledAtom$1),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(controlledAtom$1),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     controlledSwap = _useAtom2[0],
     setControlledSwap = _useAtom2[1];
   if (controlledSwap !== value) {
     setControlledSwap(value);
   }
-  var _useAtom3 = useAtom(controlledAtom),
-    _useAtom4 = _slicedToArray(_useAtom3, 2),
+  var _useAtom3 = jotai.useAtom(controlledAtom),
+    _useAtom4 = _slicedToArray__default["default"](_useAtom3, 2),
     controlledSettings = _useAtom4[0],
     setControlledSettings = _useAtom4[1];
   if (controlledSettings !== settings) {
@@ -8747,21 +8798,21 @@ function warnOnControlChange(_ref2) {
 function useSyncConvenienceFee(_ref) {
   var convenienceFee = _ref.convenienceFee,
     convenienceFeeRecipient = _ref.convenienceFeeRecipient;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var updateFeeOptions = useUpdateAtom(feeOptionsAtom);
-  useEffect(function () {
+  var updateFeeOptions = utils.useUpdateAtom(feeOptionsAtom);
+  React.useEffect(function () {
     if (convenienceFee && convenienceFeeRecipient) {
       if (typeof convenienceFeeRecipient === 'string') {
         updateFeeOptions({
-          fee: new Percent(convenienceFee, 10000),
+          fee: new sdkCore.Percent(convenienceFee, 10000),
           recipient: convenienceFeeRecipient
         });
         return;
       }
       if (chainId && convenienceFeeRecipient[chainId]) {
         updateFeeOptions({
-          fee: new Percent(convenienceFee, 10000),
+          fee: new sdkCore.Percent(convenienceFee, 10000),
           recipient: convenienceFeeRecipient[chainId]
         });
         return;
@@ -8772,15 +8823,15 @@ function useSyncConvenienceFee(_ref) {
 }
 
 function useSyncSwapEventHandlers(handlers) {
-  var setSwapEventHandlersAtom = useUpdateAtom(swapEventHandlersAtom);
-  useEffect(function () {
+  var setSwapEventHandlersAtom = utils.useUpdateAtom(swapEventHandlersAtom);
+  React.useEffect(function () {
     return setSwapEventHandlersAtom(handlers);
   }, [handlers, setSwapEventHandlersAtom]);
 }
 
 function useSyncSwapRouterUrl(routerUrl) {
-  var setSwapRouterUrlAtom = useUpdateAtom(swapRouterUrlAtom);
-  useEffect(function () {
+  var setSwapRouterUrlAtom = utils.useUpdateAtom(swapRouterUrlAtom);
+  React.useEffect(function () {
     return setSwapRouterUrlAtom(routerUrl);
   }, [routerUrl, setSwapRouterUrlAtom]);
 }
@@ -8798,7 +8849,7 @@ function supportedChainId(chainId) {
 
 function useHasFocus(node) {
   var _node$contains, _document;
-  useEffect(function () {
+  React.useEffect(function () {
     if (node instanceof HTMLElement) {
       // tabIndex is required to receive blur events from non-button elements.
       node.tabIndex = node.tabIndex || -1;
@@ -8806,19 +8857,19 @@ function useHasFocus(node) {
       node.style.outline = node.style.outline || 'none';
     }
   }, [node]);
-  var _useState = useState((_node$contains = node === null || node === void 0 ? void 0 : node.contains((_document = document) === null || _document === void 0 ? void 0 : _document.activeElement)) !== null && _node$contains !== void 0 ? _node$contains : false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState((_node$contains = node === null || node === void 0 ? void 0 : node.contains((_document = document) === null || _document === void 0 ? void 0 : _document.activeElement)) !== null && _node$contains !== void 0 ? _node$contains : false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     hasFocus = _useState2[0],
     setHasFocus = _useState2[1];
-  var onFocus = useCallback(function () {
+  var onFocus = React.useCallback(function () {
     return setHasFocus(true);
   }, []);
-  var onBlur = useCallback(function (e) {
+  var onBlur = React.useCallback(function (e) {
     var _node$contains2;
     var target = e.relatedTarget;
     setHasFocus((_node$contains2 = node === null || node === void 0 ? void 0 : node.contains(target)) !== null && _node$contains2 !== void 0 ? _node$contains2 : false);
   }, [node]);
-  useEffect(function () {
+  React.useEffect(function () {
     node === null || node === void 0 ? void 0 : node.addEventListener('focusin', onFocus);
     node === null || node === void 0 ? void 0 : node.addEventListener('focusout', onBlur);
     return function () {
@@ -8830,17 +8881,17 @@ function useHasFocus(node) {
 }
 
 function useHasHover(node) {
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     hasHover = _useState2[0],
     setHasHover = _useState2[1];
-  var onMouseEnter = useCallback(function () {
+  var onMouseEnter = React.useCallback(function () {
     return setHasHover(true);
   }, []);
-  var onMouseLeave = useCallback(function () {
+  var onMouseLeave = React.useCallback(function () {
     return setHasHover(false);
   }, []);
-  useEffect(function () {
+  React.useEffect(function () {
     node === null || node === void 0 ? void 0 : node.addEventListener('mouseenter', onMouseEnter);
     node === null || node === void 0 ? void 0 : node.addEventListener('mouseleave', onMouseLeave);
     return function () {
@@ -8851,7 +8902,7 @@ function useHasHover(node) {
   return hasHover;
 }
 
-var globalFontStyles = /*#__PURE__*/css(["-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;color:", ";font-size:16px;font-smooth:always;font-variant:none;*{font-family:", ";@supports (font-variation-settings:normal){font-family:", ";}}"], function (_ref) {
+var globalFontStyles = /*#__PURE__*/_styled.css(["-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;color:", ";font-size:16px;font-smooth:always;font-variant:none;*{font-family:", ";@supports (font-variation-settings:normal){font-family:", ";}}"], function (_ref) {
   var theme = _ref.theme;
   return theme.primary;
 }, function (_ref2) {
@@ -8863,18 +8914,18 @@ var globalFontStyles = /*#__PURE__*/css(["-moz-osx-font-smoothing:grayscale;-web
 });
 
 function ownKeys$b(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var BoundaryContext = /*#__PURE__*/createContext(null);
+function _objectSpread$b(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$b(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$b(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var BoundaryContext = /*#__PURE__*/React.createContext(null);
 
 /* Defines a boundary component past which a Popover should not overflow. */
 function PopoverBoundaryProvider(_ref) {
   var value = _ref.value,
     children = _ref.children;
-  return /*#__PURE__*/React.createElement(BoundaryContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(BoundaryContext.Provider, {
     value: value
   }, children);
 }
-var PopoverContainer = /*#__PURE__*/_styled.div.withConfig({
+var PopoverContainer = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Popover__PopoverContainer",
   componentId: "sc-19tt2k0-0"
 })(["", " background-color:", ";border:1px solid ", ";border-radius:0.5rem;opacity:", ";padding:0.75rem;transition:visibility ", " linear,opacity ", " linear;visibility:", ";z-index:", ";"], globalFontStyles, function (_ref2) {
@@ -8888,11 +8939,11 @@ var PopoverContainer = /*#__PURE__*/_styled.div.withConfig({
 }, AnimationSpeed.Medium, AnimationSpeed.Medium, function (props) {
   return props.show ? 'visible' : 'hidden';
 }, Layer.TOOLTIP);
-var Reference = /*#__PURE__*/_styled.div.withConfig({
+var Reference = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Popover__Reference",
   componentId: "sc-19tt2k0-1"
 })(["align-items:center;display:flex;justify-content:center;min-height:1rem;"]);
-var Arrow = /*#__PURE__*/_styled.div.withConfig({
+var Arrow = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Popover__Arrow",
   componentId: "sc-19tt2k0-2"
 })(["height:8px;width:8px;z-index:", ";::before{background:", ";border:1px solid ", ";content:'';height:8px;position:absolute;transform:rotate(45deg);width:8px;}&.arrow-top{bottom:-4px;::before{border-radius:1px;border-left:none;border-top:none;}}&.arrow-bottom{top:-5px;::before{border-bottom:none;border-right:none;border-radius:1px;}}&.arrow-left{right:-4px;::before{border-bottom:none;border-left:none;border-radius:1px;}}&.arrow-right{left:-5px;::before{border-radius:1px;border-right:none;border-top:none;}}"], Layer.TOOLTIP, function (_ref4) {
@@ -8913,16 +8964,16 @@ function Popover(_ref6) {
     contained = _ref6.contained,
     _ref6$showArrow = _ref6.showArrow,
     showArrow = _ref6$showArrow === void 0 ? true : _ref6$showArrow;
-  var boundary = useContext(BoundaryContext);
-  var reference = useRef(null);
+  var boundary = React.useContext(BoundaryContext);
+  var reference = React.useRef(null);
 
   // Use callback refs to be notified when instantiated
-  var popover = useRef(null);
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var popover = React.useRef(null);
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     arrow = _useState2[0],
     setArrow = _useState2[1];
-  var options = useMemo(function () {
+  var options = React.useMemo(function () {
     var modifiers = [{
       name: 'offset',
       options: {
@@ -8948,7 +8999,7 @@ function Popover(_ref6) {
           boundary: boundary,
           padding: 8
         }
-      }, _objectSpread$b(_objectSpread$b({}, maxSize), {}, {
+      }, _objectSpread$b(_objectSpread$b({}, maxSize__default["default"]), {}, {
         options: {
           boundary: boundary,
           padding: 8
@@ -8976,27 +9027,27 @@ function Popover(_ref6) {
       modifiers: modifiers
     };
   }, [offset, arrow, contained, placement, boundary]);
-  var _usePopper = usePopper(reference.current, popover === null || popover === void 0 ? void 0 : popover.current, options),
+  var _usePopper = reactPopper.usePopper(reference.current, popover === null || popover === void 0 ? void 0 : popover.current, options),
     styles = _usePopper.styles,
     attributes = _usePopper.attributes,
     update = _usePopper.update;
-  var updateCallback = useCallback(function () {
+  var updateCallback = React.useCallback(function () {
     update && update();
   }, [update]);
   useInterval(updateCallback, show ? 100 : null);
-  var containerOnClick = useCallback(function (e) {
+  var containerOnClick = React.useCallback(function (e) {
     e.stopPropagation();
   }, []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Reference, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Reference, {
     ref: reference
-  }, children), boundary && /*#__PURE__*/createPortal( /*#__PURE__*/React.createElement(PopoverContainer, _extends$a({
+  }, children), boundary && /*#__PURE__*/reactDom.createPortal( /*#__PURE__*/React__default["default"].createElement(PopoverContainer, _extends__default["default"]({
     show: show,
     ref: popover,
     style: styles.popper
   }, attributes.popper, {
     onClick: containerOnClick,
     "data-testid": "popover-container"
-  }), content, showArrow && /*#__PURE__*/React.createElement(Arrow, _extends$a({
+  }), content, showArrow && /*#__PURE__*/React__default["default"].createElement(Arrow, _extends__default["default"]({
     className: "arrow-".concat((_attributes$popper$da = (_attributes$popper = attributes.popper) === null || _attributes$popper === void 0 ? void 0 : _attributes$popper['data-popper-placement']) !== null && _attributes$popper$da !== void 0 ? _attributes$popper$da : ''),
     ref: setArrow,
     style: styles.arrow
@@ -9008,11 +9059,11 @@ function useTooltip(tooltip) {
   var focus = useHasFocus(tooltip);
   return hover || focus;
 }
-var SmallToolTipBody = /*#__PURE__*/_styled(Caption$1).withConfig({
+var SmallToolTipBody = /*#__PURE__*/_styled__default["default"](Caption$1).withConfig({
   displayName: "Tooltip__SmallToolTipBody",
   componentId: "sc-1rxsqly-0"
 })(["max-width:220px;"]);
-var IconTooltip = /*#__PURE__*/_styled(IconButton).withConfig({
+var IconTooltip = /*#__PURE__*/_styled__default["default"](IconButton).withConfig({
   displayName: "Tooltip__IconTooltip",
   componentId: "sc-1rxsqly-1"
 })(["cursor:help;"]);
@@ -9025,18 +9076,18 @@ function Tooltip(_ref) {
     placement = _ref$placement === void 0 ? 'auto' : _ref$placement,
     offset = _ref.offset,
     contained = _ref.contained;
-  var _useState = useState(),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     tooltip = _useState2[0],
     setTooltip = _useState2[1];
   var showTooltip = useTooltip(tooltip);
-  return /*#__PURE__*/React.createElement(Popover, {
+  return /*#__PURE__*/React__default["default"].createElement(Popover, {
     content: children,
     show: showTooltip,
     placement: placement,
     offset: offset,
     contained: contained
-  }, /*#__PURE__*/React.createElement(IconTooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(IconTooltip, {
     icon: Icon,
     iconProps: iconProps,
     ref: setTooltip
@@ -9049,25 +9100,25 @@ function TooltipText(_ref2) {
     placement = _ref2$placement === void 0 ? 'auto' : _ref2$placement,
     offset = _ref2.offset,
     contained = _ref2.contained;
-  var _useState3 = useState(),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     tooltip = _useState4[0],
     setTooltip = _useState4[1];
   var showTooltip = useTooltip(tooltip);
-  return /*#__PURE__*/React.createElement(Popover, {
+  return /*#__PURE__*/React__default["default"].createElement(Popover, {
     content: children,
     show: showTooltip,
     placement: placement,
     offset: offset,
     contained: contained
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     ref: setTooltip
   }, text));
 }
 
 var _excluded$4 = ["color", "disabled", "shouldUseDisabledColor", "action", "onClick", "children", "wrapperProps", "narrow"];
 var _templateObject$7, _templateObject2$2, _templateObject3$1, _templateObject4$1;
-var StyledButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var StyledButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "ActionButton__StyledButton",
   componentId: "sc-ckqrc-0"
 })(["border-radius:", "rem;flex-grow:1;max-height:", ";transition:background-color ", " ease-out,border-radius ", " ease-out,flex-grow ", " ease-out;", ";"], function (_ref) {
@@ -9081,21 +9132,21 @@ var StyledButton = /*#__PURE__*/_styled(Button$1).withConfig({
   var theme = _ref3.theme,
     disabled = _ref3.disabled,
     shouldUseDisabledColor = _ref3.shouldUseDisabledColor;
-  return disabled && (shouldUseDisabledColor ? css(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral(["\n          background-color: ", ";\n        "])), theme.interactive) : css(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral(["\n          opacity: 0.6;\n        "]))));
+  return disabled && (shouldUseDisabledColor ? _styled.css(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral__default["default"](["\n          background-color: ", ";\n        "])), theme.interactive) : _styled.css(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral__default["default"](["\n          opacity: 0.6;\n        "]))));
 });
-var ActionRow = /*#__PURE__*/_styled(Row).withConfig({
+var ActionRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "ActionButton__ActionRow",
   componentId: "sc-ckqrc-1"
 })([""]);
-var grow = keyframes(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral(["\n  from {\n    opacity: 0;\n    width: 0;\n  }\n  to {\n    opacity: 1;\n    width: max-content;\n  }\n"])));
-var actionCss = css(_templateObject4$1 || (_templateObject4$1 = _taggedTemplateLiteral(["\n  align-items: center;\n  border: 1px solid ", ";\n  padding: calc(0.25rem - 1px) calc(0.75rem - 1px);\n\n  ", " {\n    animation: ", " ", " ease-in;\n    flex-grow: 1;\n    justify-content: flex-start;\n    white-space: nowrap;\n  }\n\n  ", " {\n    /* Subtract the padding from the borderRadius so that it nests properly. */\n    border-radius: ", "rem;\n    flex-grow: 0;\n    height: 2.5rem;\n    padding: 0 0.75rem;\n  }\n"])), function (_ref4) {
+var grow = _styled.keyframes(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral__default["default"](["\n  from {\n    opacity: 0;\n    width: 0;\n  }\n  to {\n    opacity: 1;\n    width: max-content;\n  }\n"])));
+var actionCss = _styled.css(_templateObject4$1 || (_templateObject4$1 = _taggedTemplateLiteral__default["default"](["\n  align-items: center;\n  border: 1px solid ", ";\n  padding: calc(0.25rem - 1px) calc(0.75rem - 1px);\n\n  ", " {\n    animation: ", " ", " ease-in;\n    flex-grow: 1;\n    justify-content: flex-start;\n    white-space: nowrap;\n  }\n\n  ", " {\n    /* Subtract the padding from the borderRadius so that it nests properly. */\n    border-radius: ", "rem;\n    flex-grow: 0;\n    height: 2.5rem;\n    padding: 0 0.75rem;\n  }\n"])), function (_ref4) {
   var theme = _ref4.theme;
   return theme.outline;
 }, ActionRow, grow, AnimationSpeed.Medium, StyledButton, function (_ref5) {
   var theme = _ref5.theme;
   return theme.borderRadius.small;
 });
-var Overlay = /*#__PURE__*/_styled(Row).withConfig({
+var Overlay = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "ActionButton__Overlay",
   componentId: "sc-ckqrc-2"
 })(["border-radius:", "rem;flex-flow:row-reverse nowrap;margin-top:0.25rem;min-height:", ";transition:padding ", " ease-out;", ""], function (_ref6) {
@@ -9121,8 +9172,8 @@ function ActionButton(_ref9) {
     children = _ref9.children,
     wrapperProps = _ref9.wrapperProps,
     narrow = _ref9.narrow,
-    rest = _objectWithoutProperties(_ref9, _excluded$4);
-  var textColor = useMemo(function () {
+    rest = _objectWithoutProperties__default["default"](_ref9, _excluded$4);
+  var textColor = React.useMemo(function () {
     if (disabled) {
       return 'primary';
     }
@@ -9138,41 +9189,41 @@ function ActionButton(_ref9) {
         return 'currentColor';
     }
   }, [color, disabled]);
-  var buttonSize = useMemo(function () {
+  var buttonSize = React.useMemo(function () {
     return narrow ? 'small' : action ? 'medium' : 'large';
   }, [narrow, action]);
-  return /*#__PURE__*/React.createElement(Overlay, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(Overlay, _extends__default["default"]({
     "data-testid": "action-button",
     hasAction: Boolean(action),
     flex: true,
     align: "stretch",
     narrow: narrow
-  }, wrapperProps), !(action !== null && action !== void 0 && action.hideButton) && /*#__PURE__*/React.createElement(StyledButton, _extends$a({
+  }, wrapperProps), !(action !== null && action !== void 0 && action.hideButton) && /*#__PURE__*/React__default["default"].createElement(StyledButton, _extends__default["default"]({
     color: color,
     disabled: disabled || (action === null || action === void 0 ? void 0 : action.disableButton),
     shouldUseDisabledColor: shouldUseDisabledColor,
     onClick: (action === null || action === void 0 ? void 0 : action.onClick) || onClick,
     narrow: narrow
-  }, rest), /*#__PURE__*/React.createElement(TransitionButton, {
+  }, rest), /*#__PURE__*/React__default["default"].createElement(TransitionButton, {
     buttonSize: buttonSize,
     color: textColor
-  }, (action === null || action === void 0 ? void 0 : action.children) || children)), action && /*#__PURE__*/React.createElement(ActionRow, {
+  }, (action === null || action === void 0 ? void 0 : action.children) || children)), action && /*#__PURE__*/React__default["default"].createElement(ActionRow, {
     gap: 0.5,
     color: (_action$color = action.color) !== null && _action$color !== void 0 ? _action$color : 'primary'
-  }, action.tooltipContent ? /*#__PURE__*/React.createElement(Tooltip, {
+  }, action.tooltipContent ? /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     placement: "right",
     icon: LargeIcon,
     iconProps: {
       color: (_action$color2 = action.color) !== null && _action$color2 !== void 0 ? _action$color2 : 'currentColor',
       icon: action.icon || AlertTriangle
     }
-  }, action.tooltipContent) : /*#__PURE__*/React.createElement(LargeIcon, {
+  }, action.tooltipContent) : /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     color: (_action$color3 = action.color) !== null && _action$color3 !== void 0 ? _action$color3 : 'currentColor',
     icon: action.icon || AlertTriangle
-  }), /*#__PURE__*/React.createElement(Subhead2, null, action === null || action === void 0 ? void 0 : action.message)));
+  }), /*#__PURE__*/React__default["default"].createElement(Subhead2, null, action === null || action === void 0 ? void 0 : action.message)));
 }
 
-var Column = /*#__PURE__*/_styled.div.withConfig({
+var Column = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Column",
   componentId: "sc-5xasvm-0"
 })(["align-items:", ";color:", ";display:", ";flex-direction:column;flex-grow:", ";gap:", ";grid-auto-flow:row;grid-template-columns:1fr;justify-content:", ";padding:", ";", ""], function (_ref) {
@@ -9203,7 +9254,7 @@ var Column = /*#__PURE__*/_styled.div.withConfig({
   return css;
 });
 
-var Rule = /*#__PURE__*/_styled.hr.withConfig({
+var Rule = /*#__PURE__*/_styled__default["default"].hr.withConfig({
   displayName: "Rule",
   componentId: "sc-1f4l8hi-0"
 })(["border:none;border-bottom:1px solid ", ";margin:0 ", ";margin-bottom:", "px;margin-top:", "px;max-width:auto;width:auto;"], function (_ref) {
@@ -9220,12 +9271,12 @@ var Rule = /*#__PURE__*/_styled.hr.withConfig({
   return scrollingEdge !== 'bottom' ? -1 : 0;
 });
 
-var overflowCss = /*#__PURE__*/css(["overflow-y:scroll;"]);
-var hiddenScrollbarCss = /*#__PURE__*/css(["overflow-y:auto;"]);
+var overflowCss = /*#__PURE__*/_styled.css(["overflow-y:scroll;"]);
+var hiddenScrollbarCss = /*#__PURE__*/_styled.css(["overflow-y:auto;"]);
 
 /** Customizes the scrollbar for vertical overflow. */
 var scrollbarCss = function scrollbarCss(padded) {
-  return css(["overflow-y:scroll;::-webkit-scrollbar{width:1.25rem;}::-webkit-scrollbar-thumb{background:radial-gradient( closest-corner at 0.25rem 0.25rem,", " 0.25rem,transparent 0.25rem ),linear-gradient( to bottom,#ffffff00 0.25em,", " 0.25rem,", " calc(100% - 0.25rem),#ffffff00 calc(100% - 0.25rem) ),radial-gradient( closest-corner at 0.25em calc(100% - 0.25rem),", " 0.25rem,#ffffff00 0.25rem );background-clip:padding-box;border:none;", ":0.75rem solid transparent;}@supports not selector(::-webkit-scrollbar-thumb){scrollbar-color:", " transparent;}"], function (_ref) {
+  return _styled.css(["overflow-y:scroll;::-webkit-scrollbar{width:1.25rem;}::-webkit-scrollbar-thumb{background:radial-gradient( closest-corner at 0.25rem 0.25rem,", " 0.25rem,transparent 0.25rem ),linear-gradient( to bottom,#ffffff00 0.25em,", " 0.25rem,", " calc(100% - 0.25rem),#ffffff00 calc(100% - 0.25rem) ),radial-gradient( closest-corner at 0.25em calc(100% - 0.25rem),", " 0.25rem,#ffffff00 0.25rem );background-clip:padding-box;border:none;", ":0.75rem solid transparent;}@supports not selector(::-webkit-scrollbar-thumb){scrollbar-color:", " transparent;}"], function (_ref) {
     var theme = _ref.theme;
     return theme.interactive;
   }, function (_ref2) {
@@ -9248,7 +9299,7 @@ function useScrollbar(element) {
     padded = _ref6$padded === void 0 ? false : _ref6$padded,
     _ref6$hideScrollbar = _ref6.hideScrollbar,
     hideScrollbar = _ref6$hideScrollbar === void 0 ? false : _ref6$hideScrollbar;
-  return useMemo(
+  return React.useMemo(
   // NB: The css must be applied on an element's first render. WebKit will not re-apply overflow
   // properties until any transitions have ended, so waiting a frame for state would cause jank.
   function () {
@@ -9262,11 +9313,11 @@ function useScrollbar(element) {
 }
 
 var _excluded$3 = ["title", "iconPrefix", "open", "onExpand", "height", "maxHeight", "children", "styledWrapper"];
-var HeaderColumn = /*#__PURE__*/_styled(Column).withConfig({
+var HeaderColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Expando__HeaderColumn",
   componentId: "sc-t3edm6-0"
 })(["cursor:pointer;padding:1.25rem 1.5rem;"]);
-var StyledWrapper = /*#__PURE__*/_styled(Column).withConfig({
+var StyledWrapper = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Expando__StyledWrapper",
   componentId: "sc-t3edm6-1"
 })(["background-color:", ";border-radius:", "rem;overflow:hidden;@supports (overflow:clip){overflow:clip;}"], function (_ref) {
@@ -9276,11 +9327,11 @@ var StyledWrapper = /*#__PURE__*/_styled(Column).withConfig({
   var theme = _ref2.theme;
   return theme.borderRadius.medium;
 });
-var TitleRow = /*#__PURE__*/_styled(Row).withConfig({
+var TitleRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Expando__TitleRow",
   componentId: "sc-t3edm6-2"
 })(["cursor:pointer;"]);
-var TitleHeader = /*#__PURE__*/_styled.div.withConfig({
+var TitleHeader = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Expando__TitleHeader",
   componentId: "sc-t3edm6-3"
 })(["align-items:center;display:flex;justify-content:center;"]);
@@ -9289,7 +9340,7 @@ var MAX_HEIGHT = 20; // rem
 function getExpandoContentHeight(height, maxHeight) {
   return Math.min(height !== null && height !== void 0 ? height : MAX_HEIGHT, maxHeight !== null && maxHeight !== void 0 ? maxHeight : MAX_HEIGHT);
 }
-var ExpandoColumn = /*#__PURE__*/_styled(Column).withConfig({
+var ExpandoColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Expando__ExpandoColumn",
   componentId: "sc-t3edm6-4"
 })(["max-height:", "rem;overflow:hidden;position:relative;transition:max-height ", ",padding ", ";"], function (_ref3) {
@@ -9298,7 +9349,7 @@ var ExpandoColumn = /*#__PURE__*/_styled(Column).withConfig({
     maxHeight = _ref3.maxHeight;
   return open ? getExpandoContentHeight(height, maxHeight) : 0;
 }, AnimationSpeed.Medium, AnimationSpeed.Medium);
-var InnerColumn = /*#__PURE__*/_styled(Column).withConfig({
+var InnerColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Expando__InnerColumn",
   componentId: "sc-t3edm6-5"
 })(["max-height:", "rem;"], function (_ref4) {
@@ -9306,19 +9357,19 @@ var InnerColumn = /*#__PURE__*/_styled(Column).withConfig({
     maxHeight = _ref4.maxHeight;
   return getExpandoContentHeight(height, maxHeight);
 });
-var _StyledInnerColumn2 = /*#__PURE__*/_styled(InnerColumn).withConfig({
+var _StyledInnerColumn2 = /*#__PURE__*/_styled__default["default"](InnerColumn).withConfig({
   displayName: "Expando___StyledInnerColumn2",
   componentId: "sc-t3edm6-6"
 })(["", ""], function (p) {
   return p.$_css2;
 });
-var _StyledInnerColumn = /*#__PURE__*/_styled(InnerColumn).withConfig({
+var _StyledInnerColumn = /*#__PURE__*/_styled__default["default"](InnerColumn).withConfig({
   displayName: "Expando___StyledInnerColumn",
   componentId: "sc-t3edm6-7"
 })(["", ""], function (p) {
   return p.$_css;
 });
-var IconPrefix = /*#__PURE__*/_styled.div.withConfig({
+var IconPrefix = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Expando__IconPrefix",
   componentId: "sc-t3edm6-8"
 })(["color:", ";"], function (_ref5) {
@@ -9336,48 +9387,48 @@ function Expando(_ref6) {
     children = _ref6.children,
     _ref6$styledWrapper = _ref6.styledWrapper,
     styledWrapper = _ref6$styledWrapper === void 0 ? true : _ref6$styledWrapper,
-    rest = _objectWithoutProperties(_ref6, _excluded$3);
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+    rest = _objectWithoutProperties__default["default"](_ref6, _excluded$3);
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     scrollingEl = _useState2[0],
     setScrollingEl = _useState2[1];
   var scrollbar = useScrollbar(scrollingEl, {
     hideScrollbar: true
   });
-  return /*#__PURE__*/React.createElement(Column, rest, styledWrapper ? /*#__PURE__*/React.createElement(StyledWrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, rest, styledWrapper ? /*#__PURE__*/React__default["default"].createElement(StyledWrapper, {
     expanded: open
-  }, /*#__PURE__*/React.createElement(HeaderColumn, {
+  }, /*#__PURE__*/React__default["default"].createElement(HeaderColumn, {
     onClick: onExpand
-  }, /*#__PURE__*/React.createElement(ButtonSmall, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonSmall, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(TitleRow, {
+  }, /*#__PURE__*/React__default["default"].createElement(TitleRow, {
     gap: 1
-  }, /*#__PURE__*/React.createElement(TitleHeader, null, title), /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(TitleHeader, null, title), /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.2
-  }, iconPrefix && /*#__PURE__*/React.createElement(IconPrefix, null, iconPrefix), /*#__PURE__*/React.createElement(IconButton, {
+  }, iconPrefix && /*#__PURE__*/React__default["default"].createElement(IconPrefix, null, iconPrefix), /*#__PURE__*/React__default["default"].createElement(IconButton, {
     color: "secondary",
     icon: Expando$1,
     iconProps: {
       open: open
     }
-  }))))), open && /*#__PURE__*/React.createElement(Rule, {
+  }))))), open && /*#__PURE__*/React__default["default"].createElement(Rule, {
     padded: true
-  }), /*#__PURE__*/React.createElement(ExpandoColumn, {
+  }), /*#__PURE__*/React__default["default"].createElement(ExpandoColumn, {
     open: open,
     height: height,
     maxHeight: maxHeight
-  }, /*#__PURE__*/React.createElement(_StyledInnerColumn, {
+  }, /*#__PURE__*/React__default["default"].createElement(_StyledInnerColumn, {
     flex: true,
     align: "stretch",
     height: height,
     maxHeight: maxHeight,
     ref: setScrollingEl,
     $_css: scrollbar
-  }, children))) : /*#__PURE__*/React.createElement(React.Fragment, null, title, /*#__PURE__*/React.createElement(ExpandoColumn, {
+  }, children))) : /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, title, /*#__PURE__*/React__default["default"].createElement(ExpandoColumn, {
     open: open,
     height: height,
     maxHeight: maxHeight
-  }, /*#__PURE__*/React.createElement(_StyledInnerColumn2, {
+  }, /*#__PURE__*/React__default["default"].createElement(_StyledInnerColumn2, {
     flex: true,
     align: "stretch",
     height: height,
@@ -9387,7 +9438,7 @@ function Expando(_ref6) {
   }, children))));
 }
 
-var HeaderIcon = /*#__PURE__*/_styled(LargeIcon).withConfig({
+var HeaderIcon = /*#__PURE__*/_styled__default["default"](LargeIcon).withConfig({
   displayName: "ErrorView__HeaderIcon",
   componentId: "sc-93myfu-0"
 })(["flex-grow:1;margin:2rem 0;"]);
@@ -9397,16 +9448,16 @@ function StatusHeader(_ref) {
     _ref$iconSize = _ref.iconSize,
     iconSize = _ref$iconSize === void 0 ? 2.5 : _ref$iconSize,
     children = _ref.children;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     style: {
       flexGrow: 1
     }
-  }, /*#__PURE__*/React.createElement(HeaderIcon, {
+  }, /*#__PURE__*/React__default["default"].createElement(HeaderIcon, {
     icon: Icon,
     color: iconColor,
     size: iconSize
-  }), /*#__PURE__*/React.createElement(Column, {
+  }), /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75,
     flex: true,
     style: {
@@ -9414,11 +9465,11 @@ function StatusHeader(_ref) {
     }
   }, children)));
 }
-var ExpandoContent = /*#__PURE__*/_styled(Code).withConfig({
+var ExpandoContent = /*#__PURE__*/_styled__default["default"](Code).withConfig({
   displayName: "ErrorView__ExpandoContent",
   componentId: "sc-93myfu-1"
 })(["margin:0.5rem;"]);
-var ErrorDialogWrapper = /*#__PURE__*/_styled(Column).withConfig({
+var ErrorDialogWrapper = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "ErrorView__ErrorDialogWrapper",
   componentId: "sc-93myfu-2"
 })(["background-color:", ";"], function (_ref2) {
@@ -9432,37 +9483,37 @@ function ErrorDialog(_ref3) {
     action = _ref3.action,
     onClick = _ref3.onClick,
     onDismiss = _ref3.onDismiss;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
-  return /*#__PURE__*/React.createElement(ErrorDialogWrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(ErrorDialogWrapper, {
     flex: true,
     padding: "1rem 0.5rem 0.25rem",
     gap: 0.5,
     align: "stretch"
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     flex: true,
     flow: "row-reverse"
-  }, /*#__PURE__*/React.createElement(LargeIcon, {
+  }, /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     icon: StyledXButton$1,
     onClick: onDismiss
-  })), /*#__PURE__*/React.createElement(StatusHeader, {
+  })), /*#__PURE__*/React__default["default"].createElement(StatusHeader, {
     icon: AlertTriangle,
     iconColor: "warning",
     iconSize: 2.5
-  }, /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(H4, null, header || /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(H4, null, header || /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "nwtY4N",
     message: "Something went wrong"
-  })), /*#__PURE__*/React.createElement(Body1, {
+  })), /*#__PURE__*/React__default["default"].createElement(Body1, {
     color: "secondary"
-  }, message))), error ? /*#__PURE__*/React.createElement(Expando, {
-    title: open ? /*#__PURE__*/React.createElement(Trans, {
+  }, message))), error ? /*#__PURE__*/React__default["default"].createElement(Expando, {
+    title: open ? /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "6lGV3K",
       message: "Show less"
-    }) : /*#__PURE__*/React.createElement(Trans, {
+    }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "fMPkxb",
       message: "Show more"
     }),
@@ -9473,24 +9524,24 @@ function ErrorDialog(_ref3) {
       });
     },
     maxHeight: 11.5 /* rem */
-  }, /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     grow: true,
     padded: true
-  }, /*#__PURE__*/React.createElement(ExpandoContent, {
+  }, /*#__PURE__*/React__default["default"].createElement(ExpandoContent, {
     userSelect: true
-  }, error.toString()))) : /*#__PURE__*/React.createElement(Column, {
+  }, error.toString()))) : /*#__PURE__*/React__default["default"].createElement(Column, {
     style: {
       height: '7.5rem'
     }
-  }), /*#__PURE__*/React.createElement(ActionButton, {
+  }), /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     color: "accentSoft",
     onClick: onClick,
     narrow: true
   }, action));
 }
 
-function _createSuper$3(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$3(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$3(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$3(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$3() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 /**
  * Throws an error from outside of the React lifecycle.
@@ -9506,10 +9557,10 @@ function _isNativeReflectConstruct$3() { if (typeof Reflect === "undefined" || !
  * }, [throwError])
  */
 function useAsyncError() {
-  var _useState = useState(),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     setError = _useState2[1];
-  return useCallback(function (error) {
+  return React.useCallback(function (error) {
     return setError(function () {
       // Ignore user rejections - they should not trigger the ErrorBoundary
       if (error instanceof UserRejectedRequestError) return;
@@ -9519,16 +9570,16 @@ function useAsyncError() {
   }, []);
 }
 var ErrorBoundary = /*#__PURE__*/function (_Component) {
-  _inherits(ErrorBoundary, _Component);
+  _inherits__default["default"](ErrorBoundary, _Component);
   var _super = _createSuper$3(ErrorBoundary);
   function ErrorBoundary(props) {
     var _this;
-    _classCallCheck(this, ErrorBoundary);
+    _classCallCheck__default["default"](this, ErrorBoundary);
     _this = _super.call(this, props);
     _this.state = {};
     return _this;
   }
-  _createClass(ErrorBoundary, [{
+  _createClass__default["default"](ErrorBoundary, [{
     key: "componentDidCatch",
     value: function componentDidCatch(error, errorInfo) {
       var _this$props$onError, _this$props;
@@ -9539,7 +9590,7 @@ var ErrorBoundary = /*#__PURE__*/function (_Component) {
     value: function renderErrorView(error) {
       var _this2 = this;
       var header = error instanceof WidgetError ? error.header : DEFAULT_ERROR_HEADER;
-      return /*#__PURE__*/React.createElement(ErrorDialog, {
+      return /*#__PURE__*/React__default["default"].createElement(ErrorDialog, {
         message: header,
         error: error,
         action: i18n._(
@@ -9577,7 +9628,7 @@ var ErrorBoundary = /*#__PURE__*/function (_Component) {
     }
   }]);
   return ErrorBoundary;
-}(Component);
+}(React.Component);
 
 var REGISTRAR_ABI = [{
   constant: true,
@@ -9615,7 +9666,7 @@ var RESOLVER_ABI = [{
 
 // cache the resolver contracts since most of them are the public resolver
 function resolverContract(resolverAddress, provider) {
-  return new Contract(resolverAddress, RESOLVER_ABI, provider);
+  return new contracts.Contract(resolverAddress, RESOLVER_ABI, provider);
 }
 
 /**
@@ -9627,18 +9678,18 @@ function resolveENSContentHash(_x, _x2) {
   return _resolveENSContentHash.apply(this, arguments);
 }
 function _resolveENSContentHash() {
-  _resolveENSContentHash = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(ensName, provider) {
-    var ensRegistrarContract, hash, resolverAddress;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+  _resolveENSContentHash = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(ensName, provider) {
+    var ensRegistrarContract, hash$1, resolverAddress;
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          ensRegistrarContract = new Contract(REGISTRAR_ADDRESS, REGISTRAR_ABI, provider);
-          hash = namehash$1(ensName);
+          ensRegistrarContract = new contracts.Contract(REGISTRAR_ADDRESS, REGISTRAR_ABI, provider);
+          hash$1 = hash.namehash(ensName);
           _context.next = 4;
-          return ensRegistrarContract.resolver(hash);
+          return ensRegistrarContract.resolver(hash$1);
         case 4:
           resolverAddress = _context.sent;
-          return _context.abrupt("return", resolverContract(resolverAddress, provider).contenthash(hash));
+          return _context.abrupt("return", resolverContract(resolverAddress, provider).contenthash(hash$1));
         case 6:
         case "end":
           return _context.stop();
@@ -9719,22 +9770,22 @@ function getNativeLogoURI() {
   }
 }
 
-function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var UriSrc = /*#__PURE__*/function () {
   function UriSrc(uri) {
-    _classCallCheck(this, UriSrc);
-    _defineProperty(this, "parsedUri", null);
+    _classCallCheck__default["default"](this, UriSrc);
+    _defineProperty__default["default"](this, "parsedUri", null);
     this.key = uri;
     this.unparsedUri = uri;
   }
-  _createClass(UriSrc, [{
+  _createClass__default["default"](UriSrc, [{
     key: "getUri",
     value: function getUri() {
       // Lazy-parse the address
       if (this.parsedUri === null) {
         var _uriToHttp = uriToHttp(this.unparsedUri);
-        var _uriToHttp2 = _slicedToArray(_uriToHttp, 2);
+        var _uriToHttp2 = _slicedToArray__default["default"](_uriToHttp, 2);
         this.parsedUri = _uriToHttp2[0];
         this.alternateUri = _uriToHttp2[1];
       }
@@ -9751,13 +9802,13 @@ var UriSrc = /*#__PURE__*/function () {
   return UriSrc;
 }();
 var CoingeckoSrc = /*#__PURE__*/function (_UriSrc) {
-  _inherits(CoingeckoSrc, _UriSrc);
+  _inherits__default["default"](CoingeckoSrc, _UriSrc);
   var _super = _createSuper$2(CoingeckoSrc);
   function CoingeckoSrc() {
-    _classCallCheck(this, CoingeckoSrc);
+    _classCallCheck__default["default"](this, CoingeckoSrc);
     return _super.apply(this, arguments);
   }
-  _createClass(CoingeckoSrc, [{
+  _createClass__default["default"](CoingeckoSrc, [{
     key: "getUri",
     value: function getUri() {
       // Lazy-parse coingecko Url
@@ -9772,12 +9823,12 @@ var CoingeckoSrc = /*#__PURE__*/function (_UriSrc) {
 var AssetsRepoSrc = /*#__PURE__*/function () {
   function AssetsRepoSrc(asset) {
     var _asset$address;
-    _classCallCheck(this, AssetsRepoSrc);
-    _defineProperty(this, "uri", null);
+    _classCallCheck__default["default"](this, AssetsRepoSrc);
+    _defineProperty__default["default"](this, "uri", null);
     this.key = "UNI-AR-".concat((_asset$address = asset.address) === null || _asset$address === void 0 ? void 0 : _asset$address.toLowerCase(), ":").concat(asset.chainId);
     this.asset = asset;
   }
-  _createClass(AssetsRepoSrc, [{
+  _createClass__default["default"](AssetsRepoSrc, [{
     key: "getUri",
     value: function getUri() {
       // Lazy-builds assets repo address since it uses checksum
@@ -9798,14 +9849,14 @@ var getKey = function getKey(_ref) {
 /** Contains all sources for a specific asset */
 var LogoStore = /*#__PURE__*/function () {
   function LogoStore(asset) {
-    _classCallCheck(this, LogoStore);
-    _defineProperty(this, "srcs", {});
-    _defineProperty(this, "keys", []);
+    _classCallCheck__default["default"](this, LogoStore);
+    _defineProperty__default["default"](this, "srcs", {});
+    _defineProperty__default["default"](this, "keys", []);
     if (asset.isNative) this.addUri(getNativeLogoURI(asset.chainId));
     this.addSrc(new AssetsRepoSrc(asset));
     if (asset.logoURI) this.addUri(asset.logoURI);
   }
-  _createClass(LogoStore, [{
+  _createClass__default["default"](LogoStore, [{
     key: "addSrc",
     value: function addSrc(newSrc) {
       if (this.srcs[newSrc.key]) return;
@@ -9858,14 +9909,14 @@ var LogoStore = /*#__PURE__*/function () {
 }();
 var LogoTable = /*#__PURE__*/function () {
   function LogoTable() {
-    _classCallCheck(this, LogoTable);
-    _defineProperty(this, "map", {});
-    _defineProperty(this, "initialized", false);
+    _classCallCheck__default["default"](this, LogoTable);
+    _defineProperty__default["default"](this, "map", {});
+    _defineProperty__default["default"](this, "initialized", false);
     if (!!LogoTable.instance) throw new Error('Cannot instantiate multiple multiple logo tables');
   }
 
   /** Adds a new asset to the table and returns the newly added entry  */
-  _createClass(LogoTable, [{
+  _createClass__default["default"](LogoTable, [{
     key: "addToTable",
     value: function addToTable(asset) {
       var key = getKey(asset);
@@ -9917,36 +9968,36 @@ var table = LogoTable.getInstance();
 /** An optional component to update table with logos as sources change */
 function LogoUpdater(_ref) {
   var assets = _ref.assets;
-  var isFirstRender = useRef(true);
+  var isFirstRender = React.useRef(true);
   if (isFirstRender.current) {
     table.initialize(assets);
     isFirstRender.current = false;
   }
-  useEffect(function () {
+  React.useEffect(function () {
     table.initialize(assets);
   }, [assets]);
   return null;
 }
 function useLogos(currency) {
-  return useMemo(function () {
+  return React.useMemo(function () {
     var _table$getEntry;
     return (_table$getEntry = table.getEntry(currency)) === null || _table$getEntry === void 0 ? void 0 : _table$getEntry.getAllUris();
   }, [currency]);
 }
 function useLogo(currency) {
   var _entry$getCurrent;
-  var entry = useMemo(function () {
+  var entry = React.useMemo(function () {
     return table.getEntry(currency);
   }, [currency]);
-  var _useState = useState(entry === null || entry === void 0 ? void 0 : (_entry$getCurrent = entry.getCurrent()) === null || _entry$getCurrent === void 0 ? void 0 : _entry$getCurrent.getUri()),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(entry === null || entry === void 0 ? void 0 : (_entry$getCurrent = entry.getCurrent()) === null || _entry$getCurrent === void 0 ? void 0 : _entry$getCurrent.getUri()),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     src = _useState2[0],
     setSrc = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     var _entry$getCurrent2;
     setSrc(entry === null || entry === void 0 ? void 0 : (_entry$getCurrent2 = entry.getCurrent()) === null || _entry$getCurrent2 === void 0 ? void 0 : _entry$getCurrent2.getUri());
   }, [currency, entry]);
-  var invalidateSrc = useCallback(function () {
+  var invalidateSrc = React.useCallback(function () {
     var nextSrc = entry === null || entry === void 0 ? void 0 : entry.invalidateSrc();
     setSrc(nextSrc === null || nextSrc === void 0 ? void 0 : nextSrc.getUri());
   }, [entry]);
@@ -9958,8 +10009,8 @@ function useLogo(currency) {
 
 var _excluded$2 = ["currency", "symbol", "backupImg", "size", "style"];
 function ownKeys$a(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var MissingImageLogo = /*#__PURE__*/_styled.div.withConfig({
+function _objectSpread$a(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$a(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$a(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var MissingImageLogo = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Logo__MissingImageLogo",
   componentId: "sc-13f73fs-0"
 })(["--size:", ";background-color:", ";border-radius:100px;color:", ";font-size:calc(var(--size) / 3);font-weight:500;height:", ";line-height:", ";text-align:center;width:", ";"], function (_ref) {
@@ -9981,7 +10032,7 @@ var MissingImageLogo = /*#__PURE__*/_styled.div.withConfig({
   var size = _ref6.size;
   return size !== null && size !== void 0 ? size : '24px';
 });
-var LogoImage = /*#__PURE__*/_styled.img.withConfig({
+var LogoImage = /*#__PURE__*/_styled__default["default"].img.withConfig({
   displayName: "Logo__LogoImage",
   componentId: "sc-13f73fs-1"
 })(["background:radial-gradient(white 60%,#ffffff00 calc(70% + 1px));border-radius:50%;box-shadow:0 0 1px white;height:", ";width:", ";"], function (_ref7) {
@@ -10003,7 +10054,7 @@ function Logo(_ref9) {
     var _ref9$size = _ref9.size,
     size = _ref9$size === void 0 ? '24px' : _ref9$size,
     style = _ref9.style,
-    rest = _objectWithoutProperties(_ref9, _excluded$2);
+    rest = _objectWithoutProperties__default["default"](_ref9, _excluded$2);
   var imageProps = _objectSpread$a({
     alt: "".concat(symbol !== null && symbol !== void 0 ? symbol : 'token', " logo"),
     size: size,
@@ -10013,12 +10064,12 @@ function Logo(_ref9) {
     src = _useLogo.src,
     invalidateSrc = _useLogo.invalidateSrc;
   if (src) {
-    return /*#__PURE__*/React.createElement(LogoImage, _extends$a({}, imageProps, {
+    return /*#__PURE__*/React__default["default"].createElement(LogoImage, _extends__default["default"]({}, imageProps, {
       src: src,
       onError: invalidateSrc
     }));
   } else {
-    return /*#__PURE__*/React.createElement(MissingImageLogo, {
+    return /*#__PURE__*/React__default["default"].createElement(MissingImageLogo, {
       size: size
     }, symbol === null || symbol === void 0 ? void 0 : symbol.toUpperCase().replace('$', '').replace(/\s+/g, '').slice(0, 3));
   }
@@ -10041,23 +10092,23 @@ var UTF_8_DECODER = new TextDecoder('utf-8');
  */
 function contenthashToUri(contenthash) {
   var data = hexToUint8Array(contenthash);
-  var codec = getNameFromData(data);
+  var codec = multicodec.getNameFromData(data);
   switch (codec) {
     case 'ipfs-ns':
       {
-        var unprefixedData = rmPrefix(data);
-        var cid = new CID(unprefixedData);
-        return "ipfs://".concat(toB58String(cid.multihash));
+        var unprefixedData = multicodec.rmPrefix(data);
+        var cid = new CID__default["default"](unprefixedData);
+        return "ipfs://".concat(multihashes.toB58String(cid.multihash));
       }
     case 'ipns-ns':
       {
-        var _unprefixedData = rmPrefix(data);
-        var _cid = new CID(_unprefixedData);
-        var multihash = decode(_cid.multihash);
+        var _unprefixedData = multicodec.rmPrefix(data);
+        var _cid = new CID__default["default"](_unprefixedData);
+        var multihash = multihashes.decode(_cid.multihash);
         if (multihash.name === 'identity') {
           return "ipns://".concat(UTF_8_DECODER.decode(multihash.digest).trim());
         } else {
-          return "ipns://".concat(toB58String(_cid.multihash));
+          return "ipns://".concat(multihashes.toB58String(_cid.multihash));
         }
       }
     default:
@@ -10094,31 +10145,31 @@ function validate(_x, _x2) {
  * @param json the TokenInfo[] to validate
  */
 function _validate() {
-  _validate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(schema, data) {
+  _validate = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(schema, data) {
     var validatorImport, _yield$Promise$all, _yield$Promise$all2, validatorModule, validator;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.t0 = schema;
           _context.next = _context.t0 === ValidationSchema.LIST ? 3 : _context.t0 === ValidationSchema.TOKENS ? 5 : 7;
           break;
         case 3:
-          validatorImport = import('./validateTokenList-cb8626e8.js');
+          validatorImport = Promise.resolve().then(function () { return require('./validateTokenList-7ab64a4c.cjs'); });
           return _context.abrupt("break", 9);
         case 5:
-          validatorImport = import('./validateTokens-640dd368.js');
+          validatorImport = Promise.resolve().then(function () { return require('./validateTokens-4e96dc34.cjs'); });
           return _context.abrupt("break", 9);
         case 7:
           throw new Error('No validation function specified for schema');
         case 9:
           _context.next = 11;
-          return Promise.all([import('ajv'), validatorImport]);
+          return Promise.all([Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require('ajv')); }), validatorImport]);
         case 11:
           _yield$Promise$all = _context.sent;
-          _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
+          _yield$Promise$all2 = _slicedToArray__default["default"](_yield$Promise$all, 2);
           validatorModule = _yield$Promise$all2[1];
           _context.next = 16;
-          return validatorModule["default"];
+          return validatorModule.default;
         case 16:
           validator = _context.sent;
           if (!(validator !== null && validator !== void 0 && validator(data))) {
@@ -10145,8 +10196,8 @@ function validateTokens(_x3) {
  * @param json the TokenList to validate
  */
 function _validateTokens() {
-  _validateTokens = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(json) {
-    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+  _validateTokens = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2(json) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
@@ -10172,8 +10223,8 @@ function validateTokenList(_x4) {
   return _validateTokenList.apply(this, arguments);
 }
 function _validateTokenList() {
-  _validateTokenList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(json) {
-    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+  _validateTokenList = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee3(json) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
@@ -10201,9 +10252,9 @@ function fetchTokenList(_x, _x2) {
   return _fetchTokenList.apply(this, arguments);
 }
 function _fetchTokenList() {
-  _fetchTokenList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(listUrl, resolveENSContentHash) {
+  _fetchTokenList = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(listUrl, resolveENSContentHash) {
     var cached, urls, parsedENS, _parsedENS$ensPath, contentHashUri, message, translatedUri, _message, i, url, isLast, response, _message2, _message3, json, list;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           cached = listCache === null || listCache === void 0 ? void 0 : listCache.get(listUrl); // avoid spurious re-fetches
@@ -10320,21 +10371,21 @@ function _fetchTokenList() {
 }
 
 function ownKeys$9(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$9(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$9(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$9(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 /**
  * Token instances created from token info on a token list.
  */
 var WrappedTokenInfo = /*#__PURE__*/function () {
   function WrappedTokenInfo(tokenInfo, list) {
-    _classCallCheck(this, WrappedTokenInfo);
-    _defineProperty(this, "isNative", false);
-    _defineProperty(this, "isToken", true);
-    _defineProperty(this, "_checksummedAddress", null);
-    _defineProperty(this, "_tags", null);
+    _classCallCheck__default["default"](this, WrappedTokenInfo);
+    _defineProperty__default["default"](this, "isNative", false);
+    _defineProperty__default["default"](this, "isToken", true);
+    _defineProperty__default["default"](this, "_checksummedAddress", null);
+    _defineProperty__default["default"](this, "_tags", null);
     this.tokenInfo = tokenInfo;
     this.list = list;
   }
-  _createClass(WrappedTokenInfo, [{
+  _createClass__default["default"](WrappedTokenInfo, [{
     key: "address",
     get: function get() {
       if (this._checksummedAddress) return this._checksummedAddress;
@@ -10406,7 +10457,7 @@ function tokensToChainTokenMap(tokens) {
   var cached = mapCache === null || mapCache === void 0 ? void 0 : mapCache.get(tokens);
   if (cached) return cached;
   var _ref = Array.isArray(tokens) ? [undefined, tokens] : [tokens, tokens.tokens],
-    _ref2 = _slicedToArray(_ref, 2),
+    _ref2 = _slicedToArray__default["default"](_ref, 2),
     list = _ref2[0],
     infos = _ref2[1];
   var map = infos.reduce(function (map, info) {
@@ -10489,7 +10540,7 @@ function tokenComparator(balances, a, b) {
 
 /** Sorts tokens by query, giving precedence to exact matches and partial matches. */
 function useSortTokensByQuery(query, tokens) {
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!tokens) {
       return [];
     }
@@ -10519,40 +10570,40 @@ function useSortTokensByQuery(query, tokens) {
 }
 
 function useQueryTokens(query, tokens) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId,
     account = _useWeb3React.account;
   var balances = useTokenBalances(account, tokens);
-  var sortedTokens = useMemo(
+  var sortedTokens = React.useMemo(
   // Create a new array because sort is in-place and returns a referentially equivalent array.
   function () {
     return Array.from(tokens).sort(tokenComparator.bind(null, balances));
   }, [balances, tokens]);
   var debouncedQuery = useDebounce(query, 200);
-  var filter = useMemo(function () {
+  var filter = React.useMemo(function () {
     return getTokenFilter(debouncedQuery);
   }, [debouncedQuery]);
-  var filteredTokens = useMemo(function () {
+  var filteredTokens = React.useMemo(function () {
     return sortedTokens.filter(filter);
   }, [filter, sortedTokens]);
   var queriedTokens = useSortTokensByQuery(debouncedQuery, filteredTokens);
-  var _native = useMemo(function () {
+  var native = React.useMemo(function () {
     return chainId && nativeOnChain(chainId);
   }, [chainId]);
-  return useMemo(function () {
-    if (_native && filter(_native)) {
-      return [_native].concat(_toConsumableArray(queriedTokens));
+  return React.useMemo(function () {
+    if (native && filter(native)) {
+      return [native].concat(_toConsumableArray__default["default"](queriedTokens));
     }
     return queriedTokens;
-  }, [filter, _native, queriedTokens]);
+  }, [filter, native, queriedTokens]);
 }
 
 var UNISWAP_TOKEN_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org';
 var EMPTY_TOKEN_LIST = [];
 var MISSING_PROVIDER = Symbol();
-var ChainTokenMapContext = /*#__PURE__*/createContext(MISSING_PROVIDER);
+var ChainTokenMapContext = /*#__PURE__*/React.createContext(MISSING_PROVIDER);
 function useChainTokenMapContext() {
-  var chainTokenMap = useContext(ChainTokenMapContext);
+  var chainTokenMap = React.useContext(ChainTokenMapContext);
   if (chainTokenMap === MISSING_PROVIDER) {
     throw new Error('TokenList hooks must be wrapped in a <TokenListProvider>');
   }
@@ -10562,11 +10613,11 @@ function useIsTokenListLoaded() {
   return Boolean(useChainTokenMapContext());
 }
 function useTokenList() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var chainTokenMap = useChainTokenMapContext();
   var tokenMap = chainId && (chainTokenMap === null || chainTokenMap === void 0 ? void 0 : chainTokenMap[chainId]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!tokenMap) return [];
     return Object.values(tokenMap).map(function (_ref) {
       var token = _ref.token;
@@ -10575,15 +10626,15 @@ function useTokenList() {
   }, [tokenMap]);
 }
 function useTokenMap(chainId) {
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     activeChainId = _useWeb3React2.chainId;
   chainId = chainId || activeChainId;
   var chainTokenMap = useChainTokenMapContext();
   var tokenMap = chainId && (chainTokenMap === null || chainTokenMap === void 0 ? void 0 : chainTokenMap[chainId]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!tokenMap) return {};
     return Object.entries(tokenMap).reduce(function (map, _ref2) {
-      var _ref3 = _slicedToArray(_ref2, 2),
+      var _ref3 = _slicedToArray__default["default"](_ref2, 2),
         address = _ref3[0],
         token = _ref3[1].token;
       map[address] = token;
@@ -10595,24 +10646,24 @@ function Provider$6(_ref5) {
   var _ref5$list = _ref5.list,
     list = _ref5$list === void 0 ? UNISWAP_TOKEN_LIST : _ref5$list,
     children = _ref5.children;
-  var _useState = useState(),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     chainTokenMap = _useState2[0],
     setChainTokenMap = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     return setChainTokenMap(undefined);
   }, [list]);
-  var _useWeb3React3 = useWeb3React(),
+  var _useWeb3React3 = core.useWeb3React(),
     chainId = _useWeb3React3.chainId,
     provider = _useWeb3React3.provider;
-  var resolver = useCallback(function (ensName) {
+  var resolver = React.useCallback(function (ensName) {
     if (provider && chainId === 1) {
       return resolveENSContentHash(ensName, provider);
     }
     throw new Error('Could not construct mainnet ENS resolver');
   }, [chainId, provider]);
   var throwError = useAsyncError();
-  useEffect(function () {
+  React.useEffect(function () {
     // If the list was already loaded, don't reload it.
     if (chainTokenMap) return;
     var stale = false;
@@ -10624,9 +10675,9 @@ function Provider$6(_ref5) {
       return _activateList.apply(this, arguments);
     }
     function _activateList() {
-      _activateList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(list) {
+      _activateList = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(list) {
         var tokens, map;
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
@@ -10679,12 +10730,12 @@ function Provider$6(_ref5) {
       return _activateList.apply(this, arguments);
     }
   }, [chainTokenMap, list, resolver, throwError]);
-  return /*#__PURE__*/React.createElement(ChainTokenMapContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(ChainTokenMapContext.Provider, {
     value: chainTokenMap
-  }, /*#__PURE__*/React.createElement(TokenListLogoUpdater, null), children);
+  }, /*#__PURE__*/React__default["default"].createElement(TokenListLogoUpdater, null), children);
 }
 function TokenListLogoUpdater() {
-  return /*#__PURE__*/React.createElement(LogoUpdater, {
+  return /*#__PURE__*/React__default["default"].createElement(LogoUpdater, {
     assets: useTokenList()
   });
 }
@@ -10694,7 +10745,7 @@ var BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
 function parseStringOrBytes32(str, bytes32, defaultValue) {
   return str && str.length > 0 ? str :
   // need to check for proper bytes string and valid terminator
-  bytes32 && BYTES32_REGEX.test(bytes32) && arrayify(bytes32)[31] === 0 ? parseBytes32String(bytes32) : defaultValue;
+  bytes32 && BYTES32_REGEX.test(bytes32) && bytes.arrayify(bytes32)[31] === 0 ? strings.parseBytes32String(bytes32) : defaultValue;
 }
 
 /**
@@ -10703,22 +10754,22 @@ function parseStringOrBytes32(str, bytes32, defaultValue) {
  * Returns undefined if tokenAddress is invalid or token does not exist.
  */
 function useTokenFromNetwork(tokenAddress) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
   var formattedAddress = isAddress(tokenAddress);
   var tokenContract = useTokenContract(formattedAddress ? formattedAddress : undefined, false);
   var tokenContractBytes32 = useBytes32TokenContract(formattedAddress ? formattedAddress : undefined, false);
-  var tokenName = useSingleCallResult(tokenContract, 'name', undefined, NEVER_RELOAD);
-  var tokenNameBytes32 = useSingleCallResult(tokenContractBytes32, 'name', undefined, NEVER_RELOAD);
-  var symbol = useSingleCallResult(tokenContract, 'symbol', undefined, NEVER_RELOAD);
-  var symbolBytes32 = useSingleCallResult(tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD);
-  var decimals = useSingleCallResult(tokenContract, 'decimals', undefined, NEVER_RELOAD);
-  return useMemo(function () {
+  var tokenName = useSingleCallResult(tokenContract, 'name', undefined, reduxMulticall.NEVER_RELOAD);
+  var tokenNameBytes32 = useSingleCallResult(tokenContractBytes32, 'name', undefined, reduxMulticall.NEVER_RELOAD);
+  var symbol = useSingleCallResult(tokenContract, 'symbol', undefined, reduxMulticall.NEVER_RELOAD);
+  var symbolBytes32 = useSingleCallResult(tokenContractBytes32, 'symbol', undefined, reduxMulticall.NEVER_RELOAD);
+  var decimals = useSingleCallResult(tokenContract, 'decimals', undefined, reduxMulticall.NEVER_RELOAD);
+  return React.useMemo(function () {
     if (typeof tokenAddress !== 'string' || !chainId || !formattedAddress) return undefined;
     if (decimals.loading || symbol.loading || tokenName.loading) return null;
     if (decimals.result) {
       var _symbol$result, _symbolBytes32$result, _tokenName$result, _tokenNameBytes32$res;
-      return new Token(chainId, formattedAddress, decimals.result[0], parseStringOrBytes32((_symbol$result = symbol.result) === null || _symbol$result === void 0 ? void 0 : _symbol$result[0], (_symbolBytes32$result = symbolBytes32.result) === null || _symbolBytes32$result === void 0 ? void 0 : _symbolBytes32$result[0], 'UNKNOWN'), parseStringOrBytes32((_tokenName$result = tokenName.result) === null || _tokenName$result === void 0 ? void 0 : _tokenName$result[0], (_tokenNameBytes32$res = tokenNameBytes32.result) === null || _tokenNameBytes32$res === void 0 ? void 0 : _tokenNameBytes32$res[0], 'Unknown Token'));
+      return new sdkCore.Token(chainId, formattedAddress, decimals.result[0], parseStringOrBytes32((_symbol$result = symbol.result) === null || _symbol$result === void 0 ? void 0 : _symbol$result[0], (_symbolBytes32$result = symbolBytes32.result) === null || _symbolBytes32$result === void 0 ? void 0 : _symbolBytes32$result[0], 'UNKNOWN'), parseStringOrBytes32((_tokenName$result = tokenName.result) === null || _tokenName$result === void 0 ? void 0 : _tokenName$result[0], (_tokenNameBytes32$res = tokenNameBytes32.result) === null || _tokenNameBytes32$res === void 0 ? void 0 : _tokenNameBytes32$res[0], 'Unknown Token'));
     }
     return undefined;
   }, [formattedAddress, chainId, decimals.loading, decimals.result, symbol.loading, symbol.result, symbolBytes32.result, tokenAddress, tokenName.loading, tokenName.result, tokenNameBytes32.result]);
@@ -10743,7 +10794,7 @@ function useTokenFromMapOrNetwork(tokens, tokenAddress) {
  * Returns undefined if tokenAddress is invalid or token does not exist.
  */
 function useToken(tokenAddress, chainId) {
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     activeChainId = _useWeb3React2.chainId;
   var tokens = useTokenMap(chainId);
   var skipNetwork = chainId && chainId !== activeChainId;
@@ -10751,17 +10802,17 @@ function useToken(tokenAddress, chainId) {
 }
 
 function ownKeys$8(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$8(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$8(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$8(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function useDefaultToken(defaultAddress, chainId, defaultToNative) {
   var address = undefined;
   if (typeof defaultAddress === 'string') {
     address = defaultAddress;
-  } else if (_typeof(defaultAddress) === 'object' && chainId) {
+  } else if (_typeof__default["default"](defaultAddress) === 'object' && chainId) {
     address = defaultAddress[chainId];
   }
   var token = useToken(address, chainId);
   var onSupportedNetwork = useOnSupportedNetwork(chainId);
-  return useMemo(function () {
+  return React.useMemo(function () {
     // Only use native currency if chain ID is in supported chains. ExtendedEther will error otherwise.
     if (chainId && onSupportedNetwork && (address === 'NATIVE' || !token && defaultToNative)) {
       return nativeOnChain(chainId);
@@ -10775,25 +10826,25 @@ function useSyncTokenDefaults(_ref) {
     defaultOutputTokenAddress = _ref.defaultOutputTokenAddress,
     defaultOutputAmount = _ref.defaultOutputAmount,
     defaultChainId = _ref.defaultChainId;
-  var lastChainId = useRef(undefined);
-  var lastConnector = useRef(undefined);
-  var updateSwap = useUpdateAtom(swapAtom);
-  var _useWeb3React = useWeb3React(),
+  var lastChainId = React.useRef(undefined);
+  var lastConnector = React.useRef(undefined);
+  var updateSwap = utils.useUpdateAtom(swapAtom);
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId,
     connector = _useWeb3React.connector;
   var defaultOutputToken = useDefaultToken(defaultOutputTokenAddress, chainId, false);
   var defaultChainIdOutputToken = useDefaultToken(defaultOutputTokenAddress, defaultChainId, false);
   var defaultInputToken = useDefaultToken(defaultInputTokenAddress, chainId, true);
   var defaultChainIdInputToken = useDefaultToken(defaultInputTokenAddress, defaultChainId, true);
-  var setToDefaults = useCallback(function (shouldUseDefaultChainId) {
+  var setToDefaults = React.useCallback(function (shouldUseDefaultChainId) {
     var _defaultSwapState;
     var defaultSwapState = (_defaultSwapState = {
       amount: ''
-    }, _defineProperty(_defaultSwapState, Field.INPUT, shouldUseDefaultChainId ? defaultChainIdInputToken : defaultInputToken), _defineProperty(_defaultSwapState, Field.OUTPUT, shouldUseDefaultChainId ? defaultChainIdOutputToken : defaultOutputToken), _defineProperty(_defaultSwapState, "type", TradeType.EXACT_INPUT), _defaultSwapState);
+    }, _defineProperty__default["default"](_defaultSwapState, Field.INPUT, shouldUseDefaultChainId ? defaultChainIdInputToken : defaultInputToken), _defineProperty__default["default"](_defaultSwapState, Field.OUTPUT, shouldUseDefaultChainId ? defaultChainIdOutputToken : defaultOutputToken), _defineProperty__default["default"](_defaultSwapState, "type", sdkCore.TradeType.EXACT_INPUT), _defaultSwapState);
     if (defaultInputToken && defaultInputAmount) {
       defaultSwapState.amount = defaultInputAmount.toString();
     } else if (defaultOutputToken && defaultOutputAmount) {
-      defaultSwapState.type = TradeType.EXACT_OUTPUT;
+      defaultSwapState.type = sdkCore.TradeType.EXACT_OUTPUT;
       defaultSwapState.amount = defaultOutputAmount.toString();
     }
     updateSwap(function (swap) {
@@ -10801,7 +10852,7 @@ function useSyncTokenDefaults(_ref) {
     });
   }, [defaultChainIdInputToken, defaultInputToken, defaultChainIdOutputToken, defaultOutputToken, defaultInputAmount, defaultOutputAmount, updateSwap]);
   var isTokenListLoaded = useIsTokenListLoaded();
-  useEffect(function () {
+  React.useEffect(function () {
     var isChainSwitched = chainId && chainId !== lastChainId.current;
     var isConnectorSwitched = connector && connector !== lastConnector.current;
     var shouldSync = isTokenListLoaded && (isChainSwitched || isConnectorSwitched);
@@ -10815,7 +10866,7 @@ function useSyncTokenDefaults(_ref) {
 }
 
 function useOnEscapeHandler(onClose) {
-  useEffect(function () {
+  React.useEffect(function () {
     if (!onClose) return;
     var close = function close(e) {
       return e.key === 'Escape' && onClose();
@@ -10850,7 +10901,7 @@ function isAnimating(node) {
  */
 function useUnmountingAnimation(node, getAnimatingClass, animatedElements) {
   var skip = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  useEffect(function () {
+  React.useEffect(function () {
     var _animatedElements$map;
     var current = node.current;
     var animated = (_animatedElements$map = animatedElements === null || animatedElements === void 0 ? void 0 : animatedElements.map(function (element) {
@@ -10900,7 +10951,7 @@ var DialogAnimationType = /*#__PURE__*/function (DialogAnimationType) {
   return DialogAnimationType;
 }({});
 var MIN_PAGE_CENTERED_DIALOG_WIDTH = 400;
-var Context$1 = /*#__PURE__*/createContext({
+var Context$1 = /*#__PURE__*/React.createContext({
   element: null,
   options: {},
   active: false,
@@ -10913,9 +10964,9 @@ function Provider$5(_ref) {
     children = _ref.children,
     options = _ref.options;
   // If a Dialog is active, mark the main content inert
-  var ref = useRef(null);
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var ref = React.useRef(null);
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     active = _useState2[0],
     setActive = _useState2[1];
   var context = {
@@ -10924,43 +10975,43 @@ function Provider$5(_ref) {
     setActive: setActive,
     options: options
   };
-  useEffect(function () {
+  React.useEffect(function () {
     if (ref.current) {
       ref.current.inert = active;
     }
   }, [active]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     ref: ref,
     style: {
       isolation: 'isolate'
     } // creates a new stacking context, preventing the dialog from intercepting non-dialog clicks
-  }, /*#__PURE__*/React.createElement(Context$1.Provider, {
+  }, /*#__PURE__*/React__default["default"].createElement(Context$1.Provider, {
     value: context
   }, children));
 }
-var OnCloseContext = /*#__PURE__*/createContext(undefined);
+var OnCloseContext = /*#__PURE__*/React.createContext(undefined);
 function useCloseDialog() {
-  return useContext(OnCloseContext);
+  return React.useContext(OnCloseContext);
 }
 function useDialogAnimationType() {
-  var _useContext = useContext(Context$1),
+  var _useContext = React.useContext(Context$1),
     options = _useContext.options;
   return options === null || options === void 0 ? void 0 : options.animationType;
 }
 function useIsDialogPageCentered() {
-  var _useContext2 = useContext(Context$1),
+  var _useContext2 = React.useContext(Context$1),
     options = _useContext2.options;
   return options === null || options === void 0 ? void 0 : options.pageCentered;
 }
-var HeaderRow$2 = /*#__PURE__*/_styled(Row).withConfig({
+var HeaderRow$2 = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Dialog__HeaderRow",
   componentId: "sc-zdiont-0"
 })(["display:flex;height:1.75rem;", " justify-content:flex-start;margin:0.5rem 0.75rem 0.75rem;position:relative;"], largeIconCss);
-var StyledBackButton = /*#__PURE__*/_styled(ArrowLeft).withConfig({
+var StyledBackButton = /*#__PURE__*/_styled__default["default"](ArrowLeft).withConfig({
   displayName: "Dialog__StyledBackButton",
   componentId: "sc-zdiont-1"
 })([":hover{cursor:pointer;opacity:0.6;}"]);
-var Title = /*#__PURE__*/_styled.div.withConfig({
+var Title = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Dialog__Title",
   componentId: "sc-zdiont-2"
 })(["display:flex;flex-grow:1;justify-content:center;"]);
@@ -10969,18 +11020,18 @@ function Header$1(_ref2) {
     closeButton = _ref2.closeButton;
   var onClose = useCloseDialog();
   var animationType = useDialogAnimationType();
-  return /*#__PURE__*/React.createElement(HeaderRow$2, {
+  return /*#__PURE__*/React__default["default"].createElement(HeaderRow$2, {
     iconSize: 1.25,
     "data-testid": "dialog-header"
-  }, closeButton ? /*#__PURE__*/React.createElement("div", {
+  }, closeButton ? /*#__PURE__*/React__default["default"].createElement("div", {
     onClick: onClose
-  }, closeButton) : animationType === DialogAnimationType.SLIDE && /*#__PURE__*/React.createElement(StyledBackButton, {
+  }, closeButton) : animationType === DialogAnimationType.SLIDE && /*#__PURE__*/React__default["default"].createElement(StyledBackButton, {
     onClick: onClose
-  }), /*#__PURE__*/React.createElement(Title, null, /*#__PURE__*/React.createElement(Subhead1, null, title)), !closeButton && animationType !== DialogAnimationType.SLIDE && /*#__PURE__*/React.createElement(StyledXButton$1, {
+  }), /*#__PURE__*/React__default["default"].createElement(Title, null, /*#__PURE__*/React__default["default"].createElement(Subhead1, null, title)), !closeButton && animationType !== DialogAnimationType.SLIDE && /*#__PURE__*/React__default["default"].createElement(StyledXButton$1, {
     onClick: onClose
   }));
 }
-var Modal = /*#__PURE__*/_styled.div.withConfig({
+var Modal = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Dialog__Modal",
   componentId: "sc-zdiont-3"
 })(["", ";background-color:", ";border-radius:", "rem;display:flex;flex-direction:column;height:", ";left:0;outline:", ";padding:", ";position:", ";right:0;top:0;z-index:", ";"], globalFontStyles, function (_ref3) {
@@ -11004,10 +11055,10 @@ var Modal = /*#__PURE__*/_styled.div.withConfig({
   var constrain = _ref8.constrain;
   return constrain ? 'relative' : 'absolute';
 }, Layer.DIALOG);
-var slideInLeft = keyframes(_templateObject$6 || (_templateObject$6 = _taggedTemplateLiteral(["\n  from {\n    transform: translateX(calc(100% - 0.25rem));\n  }\n"])));
-var slideOutLeft = keyframes(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n  to {\n    transform: translateX(calc(0.25rem - 100%));\n  }\n"])));
-var slideOutRight = keyframes(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  to {\n    transform: translateX(calc(100% - 0.25rem));\n  }\n"])));
-var HiddenWrapper = /*#__PURE__*/_styled.div.withConfig({
+var slideInLeft = _styled.keyframes(_templateObject$6 || (_templateObject$6 = _taggedTemplateLiteral__default["default"](["\n  from {\n    transform: translateX(calc(100% - 0.25rem));\n  }\n"])));
+var slideOutLeft = _styled.keyframes(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral__default["default"](["\n  to {\n    transform: translateX(calc(0.25rem - 100%));\n  }\n"])));
+var slideOutRight = _styled.keyframes(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral__default["default"](["\n  to {\n    transform: translateX(calc(100% - 0.25rem));\n  }\n"])));
+var HiddenWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Dialog__HiddenWrapper",
   componentId: "sc-zdiont-4"
 })(["border-radius:", "rem;height:", ";left:0;outline:transparent;overflow:", ";position:", ";top:0;width:", ";@supports (overflow:clip){overflow:", ";}"], function (_ref9) {
@@ -11029,8 +11080,8 @@ var HiddenWrapper = /*#__PURE__*/_styled.div.withConfig({
   var hideOverflow = _ref14.hideOverflow;
   return hideOverflow ? 'clip' : 'visible';
 });
-var slideAnimationCss = css(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  animation: ", " ", " ease-in;\n\n  &.", " {\n    animation: ", " ", " ease-in;\n  }\n  &.", " {\n    animation: ", " ", " ease-out;\n  }\n"])), slideInLeft, AnimationSpeed.Medium, SlideAnimationType.PAGING, slideOutLeft, AnimationSpeed.Medium, SlideAnimationType.CLOSING, slideOutRight, AnimationSpeed.Medium);
-var EMPTY_CSS = css(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral([""])));
+var slideAnimationCss = _styled.css(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral__default["default"](["\n  animation: ", " ", " ease-in;\n\n  &.", " {\n    animation: ", " ", " ease-in;\n  }\n  &.", " {\n    animation: ", " ", " ease-out;\n  }\n"])), slideInLeft, AnimationSpeed.Medium, SlideAnimationType.PAGING, slideOutLeft, AnimationSpeed.Medium, SlideAnimationType.CLOSING, slideOutRight, AnimationSpeed.Medium);
+var EMPTY_CSS = _styled.css(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral__default["default"]([""])));
 var getAnimation = function getAnimation(animationType) {
   switch (animationType) {
     case DialogAnimationType.NONE:
@@ -11042,13 +11093,13 @@ var getAnimation = function getAnimation(animationType) {
       return slideAnimationCss;
   }
 };
-var FullScreenWrapper = /*#__PURE__*/_styled.div.withConfig({
+var FullScreenWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Dialog__FullScreenWrapper",
   componentId: "sc-zdiont-5"
 })(["", ""], function (_ref15) {
   var enabled = _ref15.enabled,
     fadeAnimation = _ref15.fadeAnimation;
-  return enabled && css(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n      align-items: center;\n      ", "\n      background-color: ", ";\n      display: flex;\n      height: 100%;\n      justify-content: center;\n      left: 0;\n      position: fixed;\n      top: 0;\n      width: 100%;\n\n      z-index: ", ";\n\n      ", " {\n        box-shadow: 0px 40px 120px ", ";\n        min-width: 400px;\n      }\n    "])), fadeAnimation ? fadeAnimationCss : '', function (_ref16) {
+  return enabled && _styled.css(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral__default["default"](["\n      align-items: center;\n      ", "\n      background-color: ", ";\n      display: flex;\n      height: 100%;\n      justify-content: center;\n      left: 0;\n      position: fixed;\n      top: 0;\n      width: 100%;\n\n      z-index: ", ";\n\n      ", " {\n        box-shadow: 0px 40px 120px ", ";\n        min-width: 400px;\n      }\n    "])), fadeAnimation ? fadeAnimationCss : '', function (_ref16) {
     var theme = _ref16.theme;
     return theme.scrim;
   }, Layer.DIALOG, HiddenWrapper, function (_ref17) {
@@ -11056,7 +11107,7 @@ var FullScreenWrapper = /*#__PURE__*/_styled.div.withConfig({
     return theme.networkDefaultShadow;
   });
 });
-var AnimationWrapper = /*#__PURE__*/_styled.div.withConfig({
+var AnimationWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Dialog__AnimationWrapper",
   componentId: "sc-zdiont-6"
 })(["", "{", "}"], Modal, function (_ref18) {
@@ -11074,19 +11125,19 @@ function Dialog(_ref19) {
     forceContain = _ref19.forceContain,
     _ref19$padded = _ref19.padded,
     padded = _ref19$padded === void 0 ? true : _ref19$padded;
-  var context = useContext(Context$1);
-  useEffect(function () {
+  var context = React.useContext(Context$1);
+  React.useEffect(function () {
     context.setActive(true);
     return function () {
       return context.setActive(false);
     };
   }, [context]);
-  var popoverRef = useRef(null);
-  var _useState3 = useState(false),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var popoverRef = React.useRef(null);
+  var _useState3 = React.useState(false),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     updatePopover = _useState4[0],
     setUpdatePopover = _useState4[1];
-  useEffect(function () {
+  React.useEffect(function () {
     // Allows slide in animation to occur without popovers appearing at pre-animated location.
     setTimeout(function () {
       setUpdatePopover(true);
@@ -11097,12 +11148,12 @@ function Dialog(_ref19) {
   // and adjust the styling in the renderer below so that they are centered and sized correctly.
   var pageCentered = ((_context$options = context.options) === null || _context$options === void 0 ? void 0 : _context$options.pageCentered) && !forceContain;
   var mountPoint = pageCentered ? document.body : context.element;
-  var closeOnBackgroundClick = useCallback(function () {
+  var closeOnBackgroundClick = React.useCallback(function () {
     if (pageCentered && onClose) onClose();
   }, [onClose, pageCentered]);
   var skipUnmountAnimation = ((_context$options2 = context.options) === null || _context$options2 === void 0 ? void 0 : _context$options2.animationType) === DialogAnimationType.NONE;
-  var modal = useRef(null);
-  var fullScreenWrapperRef = useRef(null);
+  var modal = React.useRef(null);
+  var fullScreenWrapperRef = React.useRef(null);
   useUnmountingAnimation(popoverRef, function () {
     var _context$options3, _mountPoint$childElem;
     switch ((_context$options3 = context.options) === null || _context$options3 === void 0 ? void 0 : _context$options3.animationType) {
@@ -11122,24 +11173,24 @@ function Dialog(_ref19) {
     }
   }, [fullScreenWrapperRef, modal], skipUnmountAnimation);
   useOnEscapeHandler(onClose);
-  return mountPoint && /*#__PURE__*/createPortal( /*#__PURE__*/React.createElement(Provider$8, null, /*#__PURE__*/React.createElement(PopoverBoundaryProvider, {
+  return mountPoint && /*#__PURE__*/reactDom.createPortal( /*#__PURE__*/React__default["default"].createElement(Provider$8, null, /*#__PURE__*/React__default["default"].createElement(PopoverBoundaryProvider, {
     value: popoverRef.current,
     updateTrigger: updatePopover
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", {
     ref: popoverRef
-  }, /*#__PURE__*/React.createElement(FullScreenWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(FullScreenWrapper, {
     enabled: pageCentered,
     fadeAnimation: ((_context$options4 = context.options) === null || _context$options4 === void 0 ? void 0 : _context$options4.animationType) === DialogAnimationType.FADE,
     onClick: closeOnBackgroundClick,
     ref: fullScreenWrapperRef
-  }, /*#__PURE__*/React.createElement(HiddenWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(HiddenWrapper, {
     constrain: pageCentered,
     hideOverflow: !pageCentered
-  }, /*#__PURE__*/React.createElement(AnimationWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(AnimationWrapper, {
     animationType: (_context$options5 = context.options) === null || _context$options5 === void 0 ? void 0 : _context$options5.animationType
-  }, /*#__PURE__*/React.createElement(OnCloseContext.Provider, {
+  }, /*#__PURE__*/React__default["default"].createElement(OnCloseContext.Provider, {
     value: onClose
-  }, /*#__PURE__*/React.createElement(Modal, {
+  }, /*#__PURE__*/React__default["default"].createElement(Modal, {
     color: color,
     ref: modal,
     constrain: pageCentered,
@@ -11150,32 +11201,32 @@ function Dialog(_ref19) {
   }, children)))))))), mountPoint);
 }
 
-var HeaderRow$1 = /*#__PURE__*/_styled(Row).withConfig({
+var HeaderRow$1 = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Header__HeaderRow",
   componentId: "sc-yebnjv-0"
 })(["height:1.5rem;margin:0.5rem 0.75rem 1rem;", ""], largeIconCss);
 function Header(_ref) {
   var title = _ref.title,
     children = _ref.children;
-  return /*#__PURE__*/React.createElement(HeaderRow$1, {
+  return /*#__PURE__*/React__default["default"].createElement(HeaderRow$1, {
     iconSize: 1.2,
     flex: true,
     align: "center",
     "data-testid": "header-container"
-  }, title && /*#__PURE__*/React.createElement(Row, {
+  }, title && /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5,
     "data-testid": "header-title"
-  }, /*#__PURE__*/React.createElement(Subhead1, null, title)), children && /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead1, null, title)), children && /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 1,
     "data-testid": "header-children"
   }, children));
 }
 
 var loadingOpacity = 0.6;
-var loadingCss = /*#__PURE__*/css(["filter:grayscale(1);opacity:", ";"], loadingOpacity);
+var loadingCss = /*#__PURE__*/_styled.css(["filter:grayscale(1);opacity:", ";"], loadingOpacity);
 
 // need to use isLoading as `loading` is a reserved prop
-var loadingTransitionCss = /*#__PURE__*/css(["opacity:", ";transition:color ", " linear,opacity ", " ease-in-out;"], function (_ref) {
+var loadingTransitionCss = /*#__PURE__*/_styled.css(["opacity:", ";transition:color ", " linear,opacity ", " ease-in-out;"], function (_ref) {
   var isLoading = _ref.isLoading;
   return isLoading && loadingOpacity;
 }, AnimationSpeed.Fast, function (_ref2) {
@@ -11192,10 +11243,10 @@ function otherField(field) {
   }
 }
 function useSwitchSwapCurrencies() {
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onSwitchTokens = _useAtomValue.onSwitchTokens;
-  var setSwap = useUpdateAtom(swapAtom);
-  return useCallback(function () {
+  var setSwap = utils.useUpdateAtom(swapAtom);
+  return React.useCallback(function () {
     setSwap(function (swap) {
       onSwitchTokens === null || onSwitchTokens === void 0 ? void 0 : onSwitchTokens();
       swap.type = invertTradeType(swap.type);
@@ -11206,21 +11257,21 @@ function useSwitchSwapCurrencies() {
   }, [onSwitchTokens, setSwap]);
 }
 function useSwapCurrency(field) {
-  var currencyAtom = useMemo(function () {
+  var currencyAtom = React.useMemo(function () {
     return pickAtom(swapAtom, field);
   }, [field]);
-  var _useAtom = useAtom(currencyAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(currencyAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     currency = _useAtom2[0],
     setCurrency = _useAtom2[1];
-  var otherCurrencyAtom = useMemo(function () {
+  var otherCurrencyAtom = React.useMemo(function () {
     return pickAtom(swapAtom, otherField(field));
   }, [field]);
-  var otherCurrency = useAtomValue(otherCurrencyAtom);
-  var _useAtomValue2 = useAtomValue(swapEventHandlersAtom),
+  var otherCurrency = utils.useAtomValue(otherCurrencyAtom);
+  var _useAtomValue2 = utils.useAtomValue(swapEventHandlersAtom),
     onTokenChange = _useAtomValue2.onTokenChange;
   var switchSwapCurrencies = useSwitchSwapCurrencies();
-  var setOrSwitchCurrency = useCallback(function (update) {
+  var setOrSwitchCurrency = React.useCallback(function (update) {
     if (update === currency) return;
     if (update === otherCurrency) {
       switchSwapCurrencies();
@@ -11233,23 +11284,23 @@ function useSwapCurrency(field) {
 }
 var tradeTypeAtom = pickAtom(swapAtom, 'type');
 function useIsSwapFieldIndependent(field) {
-  var type = useAtomValue(tradeTypeAtom);
+  var type = utils.useAtomValue(tradeTypeAtom);
   return type === toTradeType(field);
 }
 var amountAtom = pickAtom(swapAtom, 'amount');
 
 /** Returns true if the user has entered a non-zero amount. */
 function useIsAmountPopulated() {
-  return Boolean(Number(useAtomValue(amountAtom)));
+  return Boolean(Number(utils.useAtomValue(amountAtom)));
 }
 function useSwapAmount(field) {
-  var value = useAtomValue(amountAtom);
+  var value = utils.useAtomValue(amountAtom);
   var isFieldIndependent = useIsSwapFieldIndependent(field);
   var amount = isFieldIndependent ? value : undefined;
-  var _useAtomValue3 = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue3 = utils.useAtomValue(swapEventHandlersAtom),
     onAmountChange = _useAtomValue3.onAmountChange;
-  var setSwap = useUpdateAtom(swapAtom);
-  var updateAmount = useCallback(function (update, origin) {
+  var setSwap = utils.useUpdateAtom(swapAtom);
+  var updateAmount = React.useCallback(function (update, origin) {
     if (update === amount) return;
     onAmountChange === null || onAmountChange === void 0 ? void 0 : onAmountChange(field, update, origin);
     setSwap(function (swap) {
@@ -11260,7 +11311,7 @@ function useSwapAmount(field) {
   return [amount, updateAmount];
 }
 
-function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper$1(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray$1(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$1(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen); }
 function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var colors = new Map();
@@ -11273,7 +11324,7 @@ function getColorFromLogoURIs(_x) {
   return _getColorFromLogoURIs.apply(this, arguments);
 }
 function _getColorFromLogoURIs() {
-  _getColorFromLogoURIs = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(logoURIs) {
+  _getColorFromLogoURIs = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(logoURIs) {
     var cb,
       key,
       color,
@@ -11282,7 +11333,7 @@ function _getColorFromLogoURIs() {
       logoURI,
       uri,
       _args = arguments;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           cb = _args.length > 1 && _args[1] !== undefined ? _args[1] : function () {
@@ -11347,14 +11398,14 @@ function getColorFromUriPath(_x2) {
   return _getColorFromUriPath.apply(this, arguments);
 }
 function _getColorFromUriPath() {
-  _getColorFromUriPath = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(uri) {
+  _getColorFromUriPath = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2(uri) {
     var _palette$Vibrant, palette;
-    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
           _context2.next = 3;
-          return Vibrant.from(uri).getPalette();
+          return Vibrant__default["default"].from(uri).getPalette();
         case 3:
           palette = _context2.sent;
           return _context2.abrupt("return", (_palette$Vibrant = palette.Vibrant) === null || _palette$Vibrant === void 0 ? void 0 : _palette$Vibrant.hex);
@@ -11372,22 +11423,22 @@ function _getColorFromUriPath() {
   return _getColorFromUriPath.apply(this, arguments);
 }
 function usePrefetchCurrencyColor(currency) {
-  var theme = /*#__PURE__*/useTheme();
+  var theme = /*#__PURE__*/_styled.useTheme();
   var logoURIs = useLogos(currency);
-  useEffect(function () {
+  React.useEffect(function () {
     if (theme.tokenColorExtraction && logoURIs) {
       getColorFromLogoURIs(logoURIs);
     }
   }, [logoURIs, theme.tokenColorExtraction]);
 }
 function useCurrencyColor(currency) {
-  var _useState = useState(undefined),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(undefined),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     color = _useState2[0],
     setColor = _useState2[1];
-  var theme = /*#__PURE__*/useTheme();
+  var theme = /*#__PURE__*/_styled.useTheme();
   var logoURIs = useLogos(currency);
-  useEffect(function () {
+  React.useEffect(function () {
     var stale = false;
     if (theme.tokenColorExtraction && logoURIs) {
       getColorFromLogoURIs(logoURIs, function (color) {
@@ -11414,23 +11465,23 @@ var WIDGET_BREAKPOINTS = /*#__PURE__*/function (WIDGET_BREAKPOINTS) {
   return WIDGET_BREAKPOINTS;
 }({});
 
-var WidgetWidthContext = /*#__PURE__*/createContext(0);
+var WidgetWidthContext = /*#__PURE__*/React.createContext(0);
 function WidgetWidthProvider(_ref) {
   var width = _ref.width,
     children = _ref.children;
-  return /*#__PURE__*/React.createElement(WidgetWidthContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(WidgetWidthContext.Provider, {
     value: width
   }, children);
 }
 function useWidgetWidth() {
-  return useContext(WidgetWidthContext);
+  return React.useContext(WidgetWidthContext);
 }
 function useIsWideWidget() {
   var widgetWidth = useWidgetWidth();
   return widgetWidth > WIDGET_BREAKPOINTS.WIDE;
 }
 
-var MIN_NATIVE_CURRENCY_FOR_GAS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)); // .01 ETH
+var MIN_NATIVE_CURRENCY_FOR_GAS = JSBI__default["default"].exponentiate(JSBI__default["default"].BigInt(10), JSBI__default["default"].BigInt(16)); // .01 ETH
 /**
  * Given some token amount, return the max that can be spent of it
  * @param currencyAmount to return max of
@@ -11438,10 +11489,10 @@ var MIN_NATIVE_CURRENCY_FOR_GAS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt
 function maxAmountSpend(currencyAmount) {
   if (!currencyAmount) return undefined;
   if (currencyAmount.currency.isNative) {
-    if (JSBI.greaterThan(currencyAmount.quotient, MIN_NATIVE_CURRENCY_FOR_GAS)) {
-      return CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI.subtract(currencyAmount.quotient, MIN_NATIVE_CURRENCY_FOR_GAS));
+    if (JSBI__default["default"].greaterThan(currencyAmount.quotient, MIN_NATIVE_CURRENCY_FOR_GAS)) {
+      return sdkCore.CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI__default["default"].subtract(currencyAmount.quotient, MIN_NATIVE_CURRENCY_FOR_GAS));
     } else {
-      return CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI.BigInt(0));
+      return sdkCore.CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI__default["default"].BigInt(0));
     }
   }
   return currencyAmount;
@@ -11455,23 +11506,23 @@ function PriceImpactRow(_ref) {
   if (!impact) {
     return null;
   }
-  return /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25,
     flex: true,
     align: "center",
     flow: reverse ? 'row-reverse' : 'row wrap'
-  }, /*#__PURE__*/React.createElement(Body2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Body2, {
     userSelect: false,
     color: (_impact$warning = impact.warning) !== null && _impact$warning !== void 0 ? _impact$warning : 'hint'
-  }, /*#__PURE__*/React.createElement(TooltipText, {
-    text: "(".concat(formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent), ")")
-  }, /*#__PURE__*/React.createElement(Caption$1, null, tooltipText))), (impact === null || impact === void 0 ? void 0 : impact.warning) && /*#__PURE__*/React.createElement(Tooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(TooltipText, {
+    text: "(".concat(format.formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent), ")")
+  }, /*#__PURE__*/React__default["default"].createElement(Caption$1, null, tooltipText))), (impact === null || impact === void 0 ? void 0 : impact.warning) && /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     icon: AlertTriangle,
     iconProps: {
       color: impact.warning
     },
     "data-testid": "alert-tooltip"
-  }, /*#__PURE__*/React.createElement(SmallToolTipBody, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(SmallToolTipBody, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "wFqUIe",
     message: "There will be a large difference between your input and output values due to current liquidity."
   }))));
@@ -11480,18 +11531,18 @@ function PriceImpactRow(_ref) {
 var _templateObject$5;
 var _excluded$1 = ["value", "onChange"],
   _excluded2 = ["value", "onChange", "enforcer", "pattern"];
-var Input$3 = /*#__PURE__*/_styled.input.withConfig({
+var Input$3 = /*#__PURE__*/_styled__default["default"].input.withConfig({
   displayName: "Input",
   componentId: "sc-2j7myi-0"
 })(["-webkit-appearance:textfield;background-color:transparent;border:none;color:currentColor;font-family:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;margin:0;outline:none;overflow:hidden;padding:0;text-align:left;text-overflow:ellipsis;width:100%;::-webkit-search-decoration{-webkit-appearance:none;}[type='number']{-moz-appearance:textfield;}::-webkit-outer-spin-button,::-webkit-inner-spin-button{-webkit-appearance:none;}::placeholder{color:", ";}:enabled{transition:color ", " linear;}"], function (_ref) {
   var theme = _ref.theme;
   return theme.hint;
 }, AnimationSpeed.Fast);
-var StringInput = /*#__PURE__*/forwardRef(function StringInput(_ref2, ref) {
+var StringInput = /*#__PURE__*/React.forwardRef(function StringInput(_ref2, ref) {
   var value = _ref2.value,
     _onChange = _ref2.onChange,
-    props = _objectWithoutProperties(_ref2, _excluded$1);
-  return /*#__PURE__*/React.createElement(Input$3, _extends$a({
+    props = _objectWithoutProperties__default["default"](_ref2, _excluded$1);
+  return /*#__PURE__*/React__default["default"].createElement(Input$3, _extends__default["default"]({
     value: value,
     onChange: function onChange(e) {
       return _onChange(e.target.value);
@@ -11510,20 +11561,20 @@ var StringInput = /*#__PURE__*/forwardRef(function StringInput(_ref2, ref) {
     ref: ref
   }, props));
 });
-var NumericInput = /*#__PURE__*/forwardRef(function NumericInput(_ref3, ref) {
+var NumericInput = /*#__PURE__*/React.forwardRef(function NumericInput(_ref3, ref) {
   var value = _ref3.value,
     onChange = _ref3.onChange,
     enforcer = _ref3.enforcer,
     pattern = _ref3.pattern,
-    props = _objectWithoutProperties(_ref3, _excluded2);
-  var validateChange = useCallback(function (event) {
+    props = _objectWithoutProperties__default["default"](_ref3, _excluded2);
+  var validateChange = React.useCallback(function (event) {
     var _enforcer;
     var nextInput = (_enforcer = enforcer(event.target.value.replace(/,/g, '.'))) === null || _enforcer === void 0 ? void 0 : _enforcer.replace(/^0+$/, '0');
     if (nextInput !== undefined) {
       onChange(nextInput);
     }
   }, [enforcer, onChange]);
-  return /*#__PURE__*/React.createElement(Input$3, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(Input$3, _extends__default["default"]({
     value: value,
     onChange: validateChange
     // universal input options
@@ -11550,8 +11601,8 @@ var integerEnforcer = function integerEnforcer(nextUserInput) {
   }
   return null;
 };
-var IntegerInput = /*#__PURE__*/forwardRef(function IntegerInput(props, ref) {
-  return /*#__PURE__*/React.createElement(NumericInput, _extends$a({
+var IntegerInput = /*#__PURE__*/React.forwardRef(function IntegerInput(props, ref) {
+  return /*#__PURE__*/React__default["default"].createElement(NumericInput, _extends__default["default"]({
     pattern: "^[0-9]*$",
     enforcer: integerEnforcer,
     ref: ref
@@ -11568,14 +11619,14 @@ var decimalEnforcer = function decimalEnforcer(nextUserInput) {
   }
   return null;
 };
-var DecimalInput = /*#__PURE__*/forwardRef(function DecimalInput(props, ref) {
-  return /*#__PURE__*/React.createElement(NumericInput, _extends$a({
+var DecimalInput = /*#__PURE__*/React.forwardRef(function DecimalInput(props, ref) {
+  return /*#__PURE__*/React__default["default"].createElement(NumericInput, _extends__default["default"]({
     pattern: "^[0-9]*[.,]?[0-9]*$",
     enforcer: decimalEnforcer,
     ref: ref
   }, props));
 });
-var inputCss = css(_templateObject$5 || (_templateObject$5 = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border: 1px solid ", ";\n  border-radius: ", "rem;\n  cursor: text;\n  padding: calc(0.75rem - 1px);\n\n  :hover:not(:focus-within) {\n    background-color: ", ";\n    border-color: ", ";\n  }\n\n  :focus-within {\n    border-color: ", ";\n  }\n"])), function (_ref4) {
+var inputCss = _styled.css(_templateObject$5 || (_templateObject$5 = _taggedTemplateLiteral__default["default"](["\n  background-color: ", ";\n  border: 1px solid ", ";\n  border-radius: ", "rem;\n  cursor: text;\n  padding: calc(0.75rem - 1px);\n\n  :hover:not(:focus-within) {\n    background-color: ", ";\n    border-color: ", ";\n  }\n\n  :focus-within {\n    border-color: ", ";\n  }\n"])), function (_ref4) {
   var theme = _ref4.theme;
   return theme.module;
 }, function (_ref5) {
@@ -11597,11 +11648,11 @@ var inputCss = css(_templateObject$5 || (_templateObject$5 = _taggedTemplateLite
 
 var MOBILE_BREAKPOINT_WIDTH = 640;
 function useIsMobileWidth() {
-  var _useState = useState(window.innerWidth),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(window.innerWidth),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     width = _useState2[0],
     setWidth = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     var resizeListener = function resizeListener() {
       return setWidth(window.innerWidth);
     };
@@ -11619,7 +11670,7 @@ function useOutsideClickHandler(node, onOutsideClick) {
       onOutsideClick();
     }
   };
-  useEffect(function () {
+  React.useEffect(function () {
     document.addEventListener('mousedown', handleClickOutside);
     return function () {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -11628,9 +11679,9 @@ function useOutsideClickHandler(node, onOutsideClick) {
 }
 
 var _templateObject$4, _templateObject2;
-var slideInBottom = keyframes(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["\n  from {\n    transform: translateY(calc(100vh));\n  }\n"])));
-var slideOutBottom = keyframes(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  to {\n    transform: translateY(100%);\n  }\n"])));
-var BottomSheetModalBackdrop = /*#__PURE__*/_styled.div.withConfig({
+var slideInBottom = _styled.keyframes(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral__default["default"](["\n  from {\n    transform: translateY(calc(100vh));\n  }\n"])));
+var slideOutBottom = _styled.keyframes(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral__default["default"](["\n  to {\n    transform: translateY(100%);\n  }\n"])));
+var BottomSheetModalBackdrop = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "BottomSheetModal__BottomSheetModalBackdrop",
   componentId: "sc-m6wq2l-0"
 })(["background-color:", ";bottom:0;left:0;opacity:1;position:fixed;right:0;&.hidden{opacity:0;transition:visibility 0s linear ", ",opacity ", ";visibility:hidden;}top:0;transition:visibility 0s linear 0s,opacity ", ";visibility:visible;z-index:", ";"], function (_ref) {
@@ -11640,7 +11691,7 @@ var BottomSheetModalBackdrop = /*#__PURE__*/_styled.div.withConfig({
   var theme = _ref2.theme;
   return theme.zIndex.modal - 1;
 });
-var Wrapper = /*#__PURE__*/_styled.div.withConfig({
+var Wrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "BottomSheetModal__Wrapper",
   componentId: "sc-m6wq2l-1"
 })(["border-radius:0;bottom:0;left:0;margin:0;overflow:hidden;position:absolute;right:0;z-index:", ";@supports (overflow:clip){overflow:clip;}", "{animation:", " ", " ease-in;border-bottom-left-radius:0;&.", "{animation:", " ", " ease-out;}border-bottom-right-radius:0;bottom:0;box-shadow:", ";height:unset;position:fixed;top:unset;*{box-sizing:border-box;}}"], function (_ref3) {
@@ -11655,42 +11706,42 @@ function BottomSheetModal(_ref5) {
     onClose = _ref5.onClose,
     open = _ref5.open,
     title = _ref5.title;
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     rootElement = _useState2[0],
     setRootElement = _useState2[1];
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(RootElement, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(RootElement, {
     ref: setRootElement,
     open: open,
     onClose: onClose
-  }), /*#__PURE__*/React.createElement(Provider$5, {
+  }), /*#__PURE__*/React__default["default"].createElement(Provider$5, {
     value: rootElement
-  }, open && /*#__PURE__*/React.createElement(Dialog, {
+  }, open && /*#__PURE__*/React__default["default"].createElement(Dialog, {
     color: "dialog",
     onClose: onClose,
     forceContain: true
-  }, /*#__PURE__*/React.createElement(React.Fragment, null, title && /*#__PURE__*/React.createElement(Header$1, {
-    title: /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, title && /*#__PURE__*/React__default["default"].createElement(Header$1, {
+    title: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "pDgeaz",
       message: "{title}",
       values: {
         title: title
       }
     }),
-    closeButton: /*#__PURE__*/React.createElement(StyledXButton$1, null)
+    closeButton: /*#__PURE__*/React__default["default"].createElement(StyledXButton$1, null)
   }), children))));
 }
-var RootElement = /*#__PURE__*/forwardRef(function RootWrapper(_ref6, ref) {
+var RootElement = /*#__PURE__*/React.forwardRef(function RootWrapper(_ref6, ref) {
   var children = _ref6.children,
     open = _ref6.open,
     onClose = _ref6.onClose;
-  return /*#__PURE__*/createPortal( /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BottomSheetModalBackdrop, {
+  return /*#__PURE__*/reactDom.createPortal( /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(BottomSheetModalBackdrop, {
     className: !open ? 'hidden' : undefined,
     onClick: function onClick(e) {
       onClose();
       e.stopPropagation();
     }
-  }), /*#__PURE__*/React.createElement(Wrapper, {
+  }), /*#__PURE__*/React__default["default"].createElement(Wrapper, {
     "data-testid": "BottomSheetModal__Wrapper",
     ref: ref
   }, children)), document.body);
@@ -11710,15 +11761,15 @@ function ResponsiveDialog(_ref) {
     bottomSheetTitle = _ref.bottomSheetTitle;
   var isMobile = useIsMobileWidth();
   var pageCenteredDialogsEnabled = useIsDialogPageCentered();
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     wrapper = _useState2[0],
     setWrapper = _useState2[1];
   useOutsideClickHandler(isMobile ? null : wrapper, function () {
     return setOpen(false);
   });
   if (isMobile && (pageCenteredDialogsEnabled || mobileBottomSheet)) {
-    return /*#__PURE__*/React.createElement(React.Fragment, null, anchor, /*#__PURE__*/React.createElement(BottomSheetModal, {
+    return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, anchor, /*#__PURE__*/React__default["default"].createElement(BottomSheetModal, {
       onClose: function onClose() {
         return setOpen(false);
       },
@@ -11726,21 +11777,21 @@ function ResponsiveDialog(_ref) {
       title: bottomSheetTitle
     }, children));
   } else if (defaultView === 'popover') {
-    return /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React__default["default"].createElement("div", {
       ref: setWrapper
-    }, /*#__PURE__*/React.createElement(PopoverBoundaryProvider, {
+    }, /*#__PURE__*/React__default["default"].createElement(PopoverBoundaryProvider, {
       value: wrapper
-    }, /*#__PURE__*/React.createElement(Popover, {
+    }, /*#__PURE__*/React__default["default"].createElement(Popover, {
       showArrow: false,
       offset: 10,
       show: open,
       placement: "top-end",
       content: children
-    }, anchor !== null && anchor !== void 0 ? anchor : /*#__PURE__*/React.createElement(IconButton, {
+    }, anchor !== null && anchor !== void 0 ? anchor : /*#__PURE__*/React__default["default"].createElement(IconButton, {
       icon: Info
     }))));
   } else {
-    return /*#__PURE__*/React.createElement(React.Fragment, null, anchor, open && /*#__PURE__*/React.createElement(Dialog, {
+    return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, anchor, open && /*#__PURE__*/React__default["default"].createElement(Dialog, {
       color: "container",
       onClose: function onClose() {
         return setOpen(false);
@@ -11750,10 +11801,10 @@ function ResponsiveDialog(_ref) {
 }
 
 function useConditionalHandler(handler) {
-  return useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  return React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
     var result,
       _args = arguments;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (handler) {
@@ -11793,13 +11844,13 @@ function TokenImg(_ref) {
   var token = _ref.token,
     _ref$size = _ref.size,
     size = _ref$size === void 0 ? 1.5 : _ref$size;
-  return /*#__PURE__*/React.createElement(Logo, {
+  return /*#__PURE__*/React__default["default"].createElement(Logo, {
     currency: token,
     size: size + 'rem',
     symbol: token.symbol
   });
 }
-var TokenImg$1 = _styled(TokenImg).withConfig({
+var TokenImg$1 = _styled__default["default"](TokenImg).withConfig({
   displayName: "TokenImg",
   componentId: "sc-39e2lf-0"
 })(["background:radial-gradient( ", " calc(100% / ", " - 1.5px),", " calc(100% / ", " - 1.5px) );border-radius:100%;height:", "rem;width:", "rem;"], function (_ref2) {
@@ -11818,24 +11869,24 @@ var TokenImg$1 = _styled(TokenImg).withConfig({
 
 var _objectSpread2, _SupportedChainId$MAI;
 function ownKeys$7(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$7(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$7(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$7(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$7(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var WRAPPED_NATIVE_CURRENCIES_ONLY = Object.fromEntries(Object.entries(WRAPPED_NATIVE_CURRENCY).map(function (_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
+  var _ref2 = _slicedToArray__default["default"](_ref, 2),
     key = _ref2[0],
     value = _ref2[1];
   return [key, [value]];
 }).filter(Boolean));
 
 // used to construct intermediary pairs for trading
-var BASES_TO_CHECK_TRADES_AGAINST = _objectSpread$7(_objectSpread$7({}, WRAPPED_NATIVE_CURRENCIES_ONLY), {}, (_objectSpread2 = {}, _defineProperty(_objectSpread2, SupportedChainId.MAINNET, [nativeOnChain(SupportedChainId.MAINNET), DAI, USDC_MAINNET, USDT, WBTC].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.MAINNET]))), _defineProperty(_objectSpread2, SupportedChainId.OPTIMISM, [].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM]), [DAI_OPTIMISM, USDT_OPTIMISM, WBTC_OPTIMISM])), _defineProperty(_objectSpread2, SupportedChainId.ARBITRUM_ONE, [].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.ARBITRUM_ONE]), [DAI_ARBITRUM_ONE, USDT_ARBITRUM_ONE, WBTC_ARBITRUM_ONE])), _defineProperty(_objectSpread2, SupportedChainId.POLYGON, [].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.POLYGON]), [DAI_POLYGON, USDC_POLYGON, USDT_POLYGON, WETH_POLYGON])), _defineProperty(_objectSpread2, SupportedChainId.CELO, [].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.CELO]), [CUSD_CELO, CEUR_CELO, CMC02_CELO, PORTAL_USDC_CELO, PORTAL_ETH_CELO])), _defineProperty(_objectSpread2, SupportedChainId.BNB, [nativeOnChain(SupportedChainId.BNB), USDC_BNB_CHAIN, USDT_BNB_CHAIN].concat(_toConsumableArray(WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BNB]))), _objectSpread2));
-_defineProperty({}, SupportedChainId.MAINNET, (_SupportedChainId$MAI = {
+var BASES_TO_CHECK_TRADES_AGAINST = _objectSpread$7(_objectSpread$7({}, WRAPPED_NATIVE_CURRENCIES_ONLY), {}, (_objectSpread2 = {}, _defineProperty__default["default"](_objectSpread2, SupportedChainId.MAINNET, [nativeOnChain(SupportedChainId.MAINNET), DAI, USDC_MAINNET, USDT, WBTC].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.MAINNET]))), _defineProperty__default["default"](_objectSpread2, SupportedChainId.OPTIMISM, [].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM]), [DAI_OPTIMISM, USDT_OPTIMISM, WBTC_OPTIMISM])), _defineProperty__default["default"](_objectSpread2, SupportedChainId.ARBITRUM_ONE, [].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.ARBITRUM_ONE]), [DAI_ARBITRUM_ONE, USDT_ARBITRUM_ONE, WBTC_ARBITRUM_ONE])), _defineProperty__default["default"](_objectSpread2, SupportedChainId.POLYGON, [].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.POLYGON]), [DAI_POLYGON, USDC_POLYGON, USDT_POLYGON, WETH_POLYGON])), _defineProperty__default["default"](_objectSpread2, SupportedChainId.CELO, [].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.CELO]), [CUSD_CELO, CEUR_CELO, CMC02_CELO, PORTAL_USDC_CELO, PORTAL_ETH_CELO])), _defineProperty__default["default"](_objectSpread2, SupportedChainId.BNB, [nativeOnChain(SupportedChainId.BNB), USDC_BNB_CHAIN, USDT_BNB_CHAIN].concat(_toConsumableArray__default["default"](WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BNB]))), _objectSpread2));
+_defineProperty__default["default"]({}, SupportedChainId.MAINNET, (_SupportedChainId$MAI = {
   '0xF16E4d813f4DcfDe4c5b44f305c908742De84eF0': [ETH2X_FLI]
-}, _defineProperty(_SupportedChainId$MAI, rETH2.address, [sETH2]), _defineProperty(_SupportedChainId$MAI, SWISE.address, [sETH2]), _defineProperty(_SupportedChainId$MAI, FEI.address, [TRIBE]), _defineProperty(_SupportedChainId$MAI, TRIBE.address, [FEI]), _defineProperty(_SupportedChainId$MAI, FRAX.address, [FXS]), _defineProperty(_SupportedChainId$MAI, FXS.address, [FRAX]), _defineProperty(_SupportedChainId$MAI, WBTC.address, [renBTC]), _defineProperty(_SupportedChainId$MAI, renBTC.address, [WBTC]), _SupportedChainId$MAI));
+}, _defineProperty__default["default"](_SupportedChainId$MAI, rETH2.address, [sETH2]), _defineProperty__default["default"](_SupportedChainId$MAI, SWISE.address, [sETH2]), _defineProperty__default["default"](_SupportedChainId$MAI, FEI.address, [TRIBE]), _defineProperty__default["default"](_SupportedChainId$MAI, TRIBE.address, [FEI]), _defineProperty__default["default"](_SupportedChainId$MAI, FRAX.address, [FXS]), _defineProperty__default["default"](_SupportedChainId$MAI, FXS.address, [FRAX]), _defineProperty__default["default"](_SupportedChainId$MAI, WBTC.address, [renBTC]), _defineProperty__default["default"](_SupportedChainId$MAI, renBTC.address, [WBTC]), _SupportedChainId$MAI));
 /**
  * Some tokens can only be swapped via certain pairs, so we override the list of bases that are considered for these
  * tokens.
  */
-_defineProperty({}, SupportedChainId.MAINNET, _defineProperty({}, AMPL.address, [DAI, WRAPPED_NATIVE_CURRENCY[SupportedChainId.MAINNET]]));
+_defineProperty__default["default"]({}, SupportedChainId.MAINNET, _defineProperty__default["default"]({}, AMPL.address, [DAI, WRAPPED_NATIVE_CURRENCY[SupportedChainId.MAINNET]]));
 
 function currencyId(currency) {
   if (currency.isNative) return 'ETH';
@@ -11844,11 +11895,11 @@ function currencyId(currency) {
 }
 
 var _templateObject$3;
-var BasesContainer = /*#__PURE__*/_styled(Row).withConfig({
+var BasesContainer = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "CommonBases__BasesContainer",
   componentId: "sc-992jnt-0"
 })(["margin:0 1.25rem;"]);
-var activeCss = css(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["\n  background-color: ", ";\n  border-color: ", ";\n  color: ", ";\n"])), function (_ref) {
+var activeCss = _styled.css(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral__default["default"](["\n  background-color: ", ";\n  border-color: ", ";\n  color: ", ";\n"])), function (_ref) {
   var theme = _ref.theme;
   return theme.activeSoft;
 }, function (_ref2) {
@@ -11858,7 +11909,7 @@ var activeCss = css(_templateObject$3 || (_templateObject$3 = _taggedTemplateLit
   var theme = _ref3.theme;
   return theme.active;
 });
-var BaseWrapper = /*#__PURE__*/_styled(Row).withConfig({
+var BaseWrapper = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "CommonBases__BaseWrapper",
   componentId: "sc-992jnt-1"
 })(["border:1px solid ", ";border-radius:1rem;color:", ";cursor:pointer;padding:0.5rem 0.75rem 0.5rem 0.5rem;", ";:hover,:focus{", "}"], function (_ref4) {
@@ -11883,7 +11934,7 @@ function CommonBases(_ref7) {
   if (bases.length === 0) {
     return null;
   }
-  return /*#__PURE__*/React.createElement(BasesContainer, {
+  return /*#__PURE__*/React__default["default"].createElement(BasesContainer, {
     gap: 0.5,
     flex: true,
     justify: "start"
@@ -11892,7 +11943,7 @@ function CommonBases(_ref7) {
     var onKeyPress = function onKeyPress(e) {
       return e.key === 'Enter' && onSelect(currency);
     };
-    return /*#__PURE__*/React.createElement(BaseWrapper, {
+    return /*#__PURE__*/React__default["default"].createElement(BaseWrapper, {
       flex: true,
       tabIndex: 0,
       "data-testid": "common-base-".concat(currency.symbol),
@@ -11903,39 +11954,39 @@ function CommonBases(_ref7) {
       active: isSelected,
       key: currencyId(currency),
       gap: 0.25
-    }, /*#__PURE__*/React.createElement(TokenImg$1, {
+    }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
       token: currency,
       size: 1.25
-    }), /*#__PURE__*/React.createElement(ButtonMedium, {
+    }), /*#__PURE__*/React__default["default"].createElement(ButtonMedium, {
       lineHeight: "1.25rem"
     }, currency.symbol));
   }));
 }
 
-var HelpCircleIcon = /*#__PURE__*/_styled(HelpCircle).withConfig({
+var HelpCircleIcon = /*#__PURE__*/_styled__default["default"](HelpCircle).withConfig({
   displayName: "NoTokensAvailableOnNetwork__HelpCircleIcon",
   componentId: "sc-q2vrkm-0"
 })(["height:4rem;margin-bottom:0.75rem;stroke:", ";width:4rem;"], function (_ref) {
   var theme = _ref.theme;
   return theme.secondary;
 });
-var StyledColumn = /*#__PURE__*/_styled(Column).withConfig({
+var StyledColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "NoTokensAvailableOnNetwork__StyledColumn",
   componentId: "sc-q2vrkm-1"
 })(["display:flex;height:80%;text-align:center;width:100%;"]);
 function NoTokensAvailableOnNetwork() {
-  return /*#__PURE__*/React.createElement(StyledColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledColumn, {
     align: "center",
     justify: "center"
-  }, /*#__PURE__*/React.createElement(HelpCircleIcon, null), /*#__PURE__*/React.createElement(Body1, {
+  }, /*#__PURE__*/React__default["default"].createElement(HelpCircleIcon, null), /*#__PURE__*/React__default["default"].createElement(Body1, {
     color: "primary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "bq3O2b",
     message: "No tokens are available on this network. Please switch to another network."
   })));
 }
 
-var StyledTokenButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var StyledTokenButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "TokenButton__StyledTokenButton",
   componentId: "sc-z5ef1t-0"
 })(["border-radius:", "rem;min-height:2rem;padding:0.25rem 0.5rem 0.25rem 0.25rem;:enabled{transition:none;}", "{filter:", ";}"], function (_ref) {
@@ -11945,7 +11996,7 @@ var StyledTokenButton = /*#__PURE__*/_styled(Button$1).withConfig({
   var approved = _ref2.approved;
   return approved === false && 'grayscale(1)';
 });
-var TokenButtonRow = /*#__PURE__*/_styled(Row).withConfig({
+var TokenButtonRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "TokenButton__TokenButtonRow",
   componentId: "sc-z5ef1t-1"
 })(["max-width:12rem;overflow:hidden;padding-left:", "rem;width:max-content;img{min-width:1.2rem;}"], function (_ref3) {
@@ -11957,40 +12008,40 @@ function TokenButton$1(_ref4) {
     approved = _ref4.approved,
     disabled = _ref4.disabled,
     onClick = _ref4.onClick;
-  return /*#__PURE__*/React.createElement(StyledTokenButton, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledTokenButton, {
     onClick: onClick,
     color: value ? 'interactive' : 'accent',
     approved: approved,
     disabled: disabled,
     "data-testid": "token-select"
-  }, /*#__PURE__*/React.createElement(TokenButtonRow, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenButtonRow, {
     empty: !value,
     flex: true,
     gap: 0.4,
     flow: "nowrap"
-  }, value ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Logo, {
+  }, value ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Logo, {
     currency: value,
     symbol: value.symbol
-  }), /*#__PURE__*/React.createElement(ButtonLarge, {
+  }), /*#__PURE__*/React__default["default"].createElement(ButtonLarge, {
     color: 'currentColor'
-  }, /*#__PURE__*/React.createElement("span", null, value.symbol))) : /*#__PURE__*/React.createElement(ButtonLarge, {
+  }, /*#__PURE__*/React__default["default"].createElement("span", null, value.symbol))) : /*#__PURE__*/React__default["default"].createElement(ButtonLarge, {
     color: 'onAccent',
     style: {
       maxWidth: '10rem',
       textOverflow: 'ellipsis',
       overflow: 'hidden'
     }
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "0RrIzN",
     message: "Select token"
-  })), /*#__PURE__*/React.createElement(ChevronDown, {
+  })), /*#__PURE__*/React__default["default"].createElement(ChevronDown, {
     strokeWidth: 2,
     color: value ? 'primary' : 'onAccent'
   })));
 }
 
 function useNativeEvent(element, type, listener, options) {
-  useEffect(function () {
+  React.useEffect(function () {
     element === null || element === void 0 ? void 0 : element.addEventListener(type, listener, options);
     return function () {
       return element === null || element === void 0 ? void 0 : element.removeEventListener(type, listener, options);
@@ -12082,13 +12133,13 @@ function formatCurrencyAmount(_ref) {
   }) : formatTransactionAmount(currencyAmountNumber);
 }
 
-var TokenButton = /*#__PURE__*/_styled(BaseButton).withConfig({
+var TokenButton = /*#__PURE__*/_styled__default["default"](BaseButton).withConfig({
   displayName: "TokenOptions__TokenButton",
   componentId: "sc-1q7unws-0"
 })(["border-radius:0;outline:none;padding:0.5rem 1.25rem;"]);
 var ITEM_SIZE = 56;
 var MIN_VISIBLE_TOKENS = 6;
-var TokenList = /*#__PURE__*/_styled(FixedSizeList).withConfig({
+var TokenList = /*#__PURE__*/_styled__default["default"](reactWindow.FixedSizeList).withConfig({
   displayName: "TokenOptions__TokenList",
   componentId: "sc-1q7unws-1"
 })(["", "[data-index='", "']{background-color:", ";}", " overscroll-behavior:none;"], TokenButton, function (_ref) {
@@ -12101,7 +12152,7 @@ var TokenList = /*#__PURE__*/_styled(FixedSizeList).withConfig({
   var scrollbar = _ref3.scrollbar;
   return scrollbar;
 });
-var OnHover = /*#__PURE__*/_styled.div.withConfig({
+var OnHover = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptions__OnHover",
   componentId: "sc-1q7unws-2"
 })(["background-color:", ";height:", "px;left:0;position:absolute;top:", "px;width:100%;"], function (_ref4) {
@@ -12111,7 +12162,7 @@ var OnHover = /*#__PURE__*/_styled.div.withConfig({
   var hover = _ref5.hover;
   return hover * ITEM_SIZE;
 });
-var TokenBalance = /*#__PURE__*/_styled.div.withConfig({
+var TokenBalance = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptions__TokenBalance",
   componentId: "sc-1q7unws-3"
 })(["background-color:", ";border-radius:0.25rem;padding:0.375rem 0;"], function (_ref6) {
@@ -12123,7 +12174,7 @@ function TokenOption$1(_ref7) {
   var index = _ref7.index,
     value = _ref7.value,
     style = _ref7.style;
-  var ref = useRef(null);
+  var ref = React.useRef(null);
   // Annotate the event to be handled later instead of passing in handlers to avoid rerenders.
   // This prevents token logos from reloading and flashing on the screen.
   var onEvent = function onEvent(e) {
@@ -12132,10 +12183,10 @@ function TokenOption$1(_ref7) {
     e.token = value;
     e.ref = (_ref$current = ref.current) !== null && _ref$current !== void 0 ? _ref$current : undefined;
   };
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var balance = useCurrencyBalance(account, value);
-  return /*#__PURE__*/React.createElement(TokenButton, {
+  return /*#__PURE__*/React__default["default"].createElement(TokenButton, {
     "data-index": index,
     style: style,
     onClick: onEvent,
@@ -12144,64 +12195,64 @@ function TokenOption$1(_ref7) {
     onMouseMove: onEvent,
     onKeyDown: onEvent,
     ref: ref
-  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: value,
     size: 2.25
-  }), /*#__PURE__*/React.createElement(Column, {
+  }), /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     gap: 0.125,
     align: "flex-start"
-  }, /*#__PURE__*/React.createElement(Subhead1, null, value.symbol), /*#__PURE__*/React.createElement(Body2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead1, null, value.symbol), /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary"
-  }, value.name))), /*#__PURE__*/React.createElement(TokenBalance, {
+  }, value.name))), /*#__PURE__*/React__default["default"].createElement(TokenBalance, {
     isLoading: Boolean(account) && !balance
-  }, /*#__PURE__*/React.createElement(Subhead1, null, (balance === null || balance === void 0 ? void 0 : balance.greaterThan(0)) && formatCurrencyAmount({
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead1, null, (balance === null || balance === void 0 ? void 0 : balance.greaterThan(0)) && formatCurrencyAmount({
     amount: balance
   })))));
 }
 var itemKey = function itemKey(index, tokens) {
   return currencyId(tokens[index]);
 };
-var ItemRow = /*#__PURE__*/memo(function ItemRow(_ref8) {
+var ItemRow = /*#__PURE__*/React.memo(function ItemRow(_ref8) {
   var tokens = _ref8.data,
     index = _ref8.index,
     style = _ref8.style;
-  return /*#__PURE__*/React.createElement(TokenOption$1, {
+  return /*#__PURE__*/React__default["default"].createElement(TokenOption$1, {
     index: index,
     value: tokens[index],
     style: style
   });
-}, areEqual);
-var TokenOptions = /*#__PURE__*/forwardRef(function TokenOptions(_ref9, ref) {
+}, reactWindow.areEqual);
+var TokenOptions = /*#__PURE__*/React.forwardRef(function TokenOptions(_ref9, ref) {
   var tokens = _ref9.tokens,
     onSelect = _ref9.onSelect;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     focused = _useState2[0],
     setFocused = _useState2[1];
-  var _useState3 = useState(tokens[0]),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(tokens[0]),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     selected = _useState4[0],
     setSelected = _useState4[1];
-  var hover = useMemo(function () {
+  var hover = React.useMemo(function () {
     return tokens.indexOf(selected);
   }, [selected, tokens]);
 
   // If tokens updates (eg from searching), always default to selecting the first token.
   // As long as tokens.length >= 1, a token should be selected.
-  useEffect(function () {
+  React.useEffect(function () {
     setSelected(function (selected) {
       return tokens.includes(selected) ? selected : tokens[0];
     });
   }, [tokens, setSelected]);
-  var list = useRef(null);
-  var _useState5 = useState(null),
-    _useState6 = _slicedToArray(_useState5, 2),
+  var list = React.useRef(null);
+  var _useState5 = React.useState(null),
+    _useState6 = _slicedToArray__default["default"](_useState5, 2),
     element = _useState6[0],
     setElement = _useState6[1];
-  var scrollTo = useCallback(function (index) {
+  var scrollTo = React.useCallback(function (index) {
     var scroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     if (index === undefined) return;
     if (scroll) {
@@ -12214,7 +12265,7 @@ var TokenOptions = /*#__PURE__*/forwardRef(function TokenOptions(_ref9, ref) {
     }
     setSelected(tokens[index]);
   }, [element, focused, tokens]);
-  var onKeyDown = useCallback(function (e) {
+  var onKeyDown = React.useCallback(function (e) {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       if (e.key === 'ArrowDown' && hover < tokens.length - 1) {
         scrollTo(hover + 1);
@@ -12229,39 +12280,39 @@ var TokenOptions = /*#__PURE__*/forwardRef(function TokenOptions(_ref9, ref) {
       onSelect(tokens[hover]);
     }
   }, [hover, onSelect, scrollTo, tokens]);
-  useImperativeHandle(ref, function () {
+  React.useImperativeHandle(ref, function () {
     return {
       onKeyDown: onKeyDown
     };
   }, [onKeyDown]);
-  var onClick = useCallback(function (_ref10) {
+  var onClick = React.useCallback(function (_ref10) {
     var token = _ref10.token;
     return token && onSelect(token);
   }, [onSelect]);
-  var onFocus = useCallback(function (_ref11) {
+  var onFocus = React.useCallback(function (_ref11) {
     var index = _ref11.index;
     setFocused(true);
     scrollTo(index);
   }, [scrollTo]);
-  var onBlur = useCallback(function () {
+  var onBlur = React.useCallback(function () {
     return setFocused(false);
   }, []);
-  var onMouseMove = useCallback(function (_ref12) {
+  var onMouseMove = React.useCallback(function (_ref12) {
     var index = _ref12.index;
     return scrollTo(index, false);
   }, [scrollTo]);
   var scrollbar = useScrollbar(element, {
     padded: true
   });
-  var onHover = useRef(null);
+  var onHover = React.useRef(null);
   // use native onscroll handler to capture Safari's bouncy overscroll effect
-  useNativeEvent(element, 'scroll', useCallback(function () {
+  useNativeEvent(element, 'scroll', React.useCallback(function () {
     if (element && onHover.current) {
       // must be set synchronously to avoid jank (avoiding useState)
       onHover.current.style.marginTop = "".concat(-element.scrollTop, "px");
     }
   }, [element]));
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     align: "unset",
     grow: true,
     onKeyDown: onKeyDown,
@@ -12273,14 +12324,14 @@ var TokenOptions = /*#__PURE__*/forwardRef(function TokenOptions(_ref9, ref) {
       minHeight: Math.min(tokens.length, MIN_VISIBLE_TOKENS) * ITEM_SIZE,
       overflow: 'hidden'
     }
-  }, /*#__PURE__*/React.createElement(OnHover, {
+  }, /*#__PURE__*/React__default["default"].createElement(OnHover, {
     hover: hover,
     ref: onHover
-  }), /*#__PURE__*/React.createElement(AutoSizer, {
+  }), /*#__PURE__*/React__default["default"].createElement(AutoSizer__default["default"], {
     disableWidth: true
   }, function (_ref13) {
     var height = _ref13.height;
-    return /*#__PURE__*/React.createElement(TokenList, {
+    return /*#__PURE__*/React__default["default"].createElement(TokenList, {
       hover: hover,
       height: height,
       width: "100%",
@@ -12298,23 +12349,23 @@ var TokenOptions = /*#__PURE__*/forwardRef(function TokenOptions(_ref9, ref) {
   }));
 });
 
-var Img = /*#__PURE__*/_styled.div.withConfig({
+var Img = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptionsSkeleton__Img",
   componentId: "sc-26hatp-0"
 })(["clip-path:circle(50%);height:1.5rem;width:1.5rem;"]);
-var _Symbol = /*#__PURE__*/_styled.div.withConfig({
+var _Symbol = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptionsSkeleton__Symbol",
   componentId: "sc-26hatp-1"
 })(["height:0.75rem;width:7rem;"]);
-var Name = /*#__PURE__*/_styled.div.withConfig({
+var Name = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptionsSkeleton__Name",
   componentId: "sc-26hatp-2"
 })(["height:0.5rem;width:5.5rem;"]);
-var Balance$1 = /*#__PURE__*/_styled.div.withConfig({
+var Balance$1 = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptionsSkeleton__Balance",
   componentId: "sc-26hatp-3"
 })(["padding:0.375rem 0;width:1.5rem;"]);
-var TokenRow = /*#__PURE__*/_styled.div.withConfig({
+var TokenRow = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenOptionsSkeleton__TokenRow",
   componentId: "sc-26hatp-4"
 })(["outline:none;padding:0.6875rem 0.75rem;", ",", ",", ",", "{background-color:", ";border-radius:0.25rem;}"], Img, _Symbol, Name, Balance$1, function (_ref) {
@@ -12322,32 +12373,32 @@ var TokenRow = /*#__PURE__*/_styled.div.withConfig({
   return theme.secondary;
 });
 function TokenOption() {
-  return /*#__PURE__*/React.createElement(TokenRow, null, /*#__PURE__*/React.createElement(Body1, null, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(TokenRow, null, /*#__PURE__*/React__default["default"].createElement(Body1, null, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(Img, null), /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(Img, null), /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     gap: 0.125,
     align: "flex-start",
     justify: "flex-center"
-  }, /*#__PURE__*/React.createElement(Subhead1, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead1, {
     style: {
       display: 'flex'
     }
-  }, /*#__PURE__*/React.createElement(_Symbol, null)), /*#__PURE__*/React.createElement(Caption$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(_Symbol, null)), /*#__PURE__*/React__default["default"].createElement(Caption$1, {
     style: {
       display: 'flex'
     }
-  }, /*#__PURE__*/React.createElement(Name, null)))), /*#__PURE__*/React.createElement(Balance$1, null))));
+  }, /*#__PURE__*/React__default["default"].createElement(Name, null)))), /*#__PURE__*/React__default["default"].createElement(Balance$1, null))));
 }
 function TokenOptionsSkeleton() {
-  return /*#__PURE__*/React.createElement(Column, null, /*#__PURE__*/React.createElement(TokenOption, null), /*#__PURE__*/React.createElement(TokenOption, null), /*#__PURE__*/React.createElement(TokenOption, null), /*#__PURE__*/React.createElement(TokenOption, null), /*#__PURE__*/React.createElement(TokenOption, null));
+  return /*#__PURE__*/React__default["default"].createElement(Column, null, /*#__PURE__*/React__default["default"].createElement(TokenOption, null), /*#__PURE__*/React__default["default"].createElement(TokenOption, null), /*#__PURE__*/React__default["default"].createElement(TokenOption, null), /*#__PURE__*/React__default["default"].createElement(TokenOption, null), /*#__PURE__*/React__default["default"].createElement(TokenOption, null));
 }
 
-var SearchInputContainer = /*#__PURE__*/_styled(Row).withConfig({
+var SearchInputContainer = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "TokenSelect__SearchInputContainer",
   componentId: "sc-16h6xtl-0"
 })(["", ""], inputCss);
-var TokenSelectContainer = /*#__PURE__*/_styled.div.withConfig({
+var TokenSelectContainer = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TokenSelect__TokenSelectContainer",
   componentId: "sc-16h6xtl-1"
 })(["border-radius:", "rem;min-height:", ";min-width:", ";overflow:hidden;padding:0.5rem 0 0;@supports (overflow:clip){overflow:'clip';}"], function (_ref) {
@@ -12360,21 +12411,21 @@ var TokenSelectContainer = /*#__PURE__*/_styled.div.withConfig({
   return $pageCentered ? "min(400px, '100vw')" : 'auto';
 });
 function usePrefetchBalances() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var tokenList = useTokenList();
-  var prefetchedTokenList = useRef();
+  var prefetchedTokenList = React.useRef();
   useCurrencyBalances(account, tokenList !== prefetchedTokenList.current ? tokenList : undefined);
   prefetchedTokenList.current = tokenList;
 }
 function useAreBalancesLoaded() {
-  var _useWeb3React2 = useWeb3React(),
+  var _useWeb3React2 = core.useWeb3React(),
     account = _useWeb3React2.account;
   var tokens = useTokenList();
-  var _native = useNativeCurrency();
-  var currencies = useMemo(function () {
-    return [_native].concat(_toConsumableArray(tokens));
-  }, [_native, tokens]);
+  var native = useNativeCurrency();
+  var currencies = React.useMemo(function () {
+    return [native].concat(_toConsumableArray__default["default"](tokens));
+  }, [native, tokens]);
   var balances = useCurrencyBalances(account, currencies).filter(Boolean);
   return !account || currencies.length === balances.length;
 }
@@ -12382,8 +12433,8 @@ function TokenSelectDialogContent(_ref3) {
   var value = _ref3.value,
     onSelect = _ref3.onSelect,
     onClose = _ref3.onClose;
-  var _useState = useState(''),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(''),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     query = _useState2[0],
     setQuery = _useState2[1];
   var list = useTokenList();
@@ -12391,12 +12442,12 @@ function TokenSelectDialogContent(_ref3) {
   var isPageCentered = useIsDialogPageCentered();
   var isTokenListLoaded = useIsTokenListLoaded();
   var areBalancesLoaded = useAreBalancesLoaded();
-  var _useState3 = useState(isTokenListLoaded && areBalancesLoaded),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(isTokenListLoaded && areBalancesLoaded),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     isLoaded = _useState4[0],
     setIsLoaded = _useState4[1];
   // Give the balance-less tokens a small block period to avoid layout thrashing from re-sorting.
-  useEffect(function () {
+  React.useEffect(function () {
     if (!isLoaded) {
       var timeout = setTimeout(function () {
         return setIsLoaded(true);
@@ -12407,64 +12458,64 @@ function TokenSelectDialogContent(_ref3) {
     }
     return;
   }, [isLoaded]);
-  useEffect(function () {
+  React.useEffect(function () {
     return setIsLoaded(Boolean(query) || isTokenListLoaded && areBalancesLoaded);
   }, [query, areBalancesLoaded, isTokenListLoaded]);
-  var input = useRef(null);
-  useEffect(function () {
+  var input = React.useRef(null);
+  React.useEffect(function () {
     var _input$current;
     return (_input$current = input.current) === null || _input$current === void 0 ? void 0 : _input$current.focus({
       preventScroll: true
     });
   }, [input]);
-  var _useState5 = useState(null),
-    _useState6 = _slicedToArray(_useState5, 2),
+  var _useState5 = React.useState(null),
+    _useState6 = _slicedToArray__default["default"](_useState5, 2),
     options = _useState6[0],
     setOptions = _useState6[1];
-  var _useWeb3React3 = useWeb3React(),
+  var _useWeb3React3 = core.useWeb3React(),
     chainId = _useWeb3React3.chainId;
-  var listHasTokens = useMemo(function () {
+  var listHasTokens = React.useMemo(function () {
     return list.some(function (token) {
       return token.chainId === chainId;
     });
   }, [chainId, list]);
   if (!listHasTokens && isLoaded) {
-    return /*#__PURE__*/React.createElement(Dialog, {
+    return /*#__PURE__*/React__default["default"].createElement(Dialog, {
       color: "container",
       onClose: onClose
-    }, /*#__PURE__*/React.createElement(Header$1, {
-      title: /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Header$1, {
+      title: /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "0RrIzN",
         message: "Select token"
       })
-    }), /*#__PURE__*/React.createElement(NoTokensAvailableOnNetwork, null));
+    }), /*#__PURE__*/React__default["default"].createElement(NoTokensAvailableOnNetwork, null));
   }
-  return /*#__PURE__*/React.createElement(TokenSelectContainer, {
+  return /*#__PURE__*/React__default["default"].createElement(TokenSelectContainer, {
     $pageCentered: isPageCentered !== null && isPageCentered !== void 0 ? isPageCentered : false
-  }, /*#__PURE__*/React.createElement(Header$1, {
-    title: /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Header$1, {
+    title: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "0RrIzN",
       message: "Select token"
     })
-  }), /*#__PURE__*/React.createElement(Column, {
+  }), /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75,
     style: {
       margin: '0 0.5rem'
     }
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     pad: 0.75,
     grow: true
-  }, /*#__PURE__*/React.createElement(SearchInputContainer, {
+  }, /*#__PURE__*/React__default["default"].createElement(SearchInputContainer, {
     gap: 0.75,
     justify: "start",
     flex: true
-  }, /*#__PURE__*/React.createElement(Search, {
+  }, /*#__PURE__*/React__default["default"].createElement(Search, {
     color: "secondary"
-  }), /*#__PURE__*/React.createElement(Body1, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body1, {
     flexGrow: 1
-  }, /*#__PURE__*/React.createElement(StringInput, {
+  }, /*#__PURE__*/React__default["default"].createElement(StringInput, {
     value: query,
     onChange: setQuery,
     placeholder: i18n._(
@@ -12475,41 +12526,41 @@ function TokenSelectDialogContent(_ref3) {
     }),
     onKeyDown: options === null || options === void 0 ? void 0 : options.onKeyDown,
     ref: input
-  })))), /*#__PURE__*/React.createElement(CommonBases, {
+  })))), /*#__PURE__*/React__default["default"].createElement(CommonBases, {
     chainId: chainId,
     onSelect: onSelect,
     selected: value
-  })), /*#__PURE__*/React.createElement(Rule, {
+  })), /*#__PURE__*/React__default["default"].createElement(Rule, {
     padded: true
-  })), isLoaded ? tokens.length ? /*#__PURE__*/React.createElement(TokenOptions, {
+  })), isLoaded ? tokens.length ? /*#__PURE__*/React__default["default"].createElement(TokenOptions, {
     tokens: tokens,
     onSelect: onSelect,
     ref: setOptions
-  }) : /*#__PURE__*/React.createElement(Column, {
+  }) : /*#__PURE__*/React__default["default"].createElement(Column, {
     padded: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     justify: "center"
-  }, /*#__PURE__*/React.createElement(Body1, {
+  }, /*#__PURE__*/React__default["default"].createElement(Body1, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "MZbQHL",
     message: "No results found."
-  })))) : /*#__PURE__*/React.createElement(TokenOptionsSkeleton, null));
+  })))) : /*#__PURE__*/React__default["default"].createElement(TokenOptionsSkeleton, null));
 }
-var TokenSelect = /*#__PURE__*/memo(function TokenSelect(_ref4) {
+var TokenSelect = /*#__PURE__*/React.memo(function TokenSelect(_ref4) {
   var field = _ref4.field,
     value = _ref4.value,
     approved = _ref4.approved,
     disabled = _ref4.disabled,
     onSelect = _ref4.onSelect;
   usePrefetchBalances();
-  var _useState7 = useState(false),
-    _useState8 = _slicedToArray(_useState7, 2),
+  var _useState7 = React.useState(false),
+    _useState8 = _slicedToArray__default["default"](_useState7, 2),
     open = _useState8[0],
     setOpen = _useState8[1];
-  var onTokenSelectorClick = useConditionalHandler(useAtomValue(swapEventHandlersAtom).onTokenSelectorClick);
-  var onOpen = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var onTokenSelectorClick = useConditionalHandler(utils.useAtomValue(swapEventHandlersAtom).onTokenSelectorClick);
+  var onOpen = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.t0 = setOpen;
@@ -12524,19 +12575,19 @@ var TokenSelect = /*#__PURE__*/memo(function TokenSelect(_ref4) {
       }
     }, _callee);
   })), [field, onTokenSelectorClick]);
-  var selectAndClose = useCallback(function (value) {
+  var selectAndClose = React.useCallback(function (value) {
     onSelect(value);
     setOpen(false);
   }, [onSelect, setOpen]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TokenButton$1, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(TokenButton$1, {
     value: value,
     approved: approved,
     disabled: disabled,
     onClick: onOpen
-  }), /*#__PURE__*/React.createElement(ResponsiveDialog, {
+  }), /*#__PURE__*/React__default["default"].createElement(ResponsiveDialog, {
     open: open,
     setOpen: setOpen
-  }, /*#__PURE__*/React.createElement(TokenSelectDialogContent, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenSelectDialogContent, {
     value: value,
     onSelect: selectAndClose,
     onClose: function onClose() {
@@ -12546,22 +12597,22 @@ var TokenSelect = /*#__PURE__*/memo(function TokenSelect(_ref4) {
 });
 
 var _excluded = ["field", "amount", "currency", "approved", "loading", "disabled", "onChangeInput", "onChangeCurrency", "children"];
-var TokenInputRow = /*#__PURE__*/_styled(Row).withConfig({
+var TokenInputRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "TokenInput__TokenInputRow",
   componentId: "sc-1gaolgb-0"
 })(["grid-template-columns:1fr;"]);
-var ValueInput = /*#__PURE__*/_styled(DecimalInput).withConfig({
+var ValueInput = /*#__PURE__*/_styled__default["default"](DecimalInput).withConfig({
   displayName: "TokenInput__ValueInput",
   componentId: "sc-1gaolgb-1"
 })(["color:", ";", ""], function (_ref) {
   var theme = _ref.theme;
   return theme.primary;
 }, loadingTransitionCss);
-var TokenInputColumn = /*#__PURE__*/_styled(Column).withConfig({
+var TokenInputColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "TokenInput__TokenInputColumn",
   componentId: "sc-1gaolgb-2"
 })(["margin:0.25rem 1rem 0;"]);
-var TokenInput = /*#__PURE__*/forwardRef(function TokenInput(_ref2, ref) {
+var TokenInput = /*#__PURE__*/React.forwardRef(function TokenInput(_ref2, ref) {
   var field = _ref2.field,
     amount = _ref2.amount,
     currency = _ref2.currency,
@@ -12571,16 +12622,16 @@ var TokenInput = /*#__PURE__*/forwardRef(function TokenInput(_ref2, ref) {
     onChangeInput = _ref2.onChangeInput,
     onChangeCurrency = _ref2.onChangeCurrency,
     children = _ref2.children,
-    rest = _objectWithoutProperties(_ref2, _excluded);
-  var input = useRef(null);
-  var onSelect = useCallback(function (currency) {
+    rest = _objectWithoutProperties__default["default"](_ref2, _excluded);
+  var input = React.useRef(null);
+  var onSelect = React.useCallback(function (currency) {
     onChangeCurrency(currency);
     setImmediate(function () {
       var _input$current;
       return (_input$current = input.current) === null || _input$current === void 0 ? void 0 : _input$current.focus();
     });
   }, [onChangeCurrency]);
-  var focus = useCallback(function () {
+  var focus = React.useCallback(function () {
     setImmediate(function () {
       var _input$current2, _input$current3;
       (_input$current2 = input.current) === null || _input$current2 === void 0 ? void 0 : _input$current2.focus();
@@ -12589,22 +12640,22 @@ var TokenInput = /*#__PURE__*/forwardRef(function TokenInput(_ref2, ref) {
       (_input$current3 = input.current) === null || _input$current3 === void 0 ? void 0 : _input$current3.scrollTo(0, 0);
     });
   }, []);
-  useImperativeHandle(ref, function () {
+  React.useImperativeHandle(ref, function () {
     return {
       focus: focus
     };
   }, [focus]);
-  return /*#__PURE__*/React.createElement(TokenInputColumn, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(TokenInputColumn, _extends__default["default"]({
     gap: 0.25
-  }, rest), /*#__PURE__*/React.createElement(TokenInputRow, {
+  }, rest), /*#__PURE__*/React__default["default"].createElement(TokenInputRow, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(H1, null, /*#__PURE__*/React.createElement(ValueInput, {
+  }, /*#__PURE__*/React__default["default"].createElement(H1, null, /*#__PURE__*/React__default["default"].createElement(ValueInput, {
     value: amount,
     onChange: onChangeInput,
     disabled: disabled || !currency,
     isLoading: Boolean(loading),
     ref: input
-  })), /*#__PURE__*/React.createElement(TokenSelect, {
+  })), /*#__PURE__*/React__default["default"].createElement(TokenSelect, {
     field: field,
     value: currency,
     approved: approved,
@@ -12613,15 +12664,15 @@ var TokenInput = /*#__PURE__*/forwardRef(function TokenInput(_ref2, ref) {
   })), children);
 });
 
-var USDC = /*#__PURE__*/_styled(Row).withConfig({
+var USDC = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Input__USDC",
   componentId: "sc-11gio75-0"
 })(["", ";gap:0.25rem;"], loadingTransitionCss);
-var Balance = /*#__PURE__*/_styled(Body2).withConfig({
+var Balance = /*#__PURE__*/_styled__default["default"](Body2).withConfig({
   displayName: "Input__Balance",
   componentId: "sc-11gio75-1"
 })(["transition:color ", " ease-in-out;"], AnimationSpeed.Medium);
-var InputColumn$1 = /*#__PURE__*/_styled(Column).withConfig({
+var InputColumn$1 = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Input__InputColumn",
   componentId: "sc-11gio75-2"
 })(["background-color:", ";border-radius:", "rem;margin-bottom:0.25rem;padding:", ";position:relative;&:before{background-size:100%;border:1px solid transparent;border-radius:inherit;box-sizing:border-box;content:'';height:100%;left:0;pointer-events:none;position:absolute;top:0;transition:125ms ease border-color;width:100%;}", ""], function (_ref) {
@@ -12653,20 +12704,20 @@ function FieldWrapper(_ref6) {
     error = _useSwapInfo.error,
     tradeState = _useSwapInfo.trade.state;
   var _useSwapAmount = useSwapAmount(field),
-    _useSwapAmount2 = _slicedToArray(_useSwapAmount, 2),
+    _useSwapAmount2 = _slicedToArray__default["default"](_useSwapAmount, 2),
     amount = _useSwapAmount2[0],
     updateAmount = _useSwapAmount2[1];
   var _useSwapCurrency = useSwapCurrency(field),
-    _useSwapCurrency2 = _slicedToArray(_useSwapCurrency, 2),
+    _useSwapCurrency2 = _slicedToArray__default["default"](_useSwapCurrency, 2),
     currency = _useSwapCurrency2[0],
     updateCurrency = _useSwapCurrency2[1];
   var isWideWidget = useIsWideWidget();
-  var wrapper = useRef(null);
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var wrapper = React.useRef(null);
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     input = _useState2[0],
     setInput = _useState2[1];
-  var onClick = useCallback(function (event) {
+  var onClick = React.useCallback(function (event) {
     if (event.target === wrapper.current) {
       input === null || input === void 0 ? void 0 : input.focus();
     }
@@ -12679,26 +12730,26 @@ function FieldWrapper(_ref6) {
   var isDependentField = !useIsSwapFieldIndependent(field);
   var isLoading = isRouteLoading && isDependentField;
   var isWrap = useIsWrap();
-  var formattedAmount = useMemo(function () {
+  var formattedAmount = React.useMemo(function () {
     if (amount !== undefined) return amount;
     if (!currencyAmount) return '';
-    return isWrap ? currencyAmount.toExact() : formatCurrencyAmount$1(currencyAmount, NumberType.SwapTradeAmount);
+    return isWrap ? currencyAmount.toExact() : format.formatCurrencyAmount(currencyAmount, format.NumberType.SwapTradeAmount);
   }, [amount, currencyAmount, isWrap]);
-  var onClickMax = useCallback(function () {
+  var onClickMax = React.useCallback(function () {
     if (!maxAmount) return;
     updateAmount(maxAmount, /* origin= */'max');
   }, [maxAmount, updateAmount]);
-  return /*#__PURE__*/React.createElement(InputColumn$1, {
+  return /*#__PURE__*/React__default["default"].createElement(InputColumn$1, {
     isWide: isWideWidget,
     disableHover: isDisabled || !currency,
     ref: wrapper,
     onClick: onClick,
     className: className
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     pad: 1 /* rem */
-  }, /*#__PURE__*/React.createElement(Subhead2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead2, {
     color: 'secondary'
-  }, subheader)), /*#__PURE__*/React.createElement(TokenInput, {
+  }, subheader)), /*#__PURE__*/React__default["default"].createElement(TokenInput, {
     ref: setInput,
     field: field,
     amount: formattedAmount,
@@ -12708,12 +12759,12 @@ function FieldWrapper(_ref6) {
     disabled: isDisabled,
     onChangeInput: updateAmount,
     onChangeCurrency: updateCurrency
-  }, /*#__PURE__*/React.createElement(Body2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary",
     userSelect: true
-  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(USDC, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(USDC, {
     isLoading: isRouteLoading
-  }, usdc && "".concat(formatCurrencyAmount$1(usdc, NumberType.FiatTokenQuantity)), /*#__PURE__*/React.createElement(PriceImpactRow, {
+  }, usdc && "".concat(format.formatCurrencyAmount(usdc, format.NumberType.FiatTokenQuantity)), /*#__PURE__*/React__default["default"].createElement(PriceImpactRow, {
     impact: fiatValueChange,
     tooltipText: i18n._(
     /*i18n*/
@@ -12721,16 +12772,16 @@ function FieldWrapper(_ref6) {
       id: "KaCkzz",
       message: "The estimated difference between the USD values of input and output amounts."
     })
-  })), balance && /*#__PURE__*/React.createElement(Row, {
+  })), balance && /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, /*#__PURE__*/React.createElement(Balance, {
+  }, /*#__PURE__*/React__default["default"].createElement(Balance, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "0QDjxt",
     message: "Balance:"
-  }), " ", formatCurrencyAmount$1(balance)), maxAmount && /*#__PURE__*/React.createElement(TextButton, {
+  }), " ", format.formatCurrencyAmount(balance)), maxAmount && /*#__PURE__*/React__default["default"].createElement(TextButton, {
     onClick: onClickMax
-  }, /*#__PURE__*/React.createElement(ButtonSmall, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonSmall, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "CK1KXz",
     message: "Max"
   }))))))));
@@ -12741,7 +12792,7 @@ function Input$2() {
     balance = _useSwapInfo2$Field$I.balance,
     currencyAmount = _useSwapInfo2$Field$I.amount,
     approvalState = _useSwapInfo2.approval.state;
-  var maxAmount = useMemo(function () {
+  var maxAmount = React.useMemo(function () {
     // account for gas needed if using max on native token
     var max = maxAmountSpend(balance);
     if (!max || !balance) return;
@@ -12749,7 +12800,7 @@ function Input$2() {
     if (currencyAmount && max.equalTo(currencyAmount)) return;
     return max.toExact();
   }, [balance, currencyAmount]);
-  return /*#__PURE__*/React.createElement(FieldWrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(FieldWrapper, {
     field: Field.INPUT,
     maxAmount: maxAmount,
     approved: approvalState === SwapApprovalState.APPROVED,
@@ -12762,8 +12813,8 @@ function Input$2() {
   });
 }
 
-var colorAtom = atom(undefined);
-var OutputWrapper = /*#__PURE__*/_styled(FieldWrapper).withConfig({
+var colorAtom = jotai.atom(undefined);
+var OutputWrapper = /*#__PURE__*/_styled__default["default"](FieldWrapper).withConfig({
   displayName: "Output__OutputWrapper",
   componentId: "sc-1truvqp-0"
 })(["padding:", ";transition:", ";>{transition:", ";}"], function (_ref) {
@@ -12780,17 +12831,17 @@ function Output() {
   var _useSwapInfo = useSwapInfo(),
     fiatValueChange = _useSwapInfo.fiatValueChange;
   var _useSwapCurrency = useSwapCurrency(Field.OUTPUT),
-    _useSwapCurrency2 = _slicedToArray(_useSwapCurrency, 1),
+    _useSwapCurrency2 = _slicedToArray__default["default"](_useSwapCurrency, 1),
     currency = _useSwapCurrency2[0];
-  var overrideColor = useAtomValue(colorAtom);
+  var overrideColor = utils.useAtomValue(colorAtom);
   var dynamicColor = useCurrencyColor(currency);
   var isWideWidget = useIsWideWidget();
   var color = overrideColor || dynamicColor;
   // different state true/null/false allow smoother color transition
   var hasColor = currency ? Boolean(color) || null : false;
-  return /*#__PURE__*/React.createElement(DynamicThemeProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(DynamicThemeProvider, {
     color: color
-  }, /*#__PURE__*/React.createElement(OutputWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(OutputWrapper, {
     isWide: isWideWidget,
     field: Field.OUTPUT,
     fiatValueChange: fiatValueChange,
@@ -12804,7 +12855,7 @@ function Output() {
   }));
 }
 
-var Underlayer = /*#__PURE__*/_styled.div.withConfig({
+var Underlayer = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "ReverseButton__Underlayer",
   componentId: "sc-105hipk-0"
 })(["background-color:", ";border-radius:", "em;height:48px;left:50%;position:absolute;transform:translate(-50%,calc(-50% - 2px));width:48px;z-index:", ";"], function (_ref) {
@@ -12814,7 +12865,7 @@ var Underlayer = /*#__PURE__*/_styled.div.withConfig({
   var theme = _ref2.theme;
   return theme.borderRadius.medium;
 }, Layer.OVERLAY);
-var StyledReverseButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var StyledReverseButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "ReverseButton__StyledReverseButton",
   componentId: "sc-105hipk-1"
 })(["align-items:center;background-color:", ";border:4px solid ", ";border-radius:", "rem;display:flex;justify-content:center;width:100%;"], function (_ref3) {
@@ -12832,17 +12883,17 @@ function ReverseButton() {
     error = _useSwapInfo.error;
   var isDisabled = error !== undefined;
   var switchCurrencies = useSwitchSwapCurrencies();
-  return /*#__PURE__*/React.createElement(Underlayer, null, /*#__PURE__*/React.createElement(StyledReverseButton, {
+  return /*#__PURE__*/React__default["default"].createElement(Underlayer, null, /*#__PURE__*/React__default["default"].createElement(StyledReverseButton, {
     disabled: isDisabled,
     onClick: switchCurrencies
-  }, /*#__PURE__*/React.createElement(LargeIcon, {
+  }, /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     icon: Reverse
   })));
 }
 
 var _templateObject$2;
 var optionCss = function optionCss(selected) {
-  return css(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["\n  border: 1px solid ", ";\n  border-radius: ", "rem;\n  color: ", " !important;\n  display: grid;\n  grid-gap: 0.25rem;\n  padding: calc(0.75rem - 1px) 0.625rem;\n\n  :enabled {\n    border: 1px solid ", ";\n  }\n\n  :enabled:hover {\n    border-color: ", ";\n  }\n\n  :enabled:focus-within {\n    border-color: ", ";\n  }\n"])), function (_ref) {
+  return _styled.css(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral__default["default"](["\n  border: 1px solid ", ";\n  border-radius: ", "rem;\n  color: ", " !important;\n  display: grid;\n  grid-gap: 0.25rem;\n  padding: calc(0.75rem - 1px) 0.625rem;\n\n  :enabled {\n    border: 1px solid ", ";\n  }\n\n  :enabled:hover {\n    border-color: ", ";\n  }\n\n  :enabled:focus-within {\n    border-color: ", ";\n  }\n"])), function (_ref) {
     var theme = _ref.theme;
     return selected ? theme.active : '';
   }, function (_ref2) {
@@ -12865,12 +12916,12 @@ var optionCss = function optionCss(selected) {
 function Label$1(_ref8) {
   var name = _ref8.name,
     tooltip = _ref8.tooltip;
-  return /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5,
     justify: "flex-start",
     flex: true,
     align: "center"
-  }, /*#__PURE__*/React.createElement(Subhead2, null, name), tooltip && /*#__PURE__*/React.createElement(Tooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead2, null, name), tooltip && /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     placement: "top",
     contained: true,
     icon: Info,
@@ -12879,30 +12930,30 @@ function Label$1(_ref8) {
         height: '100%'
       }
     }
-  }, /*#__PURE__*/React.createElement(Caption$1, null, tooltip)));
+  }, /*#__PURE__*/React__default["default"].createElement(Caption$1, null, tooltip)));
 }
 
 function ownKeys$6(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$6(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-var Button = /*#__PURE__*/_styled(TextButton).withConfig({
+function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$6(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$6(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var Button = /*#__PURE__*/_styled__default["default"](TextButton).withConfig({
   displayName: "MaxSlippageSelect__Button",
   componentId: "sc-1me5hc8-0"
 })(["", " display:flex;flex-grow:1;max-width:180px;"], function (_ref) {
   var selected = _ref.selected;
   return optionCss(selected);
 });
-var Custom = /*#__PURE__*/_styled(BaseButton).withConfig({
+var Custom = /*#__PURE__*/_styled__default["default"](BaseButton).withConfig({
   displayName: "MaxSlippageSelect__Custom",
   componentId: "sc-1me5hc8-1"
 })(["", " ", " display:flex;flex-grow:1;max-width:180px;* input{text-align:right;}"], function (_ref2) {
   var selected = _ref2.selected;
   return optionCss(selected);
 }, inputCss);
-var ExpandoContentRow = /*#__PURE__*/_styled(Row).withConfig({
+var ExpandoContentRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "MaxSlippageSelect__ExpandoContentRow",
   componentId: "sc-1me5hc8-2"
 })(["margin:1rem 0 0;"]);
-var Option = /*#__PURE__*/forwardRef(function Option(_ref3, ref) {
+var Option = /*#__PURE__*/React.forwardRef(function Option(_ref3, ref) {
   var Wrapper = _ref3.wrapper,
     children = _ref3.children,
     selected = _ref3.selected,
@@ -12911,26 +12962,26 @@ var Option = /*#__PURE__*/forwardRef(function Option(_ref3, ref) {
     tabIndex = _ref3.tabIndex,
     testid = _ref3['data-testid'],
     justify = _ref3.justify;
-  return /*#__PURE__*/React.createElement(Wrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(Wrapper, {
     selected: selected,
     onClick: onSelect,
     ref: ref,
     tabIndex: tabIndex,
     "data-testid": testid
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5,
     flex: true,
     grow: true,
     flow: "nowrap",
     justify: justify,
     align: "center"
-  }, children, icon ? icon : /*#__PURE__*/React.createElement(LargeIcon, {
+  }, children, icon ? icon : /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     icon: Check,
     size: 1.25,
     color: selected ? 'active' : 'hint'
   })));
 });
-var Warning = /*#__PURE__*/memo(function Warning(_ref4) {
+var Warning = /*#__PURE__*/React.memo(function Warning(_ref4) {
   var state = _ref4.state,
     showTooltip = _ref4.showTooltip;
   var icon;
@@ -12939,7 +12990,7 @@ var Warning = /*#__PURE__*/memo(function Warning(_ref4) {
   switch (state) {
     case 'error':
       icon = XOctagon;
-      content = /*#__PURE__*/React.createElement(Trans, {
+      content = /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "UZ4TSv",
         message: "Please enter a valid slippage %"
       });
@@ -12947,20 +12998,20 @@ var Warning = /*#__PURE__*/memo(function Warning(_ref4) {
       break;
     case 'warning':
       icon = AlertTriangle;
-      content = /*#__PURE__*/React.createElement(Trans, {
+      content = /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "F5l42y",
         message: "High slippage increases the risk of price movement"
       });
       break;
   }
-  return /*#__PURE__*/React.createElement(Popover, {
+  return /*#__PURE__*/React__default["default"].createElement(Popover, {
     key: state,
-    content: /*#__PURE__*/React.createElement(Caption$1, null, content),
+    content: /*#__PURE__*/React__default["default"].createElement(Caption$1, null, content),
     show: show,
     placement: "top",
     offset: 16,
     contained: true
-  }, /*#__PURE__*/React.createElement(LargeIcon, {
+  }, /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     icon: icon,
     color: state,
     size: 1.25
@@ -12968,43 +13019,43 @@ var Warning = /*#__PURE__*/memo(function Warning(_ref4) {
 });
 function MaxSlippageSelect() {
   var _slippage$max;
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onSlippageChange = _useAtomValue.onSlippageChange;
-  var _useAtom = useAtom(slippageAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(slippageAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     slippage = _useAtom2[0],
     setSlippageBase = _useAtom2[1];
-  var setSlippage = useCallback(function (update) {
+  var setSlippage = React.useCallback(function (update) {
     onSlippageChange === null || onSlippageChange === void 0 ? void 0 : onSlippageChange(update);
     setSlippageBase(update);
   }, [onSlippageChange, setSlippageBase]);
-  var setAutoSlippage = useCallback(function () {
+  var setAutoSlippage = React.useCallback(function () {
     setSlippage({
       auto: true,
       max: undefined
     });
   }, [setSlippage]);
-  var _useState = useState(((_slippage$max = slippage.max) === null || _slippage$max === void 0 ? void 0 : _slippage$max.toString()) || ''),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(((_slippage$max = slippage.max) === null || _slippage$max === void 0 ? void 0 : _slippage$max.toString()) || ''),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     maxSlippageInput = _useState2[0],
     setMaxSlippageInput = _useState2[1];
-  var option = useRef(null);
+  var option = React.useRef(null);
   var showTooltip = useTooltip(option.current);
-  var input = useRef(null);
-  var focus = useCallback(function () {
+  var input = React.useRef(null);
+  var focus = React.useCallback(function () {
     var _input$current;
     return (_input$current = input.current) === null || _input$current === void 0 ? void 0 : _input$current.focus();
   }, [input]);
-  var _useState3 = useState(getSlippageWarning(toPercent(slippage.max))),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(getSlippageWarning(toPercent(slippage.max))),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     warning = _useState4[0],
     setWarning = _useState4[1];
-  useEffect(function () {
+  React.useEffect(function () {
     var _slippage$max2;
     setMaxSlippageInput(((_slippage$max2 = slippage.max) === null || _slippage$max2 === void 0 ? void 0 : _slippage$max2.toString()) || '');
     setWarning(getSlippageWarning(toPercent(slippage.max)));
   }, [slippage.max]);
-  var onInputSelect = useCallback(function () {
+  var onInputSelect = React.useCallback(function () {
     focus();
     var percent = toPercent(slippage.max);
     var warning = getSlippageWarning(percent);
@@ -13013,7 +13064,7 @@ function MaxSlippageSelect() {
       auto: auto
     }));
   }, [focus, slippage, setSlippage]);
-  var processInput = useCallback(function (max) {
+  var processInput = React.useCallback(function (max) {
     setMaxSlippageInput(max || '');
     var percent = toPercent(max);
     var warning = getSlippageWarning(percent);
@@ -13025,14 +13076,14 @@ function MaxSlippageSelect() {
   }, [setSlippage]);
   var _useSwapInfo = useSwapInfo(),
     allowedSlippage = _useSwapInfo.slippage;
-  var _useState5 = useState(false),
-    _useState6 = _slicedToArray(_useState5, 2),
+  var _useState5 = React.useState(false),
+    _useState6 = _slicedToArray__default["default"](_useState5, 2),
     open = _useState6[0],
     setOpen = _useState6[1];
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Expando, {
-    title: /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Expando, {
+    title: /*#__PURE__*/React__default["default"].createElement(Row, {
       style: {
         cursor: 'pointer'
       },
@@ -13043,23 +13094,23 @@ function MaxSlippageSelect() {
           return !open;
         });
       }
-    }, /*#__PURE__*/React.createElement(Label$1, {
-      name: /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Label$1, {
+      name: /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "SZRUQ4",
         message: "Max slippage"
       }),
-      tooltip: /*#__PURE__*/React.createElement(Trans, {
+      tooltip: /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "gXdBQ2",
         message: "Your transaction will revert if the price changes unfavorably by more than this percentage."
       })
-    }), /*#__PURE__*/React.createElement(Row, {
+    }), /*#__PURE__*/React__default["default"].createElement(Row, {
       gap: 0.2,
       justify: "flex-end",
       flex: true
-    }, /*#__PURE__*/React.createElement(IconPrefix, null, slippage.auto ? /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(IconPrefix, null, slippage.auto ? /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "R9Khdg",
       message: "Auto"
-    }) : "".concat(maxSlippageInput, "%")), /*#__PURE__*/React.createElement(IconButton, {
+    }) : "".concat(maxSlippageInput, "%")), /*#__PURE__*/React__default["default"].createElement(IconButton, {
       color: "secondary",
       icon: Expando$1,
       iconProps: {
@@ -13072,24 +13123,24 @@ function MaxSlippageSelect() {
     onExpand: function onExpand() {
       return setOpen(!open);
     }
-  }, /*#__PURE__*/React.createElement(ExpandoContentRow, {
+  }, /*#__PURE__*/React__default["default"].createElement(ExpandoContentRow, {
     gap: 0.5,
     grow: "first",
     flex: true,
     justify: "flex-end"
-  }, /*#__PURE__*/React.createElement(Option, {
+  }, /*#__PURE__*/React__default["default"].createElement(Option, {
     wrapper: Button,
     selected: slippage.auto,
     onSelect: setAutoSlippage,
     "data-testid": "auto-slippage"
-  }, /*#__PURE__*/React.createElement(ButtonMedium, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonMedium, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "R9Khdg",
     message: "Auto"
-  }))), /*#__PURE__*/React.createElement(Option, {
+  }))), /*#__PURE__*/React__default["default"].createElement(Option, {
     wrapper: Custom,
     selected: !slippage.auto,
     onSelect: onInputSelect,
-    icon: warning && /*#__PURE__*/React.createElement(Warning, {
+    icon: warning && /*#__PURE__*/React__default["default"].createElement(Warning, {
       state: warning,
       showTooltip: showTooltip
     }),
@@ -13097,12 +13148,12 @@ function MaxSlippageSelect() {
     tabIndex: -1,
     justify: "flex-end",
     "data-testid": "custom-slippage"
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     color: warning === 'error' ? 'error' : undefined,
     flex: true,
     grow: true,
     flow: "nowrap"
-  }, /*#__PURE__*/React.createElement(DecimalInput, {
+  }, /*#__PURE__*/React__default["default"].createElement(DecimalInput, {
     size: Math.max(maxSlippageInput.length, 4),
     value: maxSlippageInput,
     onChange: function onChange(input) {
@@ -13115,7 +13166,7 @@ function MaxSlippageSelect() {
   }), "%")))));
 }
 
-var Input$1 = /*#__PURE__*/_styled.input.withConfig({
+var Input$1 = /*#__PURE__*/_styled__default["default"].input.withConfig({
   displayName: "Toggle__Input",
   componentId: "sc-mgj1lp-0"
 })(["-moz-appearance:none;-webkit-appearance:none;align-items:center;appearance:none;background:", ";border:none;border-radius:", "rem;cursor:pointer;display:flex;font-size:inherit;font-weight:inherit;height:2rem;margin:0;padding:0;position:relative;width:3.5rem;:before{background-color:", ";border-radius:", "%;content:'';display:inline-block;height:1.5rem;margin-left:0.25rem;position:absolute;width:1.5rem;}:hover:before{background-color:", ";}:checked:before{background-color:", ";margin-left:1.75rem;}:hover:checked:before{background-color:", ";}:checked:after{margin-left:0;}:before{transition:margin ", " ease;}"], function (_ref) {
@@ -13132,23 +13183,23 @@ var Input$1 = /*#__PURE__*/_styled.input.withConfig({
   return theme.borderRadius.medium * 50;
 }, function (_ref5) {
   var theme = _ref5.theme;
-  return transparentize(0.3, theme.secondary);
+  return polished.transparentize(0.3, theme.secondary);
 }, function (_ref6) {
   var theme = _ref6.theme;
   return theme.accent;
 }, function (_ref7) {
   var theme = _ref7.theme;
-  return transparentize(0.3, theme.accent);
+  return polished.transparentize(0.3, theme.accent);
 }, AnimationSpeed.Medium);
 function Toggle(_ref8) {
   var checked = _ref8.checked,
     onToggle = _ref8.onToggle;
-  var onKeyDown = useCallback(function (e) {
+  var onKeyDown = React.useCallback(function (e) {
     if (e.key === 'Enter') {
       onToggle();
     }
   }, [onToggle]);
-  return /*#__PURE__*/React.createElement(ButtonMedium, null, /*#__PURE__*/React.createElement(Input$1, {
+  return /*#__PURE__*/React__default["default"].createElement(ButtonMedium, null, /*#__PURE__*/React__default["default"].createElement(Input$1, {
     type: "checkbox",
     checked: checked,
     onChange: function onChange() {
@@ -13159,13 +13210,13 @@ function Toggle(_ref8) {
 }
 
 function RouterPreferenceToggle() {
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onRouterPreferenceChange = _useAtomValue.onRouterPreferenceChange;
-  var _useAtom = useAtom(routerPreferenceAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(routerPreferenceAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     routerPreference = _useAtom2[0],
     setRouterPreferenceBase = _useAtom2[1];
-  var setRouterPreference = useCallback(function (update) {
+  var setRouterPreference = React.useCallback(function (update) {
     onRouterPreferenceChange === null || onRouterPreferenceChange === void 0 ? void 0 : onRouterPreferenceChange(update);
     setRouterPreferenceBase(update);
   }, [onRouterPreferenceChange, setRouterPreferenceBase]);
@@ -13176,61 +13227,61 @@ function RouterPreferenceToggle() {
     }
     setRouterPreference(RouterPreference.API);
   };
-  return /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, {
     flex: true,
     align: "center"
-  }, /*#__PURE__*/React.createElement(Label$1, {
-    name: /*#__PURE__*/React.createElement(Subhead2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label$1, {
+    name: /*#__PURE__*/React__default["default"].createElement(Subhead2, {
       color: "primary"
-    }, /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "m6dIzO",
       message: "Auto Router API"
     })),
-    tooltip: /*#__PURE__*/React.createElement(Trans, {
+    tooltip: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "vgrwaK",
       message: "Use the Uniswap Labs API to get faster quotes."
     })
-  }), /*#__PURE__*/React.createElement(Toggle, {
+  }), /*#__PURE__*/React__default["default"].createElement(Toggle, {
     onToggle: onToggle,
     checked: routerPreference === RouterPreference.API
   }));
 }
 
-var Input = /*#__PURE__*/_styled(Row).withConfig({
+var Input = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "TransactionTtlInput__Input",
   componentId: "sc-hllc9e-0"
 })(["", ";background-color:transparent;max-width:", "px;input{text-align:right;}"], inputCss, WIDGET_BREAKPOINTS.EXTRA_SMALL);
-var InputContainer = /*#__PURE__*/_styled(Row).withConfig({
+var InputContainer = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "TransactionTtlInput__InputContainer",
   componentId: "sc-hllc9e-1"
 })(["gap:0.5rem;margin:1rem 0 0;"]);
-var TtlValue = /*#__PURE__*/_styled.div.withConfig({
+var TtlValue = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "TransactionTtlInput__TtlValue",
   componentId: "sc-hllc9e-2"
 })(["min-width:3rem;text-align:right;"]);
 function TransactionTtlInput() {
   var _useTransactionTtl = useTransactionTtl(),
-    _useTransactionTtl2 = _slicedToArray(_useTransactionTtl, 2),
+    _useTransactionTtl2 = _slicedToArray__default["default"](_useTransactionTtl, 2),
     ttl = _useTransactionTtl2[0],
     setTtl = _useTransactionTtl2[1];
   var defaultTtl = useDefaultTransactionTtl();
   var placeholder = defaultTtl.toString();
-  var input = useRef(null);
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var input = React.useRef(null);
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
   var ttlValue = ttl === null || ttl === void 0 ? void 0 : ttl.toString();
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Expando, {
+  }, /*#__PURE__*/React__default["default"].createElement(Expando, {
     maxHeight: 4,
     open: open,
     onExpand: function onExpand() {
       return setOpen(!open);
     },
     styledWrapper: false,
-    title: /*#__PURE__*/React.createElement(Row, {
+    title: /*#__PURE__*/React__default["default"].createElement(Row, {
       style: {
         cursor: 'pointer'
       },
@@ -13239,33 +13290,33 @@ function TransactionTtlInput() {
           return !open;
         });
       }
-    }, /*#__PURE__*/React.createElement(Label$1, {
-      name: /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Label$1, {
+      name: /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "T9SU2H",
         message: "Transaction deadline"
       })
       // TODO (tina): clicking on this tooltip on mobile shouldn't open/close expando
       ,
-      tooltip: /*#__PURE__*/React.createElement(Trans, {
+      tooltip: /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "OeFqYa",
         message: "Your transaction will revert if it has been pending for longer than this period of time."
       })
-    }), /*#__PURE__*/React.createElement(Row, {
+    }), /*#__PURE__*/React__default["default"].createElement(Row, {
       gap: 0.2,
       justify: "flex-end",
       flex: true
-    }, /*#__PURE__*/React.createElement(IconPrefix, null, /*#__PURE__*/React.createElement(TtlValue, null, ttlValue !== null && ttlValue !== void 0 ? ttlValue : placeholder, "m")), /*#__PURE__*/React.createElement(IconButton, {
+    }, /*#__PURE__*/React__default["default"].createElement(IconPrefix, null, /*#__PURE__*/React__default["default"].createElement(TtlValue, null, ttlValue !== null && ttlValue !== void 0 ? ttlValue : placeholder, "m")), /*#__PURE__*/React__default["default"].createElement(IconButton, {
       color: "secondary",
       icon: Expando$1,
       iconProps: {
         open: open
       }
     })))
-  }, /*#__PURE__*/React.createElement(InputContainer, {
+  }, /*#__PURE__*/React__default["default"].createElement(InputContainer, {
     flex: true,
     grow: true,
     justify: "flex-end"
-  }, /*#__PURE__*/React.createElement(Input, {
+  }, /*#__PURE__*/React__default["default"].createElement(Input, {
     gap: 0.5,
     pad: 0.5,
     onClick: function onClick() {
@@ -13275,7 +13326,7 @@ function TransactionTtlInput() {
     flex: true,
     grow: true,
     flow: "nowrap"
-  }, /*#__PURE__*/React.createElement(IntegerInput, {
+  }, /*#__PURE__*/React__default["default"].createElement(IntegerInput, {
     placeholder: placeholder,
     value: ttlValue !== null && ttlValue !== void 0 ? ttlValue : '',
     onChange: function onChange(value) {
@@ -13283,53 +13334,53 @@ function TransactionTtlInput() {
     },
     ref: input,
     maxLength: 10
-  }), /*#__PURE__*/React.createElement(Body2, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary",
     margin: "0 0.5rem 0 0"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "H9HlDe",
     message: "minutes"
   }))))));
 }
 
-var SettingsColumn = /*#__PURE__*/_styled(Column).withConfig({
+var SettingsColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Settings__SettingsColumn",
   componentId: "sc-1g2q66y-0"
 })(["margin:0.5rem 0.25rem;"]);
 function SettingsMenu() {
-  var _useAtom = useAtom(swapRouterUrlAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 1),
+  var _useAtom = jotai.useAtom(swapRouterUrlAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 1),
     routerUrl = _useAtom2[0];
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     boundary = _useState2[0],
     setBoundary = _useState2[1];
 
   // TODO (WEB-2754): add back reset settings functionality
-  return /*#__PURE__*/React.createElement(SettingsColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(SettingsColumn, {
     gap: 1,
     ref: setBoundary
-  }, /*#__PURE__*/React.createElement(PopoverBoundaryProvider, {
+  }, /*#__PURE__*/React__default["default"].createElement(PopoverBoundaryProvider, {
     value: boundary
-  }, Boolean(routerUrl) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(RouterPreferenceToggle, null), /*#__PURE__*/React.createElement(Rule, null)), /*#__PURE__*/React.createElement(MaxSlippageSelect, null), /*#__PURE__*/React.createElement(Rule, null), /*#__PURE__*/React.createElement(TransactionTtlInput, null)));
+  }, Boolean(routerUrl) && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(RouterPreferenceToggle, null), /*#__PURE__*/React__default["default"].createElement(Rule, null)), /*#__PURE__*/React__default["default"].createElement(MaxSlippageSelect, null), /*#__PURE__*/React__default["default"].createElement(Rule, null), /*#__PURE__*/React__default["default"].createElement(TransactionTtlInput, null)));
 }
-var SettingsButton = /*#__PURE__*/_styled(IconButton).withConfig({
+var SettingsButton = /*#__PURE__*/_styled__default["default"](IconButton).withConfig({
   displayName: "Settings__SettingsButton",
   componentId: "sc-1g2q66y-1"
 })(["", ":hover{transform:rotate(45deg);transition:transform ", ";}"], Settings$1, AnimationSpeed.Medium);
 function Settings() {
-  var _useState3 = useState(false),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(false),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     open = _useState4[0],
     setOpen = _useState4[1];
   useOnEscapeHandler(function () {
     return setOpen(false);
   });
-  return /*#__PURE__*/React.createElement(ResponsiveDialog, {
+  return /*#__PURE__*/React__default["default"].createElement(ResponsiveDialog, {
     open: open,
     setOpen: setOpen,
     defaultView: "popover",
-    anchor: /*#__PURE__*/React.createElement(SettingsButton, {
+    anchor: /*#__PURE__*/React__default["default"].createElement(SettingsButton, {
       "data-testid": "settings-button",
       onClick: function onClick() {
         return setOpen(!open);
@@ -13338,11 +13389,11 @@ function Settings() {
     }),
     mobileBottomSheet: true,
     bottomSheetTitle: "Settings"
-  }, /*#__PURE__*/React.createElement(SettingsMenu, null));
+  }, /*#__PURE__*/React__default["default"].createElement(SettingsMenu, null));
 }
 
 var _ETHERSCAN_PREFIXES;
-var ETHERSCAN_PREFIXES = (_ETHERSCAN_PREFIXES = {}, _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.MAINNET, 'https://etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.ROPSTEN, 'https://ropsten.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.RINKEBY, 'https://rinkeby.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.GOERLI, 'https://goerli.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.KOVAN, 'https://kovan.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.OPTIMISM, 'https://optimistic.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.OPTIMISM_GOERLI, 'https://goerli-optimism.etherscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.POLYGON_MUMBAI, 'https://mumbai.polygonscan.com'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.POLYGON, 'https://polygonscan.com'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.CELO, 'https://celoscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.CELO_ALFAJORES, 'https://alfajores.celoscan.io'), _defineProperty(_ETHERSCAN_PREFIXES, SupportedChainId.BNB, 'https://bscscan.com'), _ETHERSCAN_PREFIXES);
+var ETHERSCAN_PREFIXES = (_ETHERSCAN_PREFIXES = {}, _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.MAINNET, 'https://etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.ROPSTEN, 'https://ropsten.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.RINKEBY, 'https://rinkeby.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.GOERLI, 'https://goerli.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.KOVAN, 'https://kovan.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.OPTIMISM, 'https://optimistic.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.OPTIMISM_GOERLI, 'https://goerli-optimism.etherscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.POLYGON_MUMBAI, 'https://mumbai.polygonscan.com'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.POLYGON, 'https://polygonscan.com'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.CELO, 'https://celoscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.CELO_ALFAJORES, 'https://alfajores.celoscan.io'), _defineProperty__default["default"](_ETHERSCAN_PREFIXES, SupportedChainId.BNB, 'https://bscscan.com'), _ETHERSCAN_PREFIXES);
 var ExplorerDataType = /*#__PURE__*/function (ExplorerDataType) {
   ExplorerDataType["TRANSACTION"] = "transaction";
   ExplorerDataType["TOKEN"] = "token";
@@ -13403,7 +13454,7 @@ function getExplorerLink(chainId, data, type) {
   }
 }
 
-var StyledExternalLink = /*#__PURE__*/_styled(ExternalLink).withConfig({
+var StyledExternalLink = /*#__PURE__*/_styled__default["default"](ExternalLink).withConfig({
   displayName: "EtherscanLink__StyledExternalLink",
   componentId: "sc-8qpheo-0"
 })(["color:", ";text-decoration:none;"], function (_ref) {
@@ -13419,26 +13470,26 @@ function EtherscanLink(_ref2) {
     children = _ref2.children,
     _ref2$showIcon = _ref2.showIcon,
     showIcon = _ref2$showIcon === void 0 ? true : _ref2$showIcon;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId;
-  var url = useMemo(function () {
+  var url = React.useMemo(function () {
     return data && getExplorerLink(chainId || SupportedChainId.MAINNET, data, type);
   }, [chainId, data, type]);
-  return /*#__PURE__*/React.createElement(StyledExternalLink, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledExternalLink, {
     href: url,
     color: color,
     target: "_blank"
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25
-  }, children, url && showIcon && /*#__PURE__*/React.createElement(Link, null)));
+  }, children, url && showIcon && /*#__PURE__*/React__default["default"].createElement(Link, null)));
 }
 
 function useWindowWidth() {
-  var _useState = useState(window.innerWidth),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(window.innerWidth),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     width = _useState2[0],
     setWidth = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     var resizeListener = function resizeListener() {
       return setWidth(window.innerWidth);
     };
@@ -13459,24 +13510,24 @@ function tradeMeaningfullyDiffers(tradeA, tradeB, slippage) {
 }
 
 var _templateObject$1;
-var SpeedBumpWrapper = /*#__PURE__*/_styled(Column).withConfig({
+var SpeedBumpWrapper = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Speedbump__SpeedBumpWrapper",
   componentId: "sc-12uom9o-0"
 })(["align-items:stretch;display:flex;height:100%;justify-content:space-between;max-width:420px;padding:1rem;text-align:center;"]);
-var BodyText = /*#__PURE__*/_styled(Body1).withConfig({
+var BodyText = /*#__PURE__*/_styled__default["default"](Body1).withConfig({
   displayName: "Speedbump__BodyText",
   componentId: "sc-12uom9o-1"
 })(["padding:0 0.5rem;"]);
-var IconWrapper = /*#__PURE__*/_styled.div.withConfig({
+var IconWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Speedbump__IconWrapper",
   componentId: "sc-12uom9o-2"
 })(["padding:2rem;"]);
-var SpeedbumpButtonStyle = css(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  border-radius: 1rem;\n  padding: 1rem;\n"])));
-var HeaderRow = /*#__PURE__*/_styled(Row).withConfig({
+var SpeedbumpButtonStyle = _styled.css(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral__default["default"](["\n  border-radius: 1rem;\n  padding: 1rem;\n"])));
+var HeaderRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Speedbump__HeaderRow",
   componentId: "sc-12uom9o-3"
 })(["width:100%;"]);
-var StyledXButton = /*#__PURE__*/_styled(LargeIcon).attrs({
+var StyledXButton = /*#__PURE__*/_styled__default["default"](LargeIcon).attrs({
   icon: X,
   color: 'primary',
   size: 1.5
@@ -13484,7 +13535,7 @@ var StyledXButton = /*#__PURE__*/_styled(LargeIcon).attrs({
   displayName: "Speedbump__StyledXButton",
   componentId: "sc-12uom9o-4"
 })([":hover{cursor:pointer;}"]);
-var ContinueButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var ContinueButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "Speedbump__ContinueButton",
   componentId: "sc-12uom9o-5"
 })(["", " background-color:", ";color:", ";"], SpeedbumpButtonStyle, function (_ref) {
@@ -13494,7 +13545,7 @@ var ContinueButton = /*#__PURE__*/_styled(Button$1).withConfig({
   var theme = _ref2.theme;
   return theme.critical;
 });
-var CancelButton = /*#__PURE__*/_styled(TextButton).withConfig({
+var CancelButton = /*#__PURE__*/_styled__default["default"](TextButton).withConfig({
   displayName: "Speedbump__CancelButton",
   componentId: "sc-12uom9o-6"
 })(["", " color:", ";"], SpeedbumpButtonStyle, function (_ref3) {
@@ -13505,26 +13556,26 @@ function SpeedBumpDialog(_ref4) {
   var onAcknowledge = _ref4.onAcknowledge,
     children = _ref4.children;
   var onClose = useCloseDialog();
-  return /*#__PURE__*/React.createElement(SpeedBumpWrapper, null, /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(SpeedBumpWrapper, null, /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(HeaderRow, {
+  }, /*#__PURE__*/React__default["default"].createElement(HeaderRow, {
     flex: true,
     align: "center",
     justify: "flex-end"
-  }, /*#__PURE__*/React.createElement(StyledXButton, {
+  }, /*#__PURE__*/React__default["default"].createElement(StyledXButton, {
     onClick: onClose
-  })), /*#__PURE__*/React.createElement(IconWrapper, null, /*#__PURE__*/React.createElement(LargeAlert, null)), /*#__PURE__*/React.createElement(H3, null, /*#__PURE__*/React.createElement(Trans, {
+  })), /*#__PURE__*/React__default["default"].createElement(IconWrapper, null, /*#__PURE__*/React__default["default"].createElement(LargeAlert, null)), /*#__PURE__*/React__default["default"].createElement(H3, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "r6y+jM",
     message: "Warning"
-  })), /*#__PURE__*/React.createElement(BodyText, null, children)), /*#__PURE__*/React.createElement(Column, null, /*#__PURE__*/React.createElement(ContinueButton, {
+  })), /*#__PURE__*/React__default["default"].createElement(BodyText, null, children)), /*#__PURE__*/React__default["default"].createElement(Column, null, /*#__PURE__*/React__default["default"].createElement(ContinueButton, {
     onClick: onAcknowledge
-  }, /*#__PURE__*/React.createElement(ButtonLarge, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonLarge, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "xGVfLh",
     message: "Continue"
-  }))), /*#__PURE__*/React.createElement(CancelButton, {
+  }))), /*#__PURE__*/React__default["default"].createElement(CancelButton, {
     onClick: onClose
-  }, /*#__PURE__*/React.createElement(ButtonMedium, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonMedium, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "dEgA5A",
     message: "Cancel"
   })))));
@@ -13537,7 +13588,7 @@ function useTradeExchangeRate(trade, outputUSDC) {
     executionPrice = trade.executionPrice;
 
   // Compute the usdc price from the output price, so that it aligns with the displayed price.
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       switch (base) {
         case 'input':
           return {
@@ -13553,50 +13604,50 @@ function useTradeExchangeRate(trade, outputUSDC) {
     }, [base, executionPrice, inputAmount, outputAmount, outputUSDC]),
     price = _useMemo.price,
     usdcPrice = _useMemo.usdcPrice;
-  return useMemo(function () {
-    return ["".concat(1, " ", price.baseCurrency.symbol, " = ").concat(formatPrice(price, NumberType.TokenTx), " ").concat(price.quoteCurrency.symbol), usdcPrice && formatCurrencyAmount$1(usdcPrice, NumberType.FiatTokenPrice)];
+  return React.useMemo(function () {
+    return ["".concat(1, " ", price.baseCurrency.symbol, " = ").concat(format.formatPrice(price, format.NumberType.TokenTx), " ").concat(price.quoteCurrency.symbol), usdcPrice && format.formatCurrencyAmount(usdcPrice, format.NumberType.FiatTokenPrice)];
   }, [price, usdcPrice]);
 }
 /** Displays the price of a trade. If outputUSDC is included, also displays the unit price. */
 function Price(_ref) {
   var trade = _ref.trade,
     outputUSDC = _ref.outputUSDC;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     defaultBase = _useState2[0],
     setDefaultBase = _useState2[1];
-  var _onClick = useCallback(function () {
+  var _onClick = React.useCallback(function () {
     return setDefaultBase(!defaultBase);
   }, [defaultBase]);
   var _useTradeExchangeRate = useTradeExchangeRate(trade, outputUSDC, defaultBase ? 'input' : 'output'),
-    _useTradeExchangeRate2 = _slicedToArray(_useTradeExchangeRate, 2),
+    _useTradeExchangeRate2 = _slicedToArray__default["default"](_useTradeExchangeRate, 2),
     exchangeRate = _useTradeExchangeRate2[0],
     usdcPrice = _useTradeExchangeRate2[1];
-  return /*#__PURE__*/React.createElement(TextButton, {
+  return /*#__PURE__*/React__default["default"].createElement(TextButton, {
     color: "primary",
     onClick: function onClick(e) {
       _onClick();
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React.createElement(Body2, null, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Body2, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25
-  }, exchangeRate, usdcPrice && /*#__PURE__*/React.createElement(Body2, {
+  }, exchangeRate, usdcPrice && /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary"
   }, "(", usdcPrice, ")"))));
 }
 
-var StyledEstimate = /*#__PURE__*/_styled(Caption$1).withConfig({
+var StyledEstimate = /*#__PURE__*/_styled__default["default"](Caption$1).withConfig({
   displayName: "Estimate__StyledEstimate",
   componentId: "sc-1awz3nd-0"
 })(["margin-bottom:0.5rem;margin-top:0.5rem;max-height:3rem;"]);
 function SwapInputOutputEstimate(_ref) {
   var trade = _ref.trade,
     slippage = _ref.slippage;
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       return getEstimateMessage(trade, slippage);
     }, [slippage, trade]),
     estimateMessage = _useMemo.estimateMessage;
-  return /*#__PURE__*/React.createElement(StyledEstimate, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledEstimate, {
     color: "secondary"
   }, estimateMessage);
 }
@@ -13614,7 +13665,7 @@ function getEstimateMessage(trade, slippage) {
   var outputCurrency = outputAmount.currency;
   if (isExactInput(trade.tradeType)) {
     var _slippage$warning;
-    var localizedMinReceived = formatCurrencyAmount$1(trade.minimumAmountOut(slippage.allowed), NumberType.TokenTx);
+    var localizedMinReceived = format.formatCurrencyAmount(trade.minimumAmountOut(slippage.allowed), format.NumberType.TokenTx);
     var minReceivedString = "".concat(localizedMinReceived, " ").concat(outputCurrency.symbol);
     return {
       estimateMessage: i18n._(
@@ -13626,12 +13677,12 @@ function getEstimateMessage(trade, slippage) {
           minReceivedString: minReceivedString
         }
       }),
-      descriptor: /*#__PURE__*/React.createElement(Body2, null, i18n._(
+      descriptor: /*#__PURE__*/React__default["default"].createElement(Body2, null, i18n._(
       /*i18n*/
       {
         id: "K5Wh2M",
         message: "Minimum output after slippage"
-      }), slippage && /*#__PURE__*/React.createElement(Body2, {
+      }), slippage && /*#__PURE__*/React__default["default"].createElement(Body2, {
         $inline: true,
         color: (_slippage$warning = slippage === null || slippage === void 0 ? void 0 : slippage.warning) !== null && _slippage$warning !== void 0 ? _slippage$warning : 'secondary'
       }, ' ', "(", formatSlippage(slippage), ")")),
@@ -13639,7 +13690,7 @@ function getEstimateMessage(trade, slippage) {
     };
   } else {
     var _slippage$warning2;
-    var localizedMaxSent = formatCurrencyAmount$1(trade.maximumAmountIn(slippage.allowed), NumberType.TokenTx);
+    var localizedMaxSent = format.formatCurrencyAmount(trade.maximumAmountIn(slippage.allowed), format.NumberType.TokenTx);
     var maxSentString = "".concat(localizedMaxSent, " ").concat(inputCurrency.symbol);
     return {
       estimateMessage: i18n._(
@@ -13651,12 +13702,12 @@ function getEstimateMessage(trade, slippage) {
           maxSentString: maxSentString
         }
       }),
-      descriptor: /*#__PURE__*/React.createElement(Body2, null, i18n._(
+      descriptor: /*#__PURE__*/React__default["default"].createElement(Body2, null, i18n._(
       /*i18n*/
       {
         id: "yPNXny",
         message: "Maximum input after slippage"
-      }), slippage && /*#__PURE__*/React.createElement(Body2, {
+      }), slippage && /*#__PURE__*/React__default["default"].createElement(Body2, {
         $inline: true,
         color: (_slippage$warning2 = slippage === null || slippage === void 0 ? void 0 : slippage.warning) !== null && _slippage$warning2 !== void 0 ? _slippage$warning2 : 'secondary'
       }, ' ', "(", formatSlippage(slippage), ")")),
@@ -13665,14 +13716,14 @@ function getEstimateMessage(trade, slippage) {
   }
 }
 
-var Label = /*#__PURE__*/_styled.span.withConfig({
+var Label = /*#__PURE__*/_styled__default["default"].span.withConfig({
   displayName: "Details__Label",
   componentId: "sc-wfcref-0"
 })(["color:", ";margin-right:0.5rem;max-width:75%;"], function (_ref) {
   var theme = _ref.theme;
   return theme.secondary;
 });
-var Value = /*#__PURE__*/_styled.span.withConfig({
+var Value = /*#__PURE__*/_styled__default["default"].span.withConfig({
   displayName: "Details__Value",
   componentId: "sc-wfcref-1"
 })(["color:", ";text-align:end;"], function (_ref2) {
@@ -13680,11 +13731,11 @@ var Value = /*#__PURE__*/_styled.span.withConfig({
     theme = _ref2.theme;
   return color && theme[color];
 });
-var DetailValue = /*#__PURE__*/_styled(Value).withConfig({
+var DetailValue = /*#__PURE__*/_styled__default["default"](Value).withConfig({
   displayName: "Details__DetailValue",
   componentId: "sc-wfcref-2"
 })(["max-width:45%;overflow-wrap:break-word;"]);
-var RuleWrapper = /*#__PURE__*/_styled.div.withConfig({
+var RuleWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Details__RuleWrapper",
   componentId: "sc-wfcref-3"
 })(["margin:0.75rem 0.125rem;"]);
@@ -13693,13 +13744,13 @@ function Detail(_ref3) {
   var label = _ref3.label,
     value = _ref3.value,
     color = _ref3.color;
-  return /*#__PURE__*/React.createElement(Body2, {
+  return /*#__PURE__*/React__default["default"].createElement(Body2, {
     userSelect: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     flex: true,
     align: "flex-start",
     flow: "no-wrap"
-  }, /*#__PURE__*/React.createElement(Label, null, label), /*#__PURE__*/React.createElement(DetailValue, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, null, label), /*#__PURE__*/React__default["default"].createElement(DetailValue, {
     color: color
   }, value)));
 }
@@ -13713,38 +13764,38 @@ function Amount(_ref4) {
   var isDialogPageCenterd = useIsDialogPageCentered();
   var width = isDialogPageCenterd ? screenWidth : widgetWidth;
   var _ref5 = width < WIDGET_BREAKPOINTS.MEDIUM ? width < WIDGET_BREAKPOINTS.EXTRA_SMALL ? ['20px', '28px'] : ['28px', '36px'] : ['36px', '44px'],
-    _ref6 = _slicedToArray(_ref5, 2),
+    _ref6 = _slicedToArray__default["default"](_ref5, 2),
     amountFontSize = _ref6[0],
     amountLineHeight = _ref6[1];
-  var formattedAmount = formatCurrencyAmount$1(amount, NumberType.TokenTx);
+  var formattedAmount = format.formatCurrencyAmount(amount, format.NumberType.TokenTx);
   if (formattedAmount.length > MAX_AMOUNT_STR_LENGTH) {
-    formattedAmount = width < WIDGET_BREAKPOINTS.EXTRA_WIDE ? formatCurrencyAmount$1(amount, NumberType.TokenNonTx) : formatCurrencyAmount$1(amount, NumberType.SwapTradeAmount);
+    formattedAmount = width < WIDGET_BREAKPOINTS.EXTRA_WIDE ? format.formatCurrencyAmount(amount, format.NumberType.TokenNonTx) : format.formatCurrencyAmount(amount, format.NumberType.SwapTradeAmount);
   }
-  return /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, {
     flex: true,
     align: "flex-start",
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Body2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(Body2, {
     userSelect: true
-  }, /*#__PURE__*/React.createElement(Label, null, label)), tooltipText && /*#__PURE__*/React.createElement(Tooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, null, label)), tooltipText && /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     placement: "right",
     offset: 8
-  }, /*#__PURE__*/React.createElement(SmallToolTipBody, null, tooltipText))), /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(SmallToolTipBody, null, tooltipText))), /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     align: "flex-end",
     grow: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.5
-  }, width > WIDGET_BREAKPOINTS.EXTRA_SMALL && /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, width > WIDGET_BREAKPOINTS.EXTRA_SMALL && /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: amount.currency,
     size: 1.75
-  }), /*#__PURE__*/React.createElement(H1, {
+  }), /*#__PURE__*/React__default["default"].createElement(H1, {
     color: "primary",
     fontSize: amountFontSize,
     lineHeight: amountLineHeight
-  }, formattedAmount, " ", amount.currency.symbol)), usdcAmount && /*#__PURE__*/React.createElement(Body2, null, /*#__PURE__*/React.createElement(Value, {
+  }, formattedAmount, " ", amount.currency.symbol)), usdcAmount && /*#__PURE__*/React__default["default"].createElement(Body2, null, /*#__PURE__*/React__default["default"].createElement(Value, {
     color: "secondary"
-  }, formatCurrencyAmount$1(usdcAmount, NumberType.FiatTokenPrice)))));
+  }, format.formatCurrencyAmount(usdcAmount, format.NumberType.FiatTokenPrice)))));
 }
 function Details(_ref7) {
   var trade = _ref7.trade,
@@ -13757,11 +13808,11 @@ function Details(_ref7) {
     outputAmount = trade.outputAmount;
   var outputCurrency = outputAmount.currency;
   var integrator = window.location.hostname;
-  var feeOptions = useAtomValue(feeOptionsAtom);
+  var feeOptions = utils.useAtomValue(feeOptionsAtom);
   var _useTradeExchangeRate = useTradeExchangeRate(trade),
-    _useTradeExchangeRate2 = _slicedToArray(_useTradeExchangeRate, 1),
+    _useTradeExchangeRate2 = _slicedToArray__default["default"](_useTradeExchangeRate, 1),
     exchangeRate = _useTradeExchangeRate2[0];
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       var details = [];
       details.push([i18n._(
       /*i18n*/
@@ -13772,7 +13823,7 @@ function Details(_ref7) {
       if (feeOptions) {
         var fee = outputAmount.multiply(feeOptions.fee);
         if (fee.greaterThan(0)) {
-          var parsedFee = formatCurrencyAmount$1(fee, NumberType.FiatGasPrice);
+          var parsedFee = format.formatCurrencyAmount(fee, format.NumberType.FiatGasPrice);
           details.push([i18n._(
           /*i18n*/
           {
@@ -13790,7 +13841,7 @@ function Details(_ref7) {
         {
           id: "y62Dys",
           message: "Network fee"
-        }), "~".concat(formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice))]);
+        }), "~".concat(format.formatCurrencyAmount(gasUseEstimateUSD, format.NumberType.FiatGasPrice))]);
       }
       if (impact) {
         details.push([i18n._(
@@ -13798,7 +13849,7 @@ function Details(_ref7) {
         {
           id: "kH6wUX",
           message: "Price impact"
-        }), impact !== null && impact !== void 0 && impact.percent ? formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent) : '-', impact.warning]);
+        }), impact !== null && impact !== void 0 && impact.percent ? format.formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent) : '-', impact.warning]);
       }
       var _getEstimateMessage = getEstimateMessage(trade, slippage),
         estimateMessage = _getEstimateMessage.estimateMessage,
@@ -13812,9 +13863,9 @@ function Details(_ref7) {
     }, [exchangeRate, feeOptions, gasUseEstimateUSD, impact, integrator, outputAmount, outputCurrency, slippage, trade]),
     details = _useMemo.details,
     estimateMessage = _useMemo.estimateMessage;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Amount, {
+  }, /*#__PURE__*/React__default["default"].createElement(Amount, {
     label: i18n._(
     /*i18n*/
     {
@@ -13823,7 +13874,7 @@ function Details(_ref7) {
     }),
     amount: inputAmount,
     usdcAmount: inputUSDC
-  }), /*#__PURE__*/React.createElement(Amount, {
+  }), /*#__PURE__*/React__default["default"].createElement(Amount, {
     label: i18n._(
     /*i18n*/
     {
@@ -13833,14 +13884,14 @@ function Details(_ref7) {
     amount: outputAmount,
     usdcAmount: outputUSDC,
     tooltipText: estimateMessage
-  }), /*#__PURE__*/React.createElement(RuleWrapper, null, /*#__PURE__*/React.createElement(Rule, null))), /*#__PURE__*/React.createElement(Column, {
+  }), /*#__PURE__*/React__default["default"].createElement(RuleWrapper, null, /*#__PURE__*/React__default["default"].createElement(Rule, null))), /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75
   }, details.map(function (_ref8, i) {
-    var _ref9 = _slicedToArray(_ref8, 3),
+    var _ref9 = _slicedToArray__default["default"](_ref8, 3),
       label = _ref9[0],
       detail = _ref9[1],
       color = _ref9[2];
-    return /*#__PURE__*/React.createElement(Detail, {
+    return /*#__PURE__*/React__default["default"].createElement(Detail, {
       key: i,
       label: label,
       value: detail,
@@ -13849,7 +13900,7 @@ function Details(_ref7) {
   })));
 }
 
-var CollapsingColumn = /*#__PURE__*/_styled(Column).withConfig({
+var CollapsingColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Summary__CollapsingColumn",
   componentId: "sc-d9hzpj-0"
 })(["justify-items:", ";"], function (_ref) {
@@ -13861,23 +13912,23 @@ function TokenValue(_ref2) {
     usdc = _ref2.usdc,
     open = _ref2.open,
     children = _ref2.children;
-  return /*#__PURE__*/React.createElement(CollapsingColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(CollapsingColumn, {
     justify: "flex-start",
     open: open,
     flex: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.375,
     justify: "flex-start"
-  }, /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: input.currency
-  }), /*#__PURE__*/React.createElement(Body2, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body2, {
     userSelect: true
   }, formatCurrencyAmount({
     amount: input
-  }), " ", input.currency.symbol)), usdc && /*#__PURE__*/React.createElement(Caption$1, {
+  }), " ", input.currency.symbol)), usdc && /*#__PURE__*/React__default["default"].createElement(Caption$1, {
     color: "secondary",
     userSelect: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     justify: "flex-start",
     gap: 0.25
   }, formatCurrencyAmount({
@@ -13893,23 +13944,23 @@ function Summary(_ref3) {
     impact = _ref3.impact,
     _ref3$open = _ref3.open,
     open = _ref3$open === void 0 ? true : _ref3$open;
-  var summaryContents = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TokenValue, {
+  var summaryContents = /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(TokenValue, {
     input: input,
     usdc: inputUSDC,
     open: open
-  }), open ? /*#__PURE__*/React.createElement(ArrowRight, null) : /*#__PURE__*/React.createElement(ArrowDown, null), /*#__PURE__*/React.createElement(TokenValue, {
+  }), open ? /*#__PURE__*/React__default["default"].createElement(ArrowRight, null) : /*#__PURE__*/React__default["default"].createElement(ArrowDown, null), /*#__PURE__*/React__default["default"].createElement(TokenValue, {
     input: output,
     usdc: outputUSDC,
     open: open
-  }, impact && /*#__PURE__*/React.createElement(Caption$1, {
+  }, impact && /*#__PURE__*/React__default["default"].createElement(Caption$1, {
     color: impact.warning
-  }, "(", formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent), ")")));
+  }, "(", format.formatPriceImpact(impact === null || impact === void 0 ? void 0 : impact.percent), ")")));
   if (open) {
-    return /*#__PURE__*/React.createElement(Row, {
+    return /*#__PURE__*/React__default["default"].createElement(Row, {
       gap: impact ? 1 : 0.25
     }, summaryContents);
   }
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: impact ? 1 : 0.25,
     flex: true
   }, summaryContents);
@@ -13923,14 +13974,14 @@ var ReviewState = /*#__PURE__*/function (ReviewState) {
   return ReviewState;
 }(ReviewState || {});
 function useReviewState(onSwap, allowance, doesTradeDiffer) {
-  var _useState = useState(ReviewState.REVIEWING),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(ReviewState.REVIEWING),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     currentState = _useState2[0],
     setCurrentState = _useState2[1];
   var closeDialog = useCloseDialog();
-  var onStartSwapFlow = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var onStartSwapFlow = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
     var _allowance$approveAnd;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (!(allowance.state === AllowanceState.REQUIRED)) {
@@ -13981,12 +14032,12 @@ function useReviewState(onSwap, allowance, doesTradeDiffer) {
   })), [allowance, currentState, doesTradeDiffer, onSwap, closeDialog]);
 
   // Automatically triggers signing swap tx if allowance requirements are met
-  useEffect(function () {
+  React.useEffect(function () {
     if (currentState === ReviewState.ALLOWING && allowance.state === AllowanceState.ALLOWED) {
       onStartSwapFlow();
     }
   }, [allowance, currentState, doesTradeDiffer, onStartSwapFlow]);
-  var onCancel = useCallback(function () {
+  var onCancel = React.useCallback(function () {
     return setCurrentState(ReviewState.REVIEWING);
   }, []);
   return {
@@ -13995,11 +14046,11 @@ function useReviewState(onSwap, allowance, doesTradeDiffer) {
     currentState: currentState
   };
 }
-var Body$1 = /*#__PURE__*/_styled(Column).withConfig({
+var Body$1 = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Summary__Body",
   componentId: "sc-1ptk1j1-0"
 })(["margin:0.75rem 0.875rem;"]);
-var PriceImpactText = /*#__PURE__*/_styled.span.withConfig({
+var PriceImpactText = /*#__PURE__*/_styled__default["default"].span.withConfig({
   displayName: "Summary__PriceImpactText",
   componentId: "sc-1ptk1j1-1"
 })(["color:", ";"], function (_ref2) {
@@ -14009,16 +14060,16 @@ var PriceImpactText = /*#__PURE__*/_styled.span.withConfig({
 function PermitTooltipText(_ref3) {
   var text = _ref3.text,
     content = _ref3.content;
-  return /*#__PURE__*/React.createElement(TooltipText, {
+  return /*#__PURE__*/React__default["default"].createElement(TooltipText, {
     placement: "bottom",
     offset: 10,
     text: text
-  }, /*#__PURE__*/React.createElement(SmallToolTipBody, null, /*#__PURE__*/React.createElement(Caption$1, null, content)));
+  }, /*#__PURE__*/React__default["default"].createElement(SmallToolTipBody, null, /*#__PURE__*/React__default["default"].createElement(Caption$1, null, content)));
 }
 function getAllowanceFailedAction(shouldRequestApproval, retry, currency) {
   var _currency$symbol;
   return {
-    message: shouldRequestApproval ? /*#__PURE__*/React.createElement(PermitTooltipText, {
+    message: shouldRequestApproval ? /*#__PURE__*/React__default["default"].createElement(PermitTooltipText, {
       text: i18n._(
       /*i18n*/
       {
@@ -14031,14 +14082,14 @@ function getAllowanceFailedAction(shouldRequestApproval, retry, currency) {
         id: "DisXD/",
         message: "Permit2 allows safe sharing and management of token approvals across different smart contracts."
       })
-    }) : /*#__PURE__*/React.createElement(PermitTooltipText, {
+    }) : /*#__PURE__*/React__default["default"].createElement(PermitTooltipText, {
       text: i18n._(
       /*i18n*/
       {
         id: "u7Sumz",
         message: "{0} approval failed",
         values: {
-          "0": (_currency$symbol = currency.symbol) !== null && _currency$symbol !== void 0 ? _currency$symbol : 'token'
+          0: (_currency$symbol = currency.symbol) !== null && _currency$symbol !== void 0 ? _currency$symbol : 'token'
         }
       }),
       content: i18n._(
@@ -14050,7 +14101,7 @@ function getAllowanceFailedAction(shouldRequestApproval, retry, currency) {
     }),
     onClick: retry,
     color: 'warning',
-    children: /*#__PURE__*/React.createElement(Trans, {
+    children: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "KDw4GX",
       message: "Try again"
     })
@@ -14059,7 +14110,7 @@ function getAllowanceFailedAction(shouldRequestApproval, retry, currency) {
 function getAllowancePendingAction(shouldRequestApproval, cancel, currency) {
   var _currency$symbol2;
   return {
-    message: shouldRequestApproval ? /*#__PURE__*/React.createElement(PermitTooltipText, {
+    message: shouldRequestApproval ? /*#__PURE__*/React__default["default"].createElement(PermitTooltipText, {
       text: i18n._(
       /*i18n*/
       {
@@ -14072,14 +14123,14 @@ function getAllowancePendingAction(shouldRequestApproval, cancel, currency) {
         id: "DisXD/",
         message: "Permit2 allows safe sharing and management of token approvals across different smart contracts."
       })
-    }) : /*#__PURE__*/React.createElement(PermitTooltipText, {
+    }) : /*#__PURE__*/React__default["default"].createElement(PermitTooltipText, {
       text: i18n._(
       /*i18n*/
       {
         id: "Q4V37Q",
         message: "Approve {0} for trading",
         values: {
-          "0": (_currency$symbol2 = currency.symbol) !== null && _currency$symbol2 !== void 0 ? _currency$symbol2 : 'token'
+          0: (_currency$symbol2 = currency.symbol) !== null && _currency$symbol2 !== void 0 ? _currency$symbol2 : 'token'
         }
       }),
       content: i18n._(
@@ -14091,7 +14142,7 @@ function getAllowancePendingAction(shouldRequestApproval, cancel, currency) {
     }),
     icon: Spinner,
     onClick: cancel,
-    children: /*#__PURE__*/React.createElement(Trans, {
+    children: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "dEgA5A",
       message: "Cancel"
     })
@@ -14099,7 +14150,7 @@ function getAllowancePendingAction(shouldRequestApproval, cancel, currency) {
 }
 function getApprovalLoadingAction() {
   return {
-    message: /*#__PURE__*/React.createElement(PermitTooltipText, {
+    message: /*#__PURE__*/React__default["default"].createElement(PermitTooltipText, {
       text: i18n._(
       /*i18n*/
       {
@@ -14114,7 +14165,7 @@ function getApprovalLoadingAction() {
       })
     }),
     icon: Spinner,
-    children: /*#__PURE__*/React.createElement(Trans, {
+    children: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "dEgA5A",
       message: "Cancel"
     }),
@@ -14127,18 +14178,18 @@ function ConfirmButton(_ref4) {
     onConfirm = _ref4.onConfirm,
     triggerImpactSpeedbump = _ref4.triggerImpactSpeedbump,
     allowance = _ref4.allowance;
-  var _useAtomValue = useAtomValue(swapEventHandlersAtom),
+  var _useAtomValue = utils.useAtomValue(swapEventHandlersAtom),
     onSwapPriceUpdateAck = _useAtomValue.onSwapPriceUpdateAck,
     onSubmitSwapClick = _useAtomValue.onSubmitSwapClick;
-  var _useState3 = useState(trade),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(trade),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     ackTrade = _useState4[0],
     setAckTrade = _useState4[1];
-  var doesTradeDiffer = useMemo(function () {
+  var doesTradeDiffer = React.useMemo(function () {
     return Boolean(trade && ackTrade && tradeMeaningfullyDiffers(trade, ackTrade, slippage.allowed));
   }, [ackTrade, trade, slippage]);
-  var onSwap = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
-    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+  var onSwap = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           onSubmitSwapClick === null || onSubmitSwapClick === void 0 ? void 0 : onSubmitSwapClick(trade);
@@ -14156,30 +14207,30 @@ function ConfirmButton(_ref4) {
     currentState = _useReviewState.currentState;
 
   // Used to determine specific message to render while in ALLOWANCE_PROMPTED state
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       return allowance.state === AllowanceState.REQUIRED ? [allowance.shouldRequestApproval, allowance.isApprovalLoading] : [false, false];
     }, [allowance]),
-    _useMemo2 = _slicedToArray(_useMemo, 2),
+    _useMemo2 = _slicedToArray__default["default"](_useMemo, 2),
     shouldRequestApproval = _useMemo2[0],
     isApprovalLoading = _useMemo2[1];
-  var onAcknowledgeClick = useCallback(function () {
+  var onAcknowledgeClick = React.useCallback(function () {
     onSwapPriceUpdateAck === null || onSwapPriceUpdateAck === void 0 ? void 0 : onSwapPriceUpdateAck(ackTrade, trade);
     setAckTrade(trade);
     var wasInterrupted = triggerImpactSpeedbump();
     // Prevents immeadiate swap if price impact speedbump was triggered
     if (!wasInterrupted) onStartSwapFlow();
   }, [ackTrade, triggerImpactSpeedbump, onStartSwapFlow, onSwapPriceUpdateAck, trade]);
-  var _useMemo3 = useMemo(function () {
+  var _useMemo3 = React.useMemo(function () {
       switch (currentState) {
         case ReviewState.SWAP_PENDING:
           return [{
-            message: /*#__PURE__*/React.createElement(Trans, {
+            message: /*#__PURE__*/React__default["default"].createElement(Trans, {
               id: "QvIt9E",
               message: "Confirm in your wallet"
             }),
             icon: Spinner,
             onClick: onCancel,
-            children: /*#__PURE__*/React.createElement(Trans, {
+            children: /*#__PURE__*/React__default["default"].createElement(Trans, {
               id: "dEgA5A",
               message: "Cancel"
             })
@@ -14191,57 +14242,57 @@ function ConfirmButton(_ref4) {
         case ReviewState.REVIEWING:
           return doesTradeDiffer ? [{
             color: 'accent',
-            message: /*#__PURE__*/React.createElement(Trans, {
+            message: /*#__PURE__*/React__default["default"].createElement(Trans, {
               id: "Ejd0wH",
               message: "Price updated"
             }),
             icon: AlertTriangle,
-            tooltipContent: /*#__PURE__*/React.createElement(SmallToolTipBody, null, /*#__PURE__*/React.createElement(SwapInputOutputEstimate, {
+            tooltipContent: /*#__PURE__*/React__default["default"].createElement(SmallToolTipBody, null, /*#__PURE__*/React__default["default"].createElement(SwapInputOutputEstimate, {
               trade: trade,
               slippage: slippage
             })),
             onClick: onAcknowledgeClick,
-            children: /*#__PURE__*/React.createElement(Trans, {
+            children: /*#__PURE__*/React__default["default"].createElement(Trans, {
               id: "vH2C/2",
               message: "Swap"
             })
           }] : [];
       }
     }, [allowance.state, currentState, doesTradeDiffer, isApprovalLoading, onAcknowledgeClick, onCancel, onStartSwapFlow, shouldRequestApproval, slippage, trade]),
-    _useMemo4 = _slicedToArray(_useMemo3, 2),
+    _useMemo4 = _slicedToArray__default["default"](_useMemo3, 2),
     action = _useMemo4[0],
     color = _useMemo4[1];
-  return /*#__PURE__*/React.createElement(ActionButton, {
+  return /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     onClick: onStartSwapFlow,
     action: action,
     color: color !== null && color !== void 0 ? color : 'accent',
     "data-testid": "swap-button"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "vH2C/2",
     message: "Swap"
   }));
 }
 function SummaryDialog(props) {
   var _props$impact, _props$impact3, _props$impact5;
-  var _useState5 = useState(false),
-    _useState6 = _slicedToArray(_useState5, 2),
+  var _useState5 = React.useState(false),
+    _useState6 = _slicedToArray__default["default"](_useState5, 2),
     ackPriceImpact = _useState6[0],
     setAckPriceImpact = _useState6[1];
-  var _useState7 = useState(((_props$impact = props.impact) === null || _props$impact === void 0 ? void 0 : _props$impact.warning) === 'error'),
-    _useState8 = _slicedToArray(_useState7, 2),
+  var _useState7 = React.useState(((_props$impact = props.impact) === null || _props$impact === void 0 ? void 0 : _props$impact.warning) === 'error'),
+    _useState8 = _slicedToArray__default["default"](_useState7, 2),
     showSpeedbump = _useState8[0],
     setShowSpeedbump = _useState8[1];
-  var _useState9 = useState(null),
-    _useState10 = _slicedToArray(_useState9, 2),
+  var _useState9 = React.useState(null),
+    _useState10 = _slicedToArray__default["default"](_useState9, 2),
     boundary = _useState10[0],
     setBoundary = _useState10[1];
   var width = useWindowWidth();
   var isPageCentered = useIsDialogPageCentered();
-  var onAcknowledgeSpeedbump = useCallback(function () {
+  var onAcknowledgeSpeedbump = React.useCallback(function () {
     setAckPriceImpact(true);
     setShowSpeedbump(false);
   }, []);
-  var triggerImpactSpeedbump = useCallback(function () {
+  var triggerImpactSpeedbump = React.useCallback(function () {
     var _props$impact2;
     if (!showSpeedbump && !ackPriceImpact && ((_props$impact2 = props.impact) === null || _props$impact2 === void 0 ? void 0 : _props$impact2.warning) === 'error') {
       setShowSpeedbump(true);
@@ -14249,46 +14300,46 @@ function SummaryDialog(props) {
     }
     return false;
   }, [ackPriceImpact, (_props$impact3 = props.impact) === null || _props$impact3 === void 0 ? void 0 : _props$impact3.warning, showSpeedbump]);
-  useEffect(function () {
+  React.useEffect(function () {
     var _props$impact4;
     if (showSpeedbump && ((_props$impact4 = props.impact) === null || _props$impact4 === void 0 ? void 0 : _props$impact4.warning) !== 'error') {
       setShowSpeedbump(false);
     }
   }, [ackPriceImpact, props.impact, showSpeedbump]);
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     style: {
       minWidth: isPageCentered ? Math.min(MIN_PAGE_CENTERED_DIALOG_WIDTH, width) : 'auto',
       height: '100%'
     },
     ref: setBoundary
-  }, showSpeedbump && props.impact ? /*#__PURE__*/React.createElement(SpeedBumpDialog, {
+  }, showSpeedbump && props.impact ? /*#__PURE__*/React__default["default"].createElement(SpeedBumpDialog, {
     onAcknowledge: onAcknowledgeSpeedbump
   }, i18n._(
   /*i18n*/
   {
     id: "4iRs73",
     message: "This transaction will result in a"
-  }), ' ', /*#__PURE__*/React.createElement(PriceImpactText, null, formatPriceImpact((_props$impact5 = props.impact) === null || _props$impact5 === void 0 ? void 0 : _props$impact5.percent), " "), i18n._(
+  }), ' ', /*#__PURE__*/React__default["default"].createElement(PriceImpactText, null, format.formatPriceImpact((_props$impact5 = props.impact) === null || _props$impact5 === void 0 ? void 0 : _props$impact5.percent), " "), i18n._(
   /*i18n*/
   {
     id: "7hjdw4",
     message: "price impact on the market price of this pool. Do you wish to continue?"
-  })) : /*#__PURE__*/React.createElement(PopoverBoundaryProvider, {
+  })) : /*#__PURE__*/React__default["default"].createElement(PopoverBoundaryProvider, {
     value: boundary
-  }, /*#__PURE__*/React.createElement(Header$1, {
-    title: /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Header$1, {
+    title: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "pacjvx",
       message: "Review swap"
     })
-  }), /*#__PURE__*/React.createElement(Body$1, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body$1, {
     flex: true,
     align: "stretch"
-  }, /*#__PURE__*/React.createElement(Details, props)), /*#__PURE__*/React.createElement(ConfirmButton, _extends$a({}, props, {
+  }, /*#__PURE__*/React__default["default"].createElement(Details, props)), /*#__PURE__*/React__default["default"].createElement(ConfirmButton, _extends__default["default"]({}, props, {
     triggerImpactSpeedbump: triggerImpactSpeedbump
   }))));
 }
 
-var EtherscanLinkContainer = /*#__PURE__*/_styled(Row).withConfig({
+var EtherscanLinkContainer = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "StatusDialog__EtherscanLinkContainer",
   componentId: "sc-k2vdjv-0"
 })(["padding:0.5rem 0 1.5rem;transition:opacity ", ";width:100%;:hover{opacity:0.6;}"], AnimationSpeed.Medium);
@@ -14296,21 +14347,21 @@ function TransactionStatus(_ref) {
   var _tx$receipt2, _tx$receipt4, _tx$receipt5;
   var tx = _ref.tx,
     onClose = _ref.onClose;
-  var Icon = useMemo(function () {
+  var Icon = React.useMemo(function () {
     var _tx$receipt;
     return (_tx$receipt = tx.receipt) !== null && _tx$receipt !== void 0 && _tx$receipt.status ? LargeCheck : LargeArrow;
   }, [(_tx$receipt2 = tx.receipt) === null || _tx$receipt2 === void 0 ? void 0 : _tx$receipt2.status]);
-  var heading = useMemo(function () {
+  var heading = React.useMemo(function () {
     var _tx$receipt3;
-    return (_tx$receipt3 = tx.receipt) !== null && _tx$receipt3 !== void 0 && _tx$receipt3.status ? /*#__PURE__*/React.createElement(Trans, {
+    return (_tx$receipt3 = tx.receipt) !== null && _tx$receipt3 !== void 0 && _tx$receipt3.status ? /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "zzDlyQ",
       message: "Success"
-    }) : /*#__PURE__*/React.createElement(Trans, {
+    }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "ExzCxg",
       message: "Transaction submitted"
     });
   }, [(_tx$receipt4 = tx.receipt) === null || _tx$receipt4 === void 0 ? void 0 : _tx$receipt4.status]);
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     flex: true,
     padded: true,
     align: "stretch",
@@ -14319,28 +14370,28 @@ function TransactionStatus(_ref) {
       marginTop: '3rem'
     },
     "data-testid": "status-dialog"
-  }, /*#__PURE__*/React.createElement(StatusHeader, {
+  }, /*#__PURE__*/React__default["default"].createElement(StatusHeader, {
     icon: Icon,
     iconColor: (_tx$receipt5 = tx.receipt) !== null && _tx$receipt5 !== void 0 && _tx$receipt5.status ? 'success' : undefined
-  }, /*#__PURE__*/React.createElement(H4, {
+  }, /*#__PURE__*/React__default["default"].createElement(H4, {
     margin: "3rem 0 0"
-  }, heading), tx.info.type === TransactionType.SWAP ? /*#__PURE__*/React.createElement(Summary, {
+  }, heading), tx.info.type === TransactionType.SWAP ? /*#__PURE__*/React__default["default"].createElement(Summary, {
     input: tx.info.trade.inputAmount,
     output: tx.info.trade.outputAmount
-  }) : null), /*#__PURE__*/React.createElement(EtherscanLinkContainer, {
+  }) : null), /*#__PURE__*/React__default["default"].createElement(EtherscanLinkContainer, {
     flex: true,
     justify: "center"
-  }, /*#__PURE__*/React.createElement(EtherscanLink, {
+  }, /*#__PURE__*/React__default["default"].createElement(EtherscanLink, {
     type: ExplorerDataType.TRANSACTION,
     data: tx.info.response.hash,
     showIcon: false,
     color: "active"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "rd4eHq",
     message: "View on Etherscan"
-  }))), /*#__PURE__*/React.createElement(ActionButton, {
+  }))), /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     onClick: onClose
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "yz7wBu",
     message: "Close"
   })));
@@ -14349,25 +14400,25 @@ function TransactionStatusDialog(_ref2) {
   var _tx$receipt6;
   var tx = _ref2.tx,
     onClose = _ref2.onClose;
-  return ((_tx$receipt6 = tx.receipt) === null || _tx$receipt6 === void 0 ? void 0 : _tx$receipt6.status) === 0 ? /*#__PURE__*/React.createElement(ErrorDialog, {
-    header: /*#__PURE__*/React.createElement(Trans, {
+  return ((_tx$receipt6 = tx.receipt) === null || _tx$receipt6 === void 0 ? void 0 : _tx$receipt6.status) === 0 ? /*#__PURE__*/React__default["default"].createElement(ErrorDialog, {
+    header: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "lMAZcK",
       message: "Your swap failed."
     }),
-    message: /*#__PURE__*/React.createElement(Trans, {
+    message: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "Yx3Ckv",
       message: "Try increasing your slippage tolerance.<0/>NOTE: Fee on transfer and rebase tokens are incompatible with Uniswap V3.",
       components: {
-        "0": /*#__PURE__*/React.createElement("br", null)
+        0: /*#__PURE__*/React__default["default"].createElement("br", null)
       }
     }),
-    action: /*#__PURE__*/React.createElement(Trans, {
+    action: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "1QfxQT",
       message: "Dismiss"
     }),
     onClick: onClose,
     onDismiss: onClose
-  }) : /*#__PURE__*/React.createElement(TransactionStatus, {
+  }) : /*#__PURE__*/React__default["default"].createElement(TransactionStatus, {
     tx: tx,
     onClose: onClose
   });
@@ -14377,15 +14428,15 @@ var METAMASK_ICON_URL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXkAAAFZC
 
 var WALLETCONNECT_ICON_URL = "data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%20%20%3Crect%20width%3D%2224%22%20height%3D%2215.0867%22%20fill%3D%22url%28%23pattern0%29%22%2F%3E%20%20%3Cdefs%3E%20%20%20%20%3Cpattern%20id%3D%22pattern0%22%20patternContentUnits%3D%22objectBoundingBox%22%20width%3D%221%22%20height%3D%221%22%3E%20%20%20%20%20%20%3Cuse%20xlink%3Ahref%3D%22%23image0%22%20transform%3D%22translate%28-0.00968744%29%20scale%280.00339792%200.00540541%29%22%2F%3E%20%20%20%20%3C%2Fpattern%3E%20%20%20%20%3Cimage%20id%3D%22image0%22%20width%3D%22300%22%20height%3D%22185%22%20xlink%3Ahref%3D%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAASwAAAC5CAYAAACSoQIxAAAgAElEQVR4Ae19fZgdVZnn761TnQ%2FCtwmugxhkGPXZDIjDoENIuu9twsAm4CS7EpFhWHYktN23AwzC6Dg6xI%2FVWcGsk%2FTtNgQ0MogQ9lkQDAtLTN%2FuhDjIk5koG10eWRwQdAjRYBLIR9epd5%2B3um%2FS6dx7%2B35U3Vt16tx%2Fqu6pc96P33vqd8%2BtOu85BPuxCFRAYF4%2Fn%2BJ4ONNV3izt0AzycRwRzQBjBgPHEfszfMIMIjqOGDNAmAHguDGRb4HxJhPeZOa3yMFe%2BM5%2BR74DbzHzmyC8ST7vZXJ%2Fs9fFL7Z10e8qmGMvpRwBSrn%2F1n0AF97Np07d753rK2eOw%2F4fENG7ffCZYDrTIZzYTJAY%2BB3AvwDoX5nk6PxcaWfHb2fgJ9v%2FC73RTFusrvghYAkrfjGJ1KL21XyO4%2BgPMvhch%2BhcAHMAzIpUaUjCmfEagP8D4ucA2u6z%2BtFwjn4WkngrJgEIWMJKQJDqNfE%2FfJNnvXVQz3OYLwToAmZ8iAjT65UXy3aMfSD8E3x%2BlhVtPdimtv7wevptLG21RjWMgCWshiGMj4DzvsUnn3RAZx2NLDvcSSAZPaXq4zN8Av8YwCZi2rST1PCOHO1LFQgGO2sJK%2BHB7cjzBWDvcihc7jD9UcLdicR8Zv4hkfOY1s73h5fTc5EosUKbgoAlrKbAHJ6Ss1fx1He26UvIx4dBuBzAO8KTbr4kZvwrgx91GI%2FyLneosII88702x0NLWAmJZTCSIn29A3wMwAkJMTvWZjLjN8z8bZrmDhSupxdibaw1LkDAElaMO8JF9%2FAJ6qB%2FrQP%2FegKdF2NTE28ag7cw0V2vjqj1L9xIBxPvkKEOWMKKYWDb8zzXgV5GhKsATIuhicaa5DP2EHAvjai%2BwZvpeWMdTahjlrBiEjgZTU095P9nH%2F4NxHROTMxKtRkMfpqJ1thRV3y6gSWsFsciczefjUP6UwRcY0dTLQ5GGfWjoy6%2BS7vuys1d9Osy1WxxExCwhNUEkEupGCOqLzJjqUNwStWxZTFDgHGQgbXaVV%2B2xNWa2FjCajLulqiaDHgU6ixxRYFqVTItYVUFU%2BOV2vN8hkP6y2N%2F%2FRoXaCXEAgFm%2FgeP3M9v6aHdsTDIcCMsYUUcYHmY7h7yPuv4dBMIUyNWZ8W3AgHGbhB9aY9yVm%2FropFWmJAWnZawIop0ZgW7fJrf7YD%2FDsDMiNRYsXFCgPGiT%2Fj0UI%2F7UJzMMskWS1gRRDPbN3Kx76DfAb0nAvFWZMwRkEmo2nG7Nn%2BCfhpzUxNnniWsEEMmy7nsP6BXEYIJnyFKtqIShwDDA%2FF%2F36PcFdu66K3E2R9Tgy1hhREYZur8hp%2Fzmb9EwElhiLQyjEHgZQDLB3vcR43xqIWOWMJqEPxsH89h8tYR0R83KMo2NxuBR5lVVyFH%2F2a2m9F6ZwmrXnxXsJM9zf%2B0D77dAabUK8a2Sw8CPvBbYvQUcu6D6fE6XE8tYdWB5%2BjkT%2B8BAp1fR3PbJO0IMP7nm6xu%2BFEv%2FSbtUNTqv00JqQUxZmrP65twUP%2FEklUtwNm6RyFA%2BI%2FTSf80kx%2B57Khy%2B2VSBOwIa1KIRitk1vBMaL2egGyVTWw1i8CkCDCj7%2FVZ6pM7ltKhSSvbCrCEVUUnyPTzn4D1I0R4exXVbRWLQE0IMPO%2F%2BFPc%2FzS8jH5RU8MUVrZ%2FCSsFnZkyffqzBL3FklUloOy1RhAgog%2BoEf3jbL%2F34UbkpKGtHWGVifIH%2B%2Fhtx5F%2BkAgXl6liiy0CoSPgM68ayrXdFLpgQwRawioRyMwafh95%2Bn%2BDcEaJy7bIIhApAj54q4Z7uV0B4liY7V%2FCCZhk%2B7yF5OlnLVlNAMZ%2BbRoCDmiuy%2Fqf5YezaUoTosgS1rhAZfv1Z9jB90E4flyxPbUINB0BIpwpP5zyA9p05TFWaP8SjgUn2%2B99B8DVMY6VNS2lCDDRrYVu9bWUun%2BU26knrGAnZaUfI8IlRyFjv1gEYoQAg79e6Gn7qxiZ1BJTUk1YQlZnuPoJAJmWoG%2BVWgRqQMBnfHOoR10PIq6hmVFVU0tYF67k6dOm6cctWRnVn9PgzEO8U11dWEFeGpyd6GMqH7rPyfPxU6Z5Gy1ZTewO9nsCELgSp%2BlH5d9BAmwN3cTUjbDOvZdnnLrXe4qILgwdTSvQItAkBJh58%2BtwF%2B7I0b4mqYyFmlQR1odW8YnTlfcDu9heCH2PsY%2BB34H4DTkS6HeQ74w34PDosik%2BvQ2EkwGcxOCT4ONkIjopWJXVTh1pOAjM%2FE%2F7tXvpMzfSnoaFJURAaghLUm2mO94mB3RuQmLTOjODjUL5ZSJ6yWe87BC9xOCXoPklV7kvezvxcqPPUGRXIecdmA3fm%2B379C44NJuYZ%2Fs%2BZpOD2QycYRdGnLwLMHj7fs%2FtSAtppYKw%2FnSATzvke1uI6A8m7wKprLELjGENGoZ2hod%2Fix9jBfktRWI9q8xr%2BABcv4OY28GYD8IpLbUppsqFtDy4nWlI5TGesC65h3%2FPO6i3AHh3TPtbK8z6FQPDTDTskzOUiO2omGn%2BAM5xMEpgDLQ7hNNaAV4cdTJ4B5SbKXTRrjjaF5ZNRhPWgjX8Lq31ZgDvCguwBMt5GeAHR%2BA%2BuKWHtiXYj1HTmakjjz8BeVc5oKUg%2FLvE%2B9SgA8z8PFx3nsmkZSxhtef5DEX6GQDvaLAfJLn56wz%2Bjtbu%2F9i8nJ5OsiOT2d45MNKpmT7qMK5M819H%2BXtY6Gn7wGR4JfW6sYSVyY88m9K3gW%2BCcT85%2FMCm7rZNSe2YjdgdJAw7wWa2f9GInMS29fkrg71tn0ms%2FRUMN5KwMnnvOiJ8q4LfJl76NTOt3K%2Bdu9LyxmiyIMqb4RmOn%2FPBNznAqZPVN%2Bj6G4M9rpEvKIwkrGy%2F9z0AqVhulsE%2FZqb%2FNpRzv2vQDRe6K5m893Em%2FmsH9J7QhcdRoK%2F%2BcLCXdsTRtEZschtpHNe2zHwWkZFcPB7yR4n4HwZT%2BrdvPBDVnBdy7j0A7sn2eX%2FGxJ8kovnVtEtqHQLellTbK9ltJGGBYGxiKDMe86E%2BNZyjn1UKrL1WGoHBXldG39%2Bbv4o%2FqFxvJYEuKl0z4aUK%2Fy%2FhHpQ030zCAv1fAOeV9DihhcEra0JvIdcmSdv20yACm2%2BkHwGYlxnwroKPO4lweoMiY9NcUnYGe%2BjV2BgUoiFGrtbgAPeGiFFLRTHjNz5RTyHX9r5CjyWrsINR6HYfwHHqbPbpc8zYH7b8Vshjh77aCr3N0Gnsg56O%2FpGnZTH%2FZoAYlQ5ZZXKvclds6woSi6NSY%2BWOITB%2FDb%2FD9fTfg3BtYkFhfGcw516TWPsnMdxYwjp%2FDR93gqcfTei%2BggXtqBuGP0E%2FnyR%2B9nIECMzr5%2FNdePcQ6P0RiI9OJGP9YM79aHQKWi%2FZyL%2BEAuu2LnrrFa0WMeOp1sNcnQU%2Bw2fmzw%2FuVBdbsqoOsyhqSerSK577IWZ8Iwr5Uchk4IHBWcr4TVSMHWEVO8X5a7jtBE9viPsmE8x4zYX6yMYcSaK2%2FcQEgUy%2Ft5gY%2Fxjnrd%2BErArd6uo0rPVuPGFJvw9IS%2BuHCVgUk%2FvgKDMYGIRSS01OWj3K4YR9yQzwmWDvkVj%2BRWTcO9ijrksDWUm3SQVhiaOyYBxm6fVEWBKb%2B4XhMdFnC93OV9PS4WKDfY2GjI7UvTuI6KYam0ZXnbF2sEd1panvpIawir0m0%2B89QEDLH0wy4RVPq49s6SVZUcJ%2BEoJAZsC7HIz7gmWeW2gzM%2FoKOXd5C01oiWpjH7qXQ7MwU%2F25%2FOcvd70Z5T74J8pVf2zJqhloh6uj0O1%2B33PVBwG8HK7k6qWllawEodSNsIJuwUyZAX0%2FIViCpPqeEkJNeV61V6nL5S1mCOKsiBYhkFnDM6G9Jwh0fjNNSDNZCc7pJCzxnJmy%2FXpdUycJygPSWeovsZR0Mzu51RUNAplv8TTs1w8RcHk0Go6Wysx3FnJttx1dmq5v6SUsifMoaa0BYVn0YafbB3vUF6LXYzU0FQFZqvkb3t87TH8dpV6Zn1fIta2IUkcSZKebsMYilM17d0VFWgyMyCguyFlLQo%2BwNtaFQHveu1YRvglA1SWgQiNmuq2QU3dWqJKaS5awxkKdyY98PYJX1geIeFFalypOzV005mhnfuRPmUiWr5kWnu%2F0ycEetTI8ecmWZAlrXPwyeW81EXrHFdV%2FytinoS4dztHW%2BoXYlklDoD3Pcx3ojUSY3qjtRLR8U7fqa1SOSe0tYU2IZiY%2FIpMDb51QXNtXxj4fqnMoR8%2FW1tDWNgGBMEjLZ9wwlHPXmoBHmD6kbh7WZODJWxh5wDlZvXLXfcYeS1bl0ElHuYyqfagFYOyr1WMG2JJVedTsCKsMNpm8vpWI7yhzuXQxYzdDdRZytL10BVuaJgQ68nyBA72p2sTpMbK6bjjnGrMAZdjxtoRVAdEaSWsXfJUxcaeSChDZS5MgIKQF6I0O4cRKVYWsQLjavk2uhFKaJ45WxuXw1c4B3cvMqw8XlD7ZhUNq3uDN9Hzpy7Y0zQhk8nweQw9VIC3NhGssWU3eS%2BwIa3KM0JH3ljmEu0pVlXWsaER1WLIqhY4tKyJQgbS0T7hyqNt9uFjXHssjYB%2B6l8fm8BV5W0Og7sMFR05%2B5Ss135LVEUDsWWkE5LkmQXXIKh3jarzpM5ZYshqHyCSndoQ1CUDjL49NDPwbBhOBdrpT1c1PfZx%2BNb6OPbcIVELgvG%2FxySfv84It6BzX%2FfmmbjO346qEgb1mEbAIWAQsAhYBi4BFwCJgEbAIWAQsAhaBOhCI5BnWJffw740c8JaDcGFgE9Mb5PDAYHfbk3XYaJskBIHsKn4%2FlL6FiWeLycT0kvbVncPL6bmEuGDNrAOB7MDIpexTN4hPDuLuY6vX5q7e3EW%2FrkNcxSahE1YmP3InEX2ylFYGb%2FMd92N2z71S6CS37Pw1fNIJWq8jYHEZLx7ao9Qyu4N1GXQSWjz%2FG%2FzvHd%2F7rgM6t6QLPn9lsLftMyWv1VkYGmFVu5WW5NoBaoFNDK4zYjFrdvFafrs%2B5A0R0XsrmcbMz6spbscPltFrlerZa8lAoIYZ%2FBv2KrVkWxeNhOFZKPOwzl7FU4PNSqvY909m%2B0p%2B1ajDYbhgZbQKgc4BPt0%2FpLdORlZin9SRukJwrbLX6g0HgbHVKDZVmLl%2FWJHsBSrcIBxxuLCBk4ZHWGLIGa5%2BQrb%2Bq8kOu15UTXDFrXJAVqyfJiB4XlW1fYwXyVHtdv5R1YjFqmIDS%2BcUfumpy164kQ424lBDhHXhSp4%2BbZp%2BvGayGrOYGfvh88LC8rZCI07Yts1FoPNunu0f0kM1k1Ux7sBLzhTVsel6eqm5llttjSCQWT2SgUOPN7A4YeHAAbXwh7fQ%2FnrtqPsv4Zw8Hz9lmrexXrISg8VxcuiJAIh6PbDtmopAQFYH6xhZjbNSiM4%2FqJ8WWeOK7WmMEejoG7lE7tUGyEq8ywhnCHfU62pdI6wPreITp7veRgJdUK%2Fio9oxDvrMVwz1tj11VLn9EisEFvTzWR7rYSKcHoZhzHjVJdW%2BsYdeDEOelRENAmNktYGAtjA0MPjZ%2FZ674JkbaU%2Bt8momrHn9fIoLbxOBgnyoWhWWqy%2B7yxCwZLDH3VCuji1vHQLZr%2FN7uU0PESHUh%2Bay2oVLaq4lrdbFtpLmbL%2B3iIGHwyKroi4Gb9%2FvuR21klZNhDVGVpsJNKeoONQjwwNhsSWtUFFtWJiQFaboLQBmNiyshAC7RE8JUGJQJGQFxiMguFGYI6Tlwe3c0kO7q5Vf9TMs2ZrbhRcdWYnFAgzjkY4Bb0m1Dth60SKQ7eM5UZJVEHYZtU3RWwJd0bpjpVeJQHAPRkhWQdxB5wmnCLdUaRaqIqxg7oznbYlsZDXeWoLrMB6ypDUelNacy6JzIL05qpHVBK9mii5LWhNQacHXzIB3ldyDUY2sxrsUcIrnbal2ft6kfwllvg37ehiEs8YrasK5XTa2CSCXU1FhhcxyTcIptxt5hINjnVKErMC4n5q9fDrjRWeKmjtZJkTFEVZxcmALyErgVgKcbAFeJ%2Fa2WZ0ISBbCJGuQ1ym5imaEU0S3zYSoAquQqwT3WivISvwgnCWZEMI5ldwqS1jBfJt6ZjJX0lbjNWF5h7DOklaNwDVQXYhCUqeqSbtoQE3FpjZ9qyI8kVwc27dAEtgn%2FdcViQEiVEiLK8%2FPK0lYMt9GJvbVO5M5TIeKpCWAhinXyjoWgWKOWLX76B0rIcQSwvFCnGJTiFKtqBIIFDdZaSlZjdlVnFQsHFTC1GMfussrbI8loTWcyYGllNZaNkZad8mWW7W2tfWrQ0CyDRzojbEgq6LJo6S10ZJWEZDwj3JPldsRKnxt1UkU7hEOCqbTTGhy1PAv6vk2E3TX9ZWIlm%2FqVn11NbaNSiIgZCVpFyCEklFfUkkDhTbntAHwKjStcs%2FNChIiv3TMfp%2BH%2FxI2Y75NGO7JpqayI3MYsqwMoJgjFleykhgVc07FVhuzcBCQe6iKDYLDUVa%2FlJkT5%2BcFI6yArJxgJnOwxGn98pvZkv52sEd9uZkaTdOV7fMWwkGiUqEIWLipx%2F1fpsWimf5k%2BvRnyeEvNlNng7re8Bx10eZP0E%2Bd89fwcXD0YwASRFbiPv%2FXzMDIlxoEIrXNs33enyWNrIKoA49n%2B70PpzZwDTqe7Rv5csLISjw%2BWfn6UTlxTvD8vwLw7gZxaElzYvrbTH7kKy1RnmClmbz3ETh4JMEufC%2FT75VbPz7BbkVrekffyNfg0N9EqyUa6QT8frZf3%2BIAfqIDT0Sflo0vooHJPKmZvPdRIjyUdM8IeDjb5y1Nuh%2FNsr9jYGSl49AtzdIXjR6%2BwiGis6MR3jypsktPJu%2Btbp7GZGqStAsifCeZ1pew2sH9QSpJiUu26AgC2bx3l8Mk%2F6SS%2FWG8T94Sesn2YtR6IvRKYMB81FQNE3wLw4di2kWQ8hSGwHjICNK3LGmVCQYzBfcEwYhJ1z7gOMz8szLuJq%2BYsCwzoO9KnuHRWpzJex9XhG%2FHYSZz2J6KT8T4bvuA95dhy066vGy%2FXgtDyEpiQcBzDoiMusEJuL4j792T9M4Wlv3ZvO4hwt1hyYurHMW4J9uvb4irfc22K9vv3QvCx5utN0p9BPSPzsPq92Qt9QVRKmu2bAbuK%2FS4f9FsvXHS19GvlzvgVXGyKWpbNKh3uEflo9YTZ%2FnZvHcfCH8eZxtrtY2B7xd63CuCme67p6srmflfahUS5%2FoEXJPp974bZxujtG30FXC6yErwVOC%2Bzn59c5TYxll2Nu89aBpZ%2BcT%2FvN9TAQEffkAd%2Bk44MYkqMx7G62ppYQUZ8XKhGlgl7YKI76imrql1mOm2Qk6lZrpLZgW7mKXXE8Go5cUn7rBzmLCk48p%2BYbMo2BEnnO27YnI3MLABO9XiNJBWdkB%2FDsxfiAn0LTUjLaR1%2FhpuO0Fr2dlmUUsBD1m5D966i91Ld%2BRoX1H04eRnKZALr7PbKRWLFUw4BoE8TT8igTXBn3I%2BZPIjd1iyOoKOjDIzA%2Fr2IyXmnQVk5WnZM9A4sjp0wF0wnqwkekcRlhRIBakIwKjt4yWgJ3h6w9mrOJZLqDR6KwlZEZFdxWICkMS8IiDyCeUmfJW%2BLH2aCKatYlEQDiq1pf1RfwnHB1HAeKfSj5kIxi89ddkLN9LB8f4m%2BVxm%2BcvE2ST7ELXtzHxnIdd2W9R6miX%2FwpU8fdo0%2Fbhs%2F94snc3Qw4ynXtHqinL3Z1nCEuMODzcNZPADB9TCUgzejKCEqcOSVfVoMqOvkHOXV98injWFrKZM8zY6IKOWjxay2uuqRdu6aKQc8hUJSxqZ%2FECv3LCzHFixKpe0i369xqSZzE3Bl7F2MOcmdoKpvBibSd6TxpEVsGGvUksqkZX0j2OeYU3sNIGAnWpxMD1g4sUEf5eAy6%2BUdIDEuTFKVussWdUROcKypOacFt%2FiG0dWMvVop1o8GVlJtCcdYR3uEutZZXbp%2Bwi46nCZAScT53nE3qUjZGX3a2wkWIx7B3vUdUEmYiNymtTW2HmSwAOFmeoaLCVdDZTVE5ZIY6bMgJZdYU0jre37PbfjmRtpTzWgtayOoT8arcKT5WbpVlfHnbTm9fMpLoL5kee1Cqso9NaDf22EJVYb%2BgvP4O0e3M4tPbQ7iuA0LFPI6nX9kGkzmRvGpUEBwU1Twy98g%2Bpqbj5GVpsJNKfmxnFuUOcIt3bCEhAMfeDL4B1QbqbQRbviFGtT0y7igrE8ny3MUldW%2B7ekWXZn1vBMaK9gIFmtHexRXfWMbOsjrLGImbQ4WLETMvPzcN15cSGtgKxO04%2BYNpO5iHdcjnHLOb14Lb9dH%2FKGiOi9ccEoDDsanVrSEGGJAybOAxLSUlPcjh8so9fCCFK9MkydUlIvHlG3k5zTal6tR22HkJV%2FSG8FoeR27VHrj0p%2Bo2Qldk06rWEy42Uinswinqxekq7Lr5p0GOk4rbL7cNqFYTlircKzGr3F9C35oaimfhR1Ogf4dDPJSjINGp%2B02zBhSdAk5cH3DVshgHCWdBzpQFF0zEoyhazOcPUTBqZFVXI7FtcE81blnHbezbN91k%2BbN7Liz4eVFtXwX8LxvczEdZgYeMmZojo2XU8vjfc1qnNTc8SiwitCuYVm5pwGZHVQP02Epv9ARoihvJ8LdV2yUAlLHDeStBivOlPVRVGTlqlpF1HeEBHLLjQj53RBP5%2FlsR42jayIaPmmbtUXZoxCJywxrnNA9zKzUfsEMuNVl1T7xh56McwAFGUV0y4IZNTiiUX%2FknostYhcmL6MkdVWIrTseWmY%2FhRlRUFWIjsSwhLBHXlvGRHWmLS1FDNec0nNDZu0TE27KHbepB8lfUsWtpy4mFyjfmW%2Fzu%2FlNj1kElmxzNJkdA3l3LWN4lOqfWSEJcpk806HsM400qIR1TF4Mz1fCtBay0xNu6gVh7jXDzvnNNvHc%2BBoWSRzZtx9r9Y%2BISufcd1wzr232ja11gvlLWE5pYHhDKM2uAx%2BDafozZkB%2FsNyfldbfuHdfKpL3hCBjMoR88E%2FYeLnqsUhCfXkr%2Fp05RXkB6ZRe9tX8zm%2Bo4dNIivBJGqyEh2REpYoKOTcdRpm7ZEGYBazHsqu4vfX23kl7WLKIW%2BQmM6pV0Yc2zFj3VBP2%2FsL3W3nAvh2HG2s1yYi%2BoAkITdCWvP7%2BI%2BUo4cc4NR67YhjOyZ8LMqRVdHnSP8SFpXIsWPAW%2BL4WA%2BCO7480eeM3QzVWcjR9lr8CHLEPG%2BLaWkXmJjQam6ifF05px15vgDQGx3CibX0l1jXZXi%2Bg6VD3e7DzbAz8hFW0YnAIcJiMMzZH5BwCkMPjXbEoqeVj8HseTPJShJaj15fioiDMkYkD2ArIx3d1SAZ2fO2BD88VaqRPuJAbzKNrEBY3CyyEqibRliibLDH3SAOMlB2zeYq4x%2BbatIBpSNWQ1rFtAvTRlaSIxYsO0zExwRGSCvn3iB1jrmW4IIghp63pZr0rfY8z5U%2BAkLyVrctE6PgHiYsDu7pMnWiKG4qYYkD4iD7vAgMY3atkY4oHVI6ZrkgBWRlZtpFVTliJuecVkrfGiOrjSaRldy7cg83m6zk3mo6YYnSod62p9jnywwkrY2lSKuYI0bA7HKElsTyWrfOknwy0xLlJe9P8v9KkVZm9UjGgd5IhOlJjG8pm5mxX%2B5duYdLXY%2B6rCWEJU4VlrcVxHEBIGonmyVfOqZ0UOmoRZ0yk9mXHDHDyApEf1dPQutoGzJqN2aJbUBad%2FPhH6SOvpFLyCFJYDeKrHyoBXLvFvt3s49Ne0tYzrH5q%2Fki19FPGDVkBg744JUM51cO8%2BdMmskscQwjoTXbr28D%2BKvl%2BkUiyxn%2F5jv0BdL%2BbHLoU4n0oZzRjH0a6tLhHG0tV6UZ5S0nLHHSyNe9zYheC3SEmSNmYs5pC0ISuUqfsQdQC4Zy9GzkyiZREAvCEhszeT5PpggY9dp3EvCTdDmqHDHJOXUIdyUJi1TZWudcw6gwig1hiYNCWjT6%2Brfh9IeoAEuj3KhzxExMlDeinzB2g9X8wV7aERd%2FYkVYAoqJSaFxCXY9dkRNVkWbTEyUL%2FqW0OMu%2BCoTJ7ISHGNHWGKUictuJLTTaiZcU%2Bh2H2iG%2FZkB7ypi3AdANUOf1VEaAVlGKcwVSUprqa80loQlrpi6sFl9YWpBqybniBU9DHJOGQ9Z0ioi0txjVGu%2BheVFy%2BZhTeaALJIni%2BXJSp%2BT1bXXQ0ZA8j2bnCNW9EDy0nzClUblnBadi%2FlxbFXd0BeoDNPt2I6wik4Gs8QP6SHjJl4WHYzZUXLECFjSirSL8VBk%2B71FDDxMQMu23Bpvj%2Bnnzd5spV48YzvCKjokGz84pC4CI5K11It67FFmhLYuR2wi%2FkbmnE50Mi7fGS%2FKPRb1JithuBv7EVbRSVN3wy361%2BpjkCLl88JWpl2UwkDSnCTFBYSppa7bsgYRELKaoua2epfzar2I%2FQir6IgAKsDKNvLFMnsMCQHGvlbniJXzxMSc03K%2BNrtc7qUkkZXgk5gRVjGYwaJp2isEi6gVC%2B2xfgRGyaozDmkXlZyQVTAU9JOG5ZxWcjnSawyua9XUSI2qQnjiCEt8GttpZrMlrSoiXKFKnHLEKph5%2BJLNOT0MRUMnDN7uwe3c0kO7GxLUgsaJJCzByW6P1WBviVmOWLXe2PStapEqXU%2FIar%2FndjxzI%2B0pXSPepYl5hjURRvl1EOBlv7iJ1%2Bz3SRHYJTlitW6eManUJlQIbGY1H5LnZj81ITC2t2JiyUqcTewIqxgp2eJ9JnlPOqCyyxMX69pjgMAuHFLzwtoItlWY2pzT2pD3wVt3sXtp2LtX12ZF47UTO8Iqui4BOHTAXSABKZbZY2kEJO3CBLIS74Kk3ENqXuBTaXdt6REECnKPJJ2sxJ3Ej7CKMblwJU%2BfNk0%2FLqvUFMvs8QgCY2kX7ZLydKQ0%2BWdjOafDRDg9%2Bd5E4kHhl5667IUbyYhNX4whLAn12at46qA5Wb8AAAVoSURBVDuVfowIl0QS%2BoQKTUraRb3wBulbsm6%2BJa2jIGTGU69odYUpZCXOJf4v4fgISWD2ukpy0DaML0%2F1eYLSLuqNU5C%2BNVVdJMRcrwzT2sk9IPeCSWQlMTKKsMShbV00gp1KNmu1pDWWdrGpm4xf8cLmnB6h3KDv71SLg3vhSLERZ8YRlkSlsIK8gLQYDxsRpTqcSGLaRR1uHtVEiDnt6VssfX6nWhzcA0ehY8YXo55hHROS9awyu%2FR9BFx1zDWDC5KadhFWSIL0Lc%2FbEmwnH5bQBMhh4IHCTHUNlpJOgLl1mWg2YQkkzJTt1%2BtAuLYuhBLWKMlpF2FCnbqcU8a9gz3qOhBxmDjGTZb5hCWIp4S0kp52EfbNkZr0rZSQlfQPI59hHdPxiTj49WGsPeaaIQUmpF2EHYpUpG8x1qZhZFXsG%2BkYYRW9DfY%2B9FYToXdcUeJPTUm7iCoQpqZvMaOvkHOXR4VbHOWmY4Q1DnkJsAR6XFHST41Ju4gqECambzHznWkjK%2BkfqRthFW%2BKTH7kDiK6tfg9iUcTZzJHGQdT0rdGyarttiixiqvs1BKWBCQzoG8n5hVxDU4lu4SsZCaziZMDK%2Fnd6LXkp2%2FR7YM96guN4pDU9qkmLAlaJq9vJeI7khTAIO1CqSWWrOqL2vlruO0ErWULsUX1SWhNK2a6rZBTd7ZGezy0pu4Z1kTYpQMQUWIeXBZnMluymhjJ6r8H2CUsfUv6aNrJSiKc%2BhFWsZt3DuheZl5d%2FB7HYxpmMjcT98wKdjFLryfCkmbqrVWXz7hhKOcaOyWnFjwsYY1DqyPvLSPCGoohkQdk1a2uNn0m87hwNOc0xulbLFOeGV2WrI50BUtYR7AIztrz3rUOYV2sSCtFM5knhKM5X2OYCSFk5TOuG8659zYHhGRosYRVIk6ZAe8qMO6PBWmNzmTusiOrEoEKsyhGpCVkBcLVhW73gTBdNEFW6h%2B6lwpi0FEIVwNoada7THAdzLk3WLIqFaWQy%2BKTvqUtWZWPrR1hlccGHQPeEsfHehDcCtUiuZTmyYGRAFqD0Ey%2BRelbDM93sHSo203tOm6ThcmOsCogFHQcgqxeOlKhWuiXLFmFDmlNAkfTt7ip852CPkZYbMmqcqgsYVXGB4M97gb2WdaJbxJp0e2FXDrTLiYJRVMvBzFg%2FmIzlErfkj4mfa0Z%2BpKsw%2F4lrDJ6HX0jlzhEj4EwtcomNVezM5lrhizyBpFnQjAO%2BsxXDPW2PRW5MwYosIRVQxAzq0cycOhxIkyvoVlVVWUm86ZuZdIqElX5nYRKUZEWM%2FbD54WF5W2FJOAQBxstYdUYhfY8z3WgN4ZJWnYmc41BaEH10DMhGPs01KXDObI7ltcQT0tYNYBVrCqkpaCfBOH4Ylk9RzuTuR7UWtcmtEwIxj4fqnMoR8%2B2zptkaraEVWfcOvJ8AaA3OoQT6xFhZzLXg1rr2zSaCeEz9gBqgSWr%2BmJpCas%2B3IJWmTyfR9CbQDilRjGaCdfYmcw1ohaT6nWTFmM3Q3UWcrQ9Jq4kzgxLWA2GLNvHc0B6c9WkZScHNoh4PJpL%2BhYx7gOgqrRoF3yVGeylHVXWt9VKIGAJqwQotRYFpOVoedMzs2JbhgfCYjvfpiJKiblYQybELhxS8wZvpucT41xMDbUTR0MIjPxqakfN9X3%2BaVlxjN0%2B80JLVmURStwFmZVO4EWjz6VKmy%2B7cEvfsGRVGp9aS%2B0Iq1bEJqnfPqC7iP1bHNB7pCozXiOiVXuUk9%2FWRb%2BbpLm9nEAEZMPWNvJ7wSwr184K4g7%2BGZi%2BVsi59yTQJWty2hBoX8vvnt%2FP56bN77T7KzHvvJtnpx2HqPz%2F%2F6omxnsqyGCHAAAAAElFTkSuQmCC%22%2F%3E%20%20%3C%2Fdefs%3E%3C%2Fsvg%3E";
 
-var ConnectorsContext = /*#__PURE__*/createContext(null);
+var ConnectorsContext = /*#__PURE__*/React.createContext(null);
 function Provider$4(_ref) {
   var connectors = _ref.connectors,
     children = _ref.children;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     chainId = _useWeb3React.chainId,
     connector = _useWeb3React.connector;
   // The network chainId must be kept synchronized to avoid a loop when disconnecting and for a better UX.
-  useEffect(function () {
+  React.useEffect(function () {
     if (connector !== connectors.network) {
       try {
         connectors.network.activate(chainId);
@@ -14394,22 +14445,22 @@ function Provider$4(_ref) {
       }
     }
   }, [chainId, connector, connectors.network]);
-  return /*#__PURE__*/React.createElement(ConnectorsContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(ConnectorsContext.Provider, {
     value: connectors
   }, children);
 }
 function useConnectors() {
-  var connectors = useContext(ConnectorsContext);
-  invariant(connectors, 'useConnectors used without initializing the context');
+  var connectors = React.useContext(ConnectorsContext);
+  invariant__default["default"](connectors, 'useConnectors used without initializing the context');
   return connectors;
 }
 
 function ownKeys$5(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$5(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$5(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$5(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var WalletConnectPopup = /*#__PURE__*/function (_WalletConnect) {
-  _inherits(WalletConnectPopup, _WalletConnect);
+  _inherits__default["default"](WalletConnectPopup, _WalletConnect);
   var _super = _createSuper$1(WalletConnectPopup);
   function WalletConnectPopup(_ref) {
     var actions = _ref.actions,
@@ -14417,7 +14468,7 @@ var WalletConnectPopup = /*#__PURE__*/function (_WalletConnect) {
       defaultChainId = _ref.defaultChainId,
       timeout = _ref.timeout,
       onError = _ref.onError;
-    _classCallCheck(this, WalletConnectPopup);
+    _classCallCheck__default["default"](this, WalletConnectPopup);
     return _super.call(this, {
       actions: actions,
       options: _objectSpread$5(_objectSpread$5({}, options), {}, {
@@ -14428,10 +14479,10 @@ var WalletConnectPopup = /*#__PURE__*/function (_WalletConnect) {
       onError: onError
     });
   }
-  return _createClass(WalletConnectPopup);
-}(WalletConnect);
+  return _createClass__default["default"](WalletConnectPopup);
+}(walletconnect.WalletConnect);
 var WalletConnectQR = /*#__PURE__*/function (_WalletConnect2) {
-  _inherits(WalletConnectQR, _WalletConnect2);
+  _inherits__default["default"](WalletConnectQR, _WalletConnect2);
   var _super2 = _createSuper$1(WalletConnectQR);
   function WalletConnectQR(_ref2) {
     var _this;
@@ -14440,7 +14491,7 @@ var WalletConnectQR = /*#__PURE__*/function (_WalletConnect2) {
       defaultChainId = _ref2.defaultChainId,
       timeout = _ref2.timeout,
       onError = _ref2.onError;
-    _classCallCheck(this, WalletConnectQR);
+    _classCallCheck__default["default"](this, WalletConnectQR);
     _this = _super2.call(this, {
       actions: actions,
       options: _objectSpread$5(_objectSpread$5({}, options), {}, {
@@ -14450,15 +14501,15 @@ var WalletConnectQR = /*#__PURE__*/function (_WalletConnect2) {
       timeout: timeout,
       onError: onError
     });
-    _this.events.once(URI_AVAILABLE, function () {
+    _this.events.once(walletconnect.URI_AVAILABLE, function () {
       var _this$provider;
       (_this$provider = _this.provider) === null || _this$provider === void 0 ? void 0 : _this$provider.connector.on('disconnect', function () {
         _this.deactivate();
       });
     });
-    _this.events.on(URI_AVAILABLE, /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(uri) {
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+    _this.events.on(walletconnect.URI_AVAILABLE, /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(uri) {
+        return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _this.svg = undefined;
@@ -14469,7 +14520,7 @@ var WalletConnectQR = /*#__PURE__*/function (_WalletConnect2) {
               return _context.abrupt("return");
             case 3:
               _context.next = 5;
-              return QRCode.toString(uri, {
+              return QRCode__default["default"].toString(uri, {
                 // Leave a margin to increase contrast in dark mode.
                 margin: 1,
                 // Use 55*2=110 for the width to prevent distortion. The generated viewbox is "0 0 55 55".
@@ -14491,49 +14542,49 @@ var WalletConnectQR = /*#__PURE__*/function (_WalletConnect2) {
     }());
     return _this;
   }
-  _createClass(WalletConnectQR, [{
+  _createClass__default["default"](WalletConnectQR, [{
     key: "deactivate",
     value: function deactivate() {
-      this.events.emit(URI_AVAILABLE);
-      return _get(_getPrototypeOf(WalletConnectQR.prototype), "deactivate", this).call(this);
+      this.events.emit(walletconnect.URI_AVAILABLE);
+      return _get__default["default"](_getPrototypeOf__default["default"](WalletConnectQR.prototype), "deactivate", this).call(this);
     }
   }]);
   return WalletConnectQR;
-}(WalletConnect);
-_defineProperty(WalletConnectQR, "SVG_AVAILABLE", 'svg_available');
+}(walletconnect.WalletConnect);
+_defineProperty__default["default"](WalletConnectQR, "SVG_AVAILABLE", 'svg_available');
 
 var NO_WALLET_HELP_CENTER_URL = 'https://help.uniswap.org/en/articles/5391585-how-to-get-a-wallet';
-var Body = /*#__PURE__*/_styled(Column).withConfig({
+var Body = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "ConnectWalletDialog__Body",
   componentId: "sc-5jsq8h-0"
 })(["display:grid;gap:12px;grid-template-columns:repeat(2,calc(50% - 0.5rem / 2));grid-template-rows:2fr 1fr;height:calc(100% - 2.5rem);"]);
-var StyledButtonContents = /*#__PURE__*/_styled(Column).withConfig({
+var StyledButtonContents = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "ConnectWalletDialog__StyledButtonContents",
   componentId: "sc-5jsq8h-1"
 })(["gap:0.75rem;justify-items:center;"]);
-var StyledMainButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var StyledMainButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "ConnectWalletDialog__StyledMainButton",
   componentId: "sc-5jsq8h-2"
 })(["border-radius:", "rem;grid-column:1 / 3;height:100%;padding:22px;"], function (_ref) {
   var theme = _ref.theme;
   return theme.borderRadius.medium;
 });
-var StyledMainButtonRow = /*#__PURE__*/_styled(Row).withConfig({
+var StyledMainButtonRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "ConnectWalletDialog__StyledMainButtonRow",
   componentId: "sc-5jsq8h-3"
 })(["grid-template-columns:repeat(2,calc(50% - 1rem / 2));justify-items:center;"]);
-var StyledSmallButton = /*#__PURE__*/_styled(Button$1).withConfig({
+var StyledSmallButton = /*#__PURE__*/_styled__default["default"](Button$1).withConfig({
   displayName: "ConnectWalletDialog__StyledSmallButton",
   componentId: "sc-5jsq8h-4"
 })(["border-radius:", "rem;height:88px;padding:16px;"], function (_ref2) {
   var theme = _ref2.theme;
   return theme.borderRadius.medium;
 });
-var StyledNoWalletText = /*#__PURE__*/_styled(Subhead1).withConfig({
+var StyledNoWalletText = /*#__PURE__*/_styled__default["default"](Subhead1).withConfig({
   displayName: "ConnectWalletDialog__StyledNoWalletText",
   componentId: "sc-5jsq8h-5"
 })(["line-height:20px;white-space:pre-wrap;"]);
-var QRCodeWrapper = /*#__PURE__*/_styled.div.withConfig({
+var QRCodeWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "ConnectWalletDialog__QRCodeWrapper",
   componentId: "sc-5jsq8h-6"
 })(["height:110px;width:110px;path{fill:", ";}"], function (_ref3) {
@@ -14544,13 +14595,13 @@ function ButtonContents(_ref4) {
   var walletName = _ref4.walletName,
     logoSrc = _ref4.logoSrc,
     caption = _ref4.caption;
-  return /*#__PURE__*/React.createElement(StyledButtonContents, null, /*#__PURE__*/React.createElement("img", {
+  return /*#__PURE__*/React__default["default"].createElement(StyledButtonContents, null, /*#__PURE__*/React__default["default"].createElement("img", {
     src: logoSrc,
     alt: walletName,
     width: 26
-  }), /*#__PURE__*/React.createElement(Subhead1, null, walletName), caption && /*#__PURE__*/React.createElement(Caption$1, {
+  }), /*#__PURE__*/React__default["default"].createElement(Subhead1, null, walletName), caption && /*#__PURE__*/React__default["default"].createElement(Caption$1, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "J/ybbf",
     message: "{caption}",
     values: {
@@ -14563,25 +14614,25 @@ function WalletConnectButton(_ref5) {
     logoSrc = _ref5.logoSrc,
     walletConnect = _ref5.walletConnectQR,
     onClick = _ref5.onClick;
-  var _useState = useState(walletConnect.svg),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(walletConnect.svg),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     svg = _useState2[0],
     setSvg = _useState2[1];
-  useEffect(function () {
+  React.useEffect(function () {
     if (!svg) walletConnect.activate();
     walletConnect.events.on(WalletConnectQR.SVG_AVAILABLE, setSvg);
     return function () {
       walletConnect.events.off(WalletConnectQR.SVG_AVAILABLE, setSvg);
     };
   }, [svg, walletConnect]);
-  return /*#__PURE__*/React.createElement(StyledMainButton, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledMainButton, {
     color: "container",
     onClick: onClick
-  }, /*#__PURE__*/React.createElement(StyledMainButtonRow, null, /*#__PURE__*/React.createElement(ButtonContents, {
+  }, /*#__PURE__*/React__default["default"].createElement(StyledMainButtonRow, null, /*#__PURE__*/React__default["default"].createElement(ButtonContents, {
     logoSrc: logoSrc,
     walletName: walletName,
     caption: 'Scan to connect your wallet. Works with most wallets.'
-  }), svg && /*#__PURE__*/React.createElement(QRCodeWrapper, {
+  }), svg && /*#__PURE__*/React__default["default"].createElement(QRCodeWrapper, {
     dangerouslySetInnerHTML: {
       __html: svg
     }
@@ -14591,30 +14642,30 @@ function MetaMaskButton(_ref6) {
   var walletName = _ref6.walletName,
     logoSrc = _ref6.logoSrc,
     onClick = _ref6.onClick;
-  return /*#__PURE__*/React.createElement(StyledSmallButton, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledSmallButton, {
     color: "container",
     onClick: onClick
-  }, /*#__PURE__*/React.createElement(ButtonContents, {
+  }, /*#__PURE__*/React__default["default"].createElement(ButtonContents, {
     logoSrc: logoSrc,
     walletName: walletName
   }));
 }
 function NoWalletButton() {
-  return /*#__PURE__*/React.createElement(StyledSmallButton, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledSmallButton, {
     color: "container",
     onClick: function onClick() {
       return window.open(NO_WALLET_HELP_CENTER_URL);
     }
-  }, /*#__PURE__*/React.createElement(StyledNoWalletText, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(StyledNoWalletText, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "lp8wfS",
     message: "I don't have a wallet"
   })));
 }
 function ConnectWalletDialog() {
   var connectors = useConnectors();
-  var onActivate = useCallback( /*#__PURE__*/function () {
-    var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(connector) {
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var onActivate = React.useCallback( /*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(connector) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
@@ -14636,46 +14687,46 @@ function ConnectWalletDialog() {
       return _ref7.apply(this, arguments);
     };
   }(), []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Header$1, {
-    title: /*#__PURE__*/React.createElement(Trans, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Header$1, {
+    title: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "VHOVEJ",
       message: "Connect wallet"
     })
-  }), /*#__PURE__*/React.createElement(Body, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body, {
     align: "stretch",
     padded: true
-  }, /*#__PURE__*/React.createElement(WalletConnectButton, {
+  }, /*#__PURE__*/React__default["default"].createElement(WalletConnectButton, {
     walletName: "WalletConnect",
     logoSrc: WALLETCONNECT_ICON_URL,
     walletConnectQR: connectors.walletConnectQR,
     onClick: function onClick() {
       return onActivate(connectors.walletConnect);
     }
-  }), /*#__PURE__*/React.createElement(MetaMaskButton, {
+  }), /*#__PURE__*/React__default["default"].createElement(MetaMaskButton, {
     walletName: "MetaMask",
     logoSrc: METAMASK_ICON_URL,
     onClick: function onClick() {
       return onActivate(connectors.metaMask);
     }
-  }), /*#__PURE__*/React.createElement(NoWalletButton, null)));
+  }), /*#__PURE__*/React__default["default"].createElement(NoWalletButton, null)));
 }
 
 // If set, allows integrator to add behavior when 'Connect wallet to swap' button is clicked
-var onConnectWalletClickAtom = atom(undefined);
+var onConnectWalletClickAtom = jotai.atom(undefined);
 
 /** An ActionButton that opens the wallet connection dialog. */
 function ConnectWalletButton() {
   // Opens a dialog that initiates own wallet connection flow
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
   var onClose = function onClose() {
     return setOpen(false);
   };
-  var onConnectWalletClick = useConditionalHandler(useAtomValue(onConnectWalletClickAtom));
-  var onClick = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var onConnectWalletClick = useConditionalHandler(utils.useAtomValue(onConnectWalletClickAtom));
+  var onClick = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.t0 = setOpen;
@@ -14690,17 +14741,17 @@ function ConnectWalletButton() {
       }
     }, _callee);
   })), [onConnectWalletClick]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ActionButton, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     color: "accentSoft",
     onClick: onClick,
     "data-testid": "connect-wallet"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "VHOVEJ",
     message: "Connect wallet"
-  })), open && /*#__PURE__*/React.createElement(Dialog, {
+  })), open && /*#__PURE__*/React__default["default"].createElement(Dialog, {
     color: "dialog",
     onClose: onClose
-  }, /*#__PURE__*/React.createElement(ConnectWalletDialog, null)));
+  }, /*#__PURE__*/React__default["default"].createElement(ConnectWalletDialog, null)));
 }
 
 /**
@@ -14710,9 +14761,9 @@ function ConnectWalletButton() {
 function useENSName(address) {
   var _resolverAddress$resu, _nameCallRes$result;
   var debouncedAddress = useDebounce(address, 200);
-  var ensNodeArgument = useMemo(function () {
+  var ensNodeArgument = React.useMemo(function () {
     if (!debouncedAddress || !isAddress(debouncedAddress)) return [undefined];
-    return [namehash$1("".concat(debouncedAddress.toLowerCase().substr(2), ".addr.reverse"))];
+    return [hash.namehash("".concat(debouncedAddress.toLowerCase().substr(2), ".addr.reverse"))];
   }, [debouncedAddress]);
   var registrarContract = useENSRegistrarContract(false);
   var resolverAddress = useSingleCallResult(registrarContract, 'resolver', ensNodeArgument);
@@ -14728,7 +14779,7 @@ function useENSName(address) {
   var fwdAddr = useENSAddress(name);
   var checkedName = address === (fwdAddr === null || fwdAddr === void 0 ? void 0 : fwdAddr.address) ? name : null;
   var changed = debouncedAddress !== address;
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       ENSName: changed ? null : checkedName,
       loading: changed || resolverAddress.loading || nameCallRes.loading
@@ -14744,7 +14795,7 @@ function useENS(nameOrAddress) {
   var validated = isAddress(nameOrAddress);
   var reverseLookup = useENSName(validated ? validated : undefined);
   var lookup = useENSAddress(nameOrAddress);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       loading: reverseLookup.loading || lookup.loading,
       address: validated ? validated : lookup.address,
@@ -14753,7 +14804,7 @@ function useENS(nameOrAddress) {
   }, [lookup.address, lookup.loading, nameOrAddress, reverseLookup.ENSName, reverseLookup.loading, validated]);
 }
 
-var ERC20_INTERFACE = new Interface([{
+var ERC20_INTERFACE = new abi$1.Interface([{
   constant: false,
   inputs: [{
     name: '_spender',
@@ -14773,7 +14824,7 @@ var ERC20_INTERFACE = new Interface([{
 }]);
 function approveAmountCalldata(amount, spender) {
   if (!amount.currency.isToken) throw new Error('Must call with an amount of token');
-  var approveData = ERC20_INTERFACE.encodeFunctionData('approve', [spender, toHex$1(amount.quotient)]);
+  var approveData = ERC20_INTERFACE.encodeFunctionData('approve', [spender, v3Sdk.toHex(amount.quotient)]);
   return {
     to: amount.currency.address,
     data: approveData,
@@ -14844,14 +14895,14 @@ var ArgentWalletContractABI = [
 ];
 
 function useArgentWalletContract() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
   var isArgentWallet = useIsArgentWallet();
   return useContract(isArgentWallet ? account !== null && account !== void 0 ? account : undefined : undefined, ArgentWalletContractABI, true);
 }
 
 function ownKeys$4(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$4(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$4(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$4(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 /**
  * Returns the swap calls that can be used to make the trade
  * @param trade trade to execute
@@ -14860,7 +14911,7 @@ function _objectSpread$4(target) { for (var i = 1; i < arguments.length; i++) { 
  * @param signatureData the signature data of the permit of the input token amount, if available
  */
 function useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, signatureData, deadline, feeOptions) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
@@ -14868,7 +14919,7 @@ function useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, si
     recipientAddress = _useENS.address;
   var recipient = recipientAddressOrName === null ? account : recipientAddress;
   var argentWalletContract = useArgentWalletContract();
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) return [];
     var swapRouterAddress = SWAP_ROUTER_ADDRESSES[chainId];
     if (!swapRouterAddress) return [];
@@ -14892,13 +14943,13 @@ function useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, si
         v: signatureData.v
       }
     } : {});
-    var _SwapRouter$swapCallP = SwapRouter.swapCallParameters(trade, swapOptions),
+    var _SwapRouter$swapCallP = routerSdk.SwapRouter.swapCallParameters(trade, swapOptions),
       value = _SwapRouter$swapCallP.value,
       calldata = _SwapRouter$swapCallP.calldata;
     if (argentWalletContract && trade.inputAmount.currency.isToken) {
       return [{
         address: argentWalletContract.address,
-        calldata: argentWalletContract["interface"].encodeFunctionData('wc_multiCall', [[approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress), {
+        calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [[approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress), {
           to: swapRouterAddress,
           value: value,
           data: calldata
@@ -15002,17 +15053,17 @@ function swapErrorToUserReadableMessage(error) {
         id: "moHqNj",
         message: "{0}. Try increasing your slippage tolerance.\nNote: fee-on-transfer and rebase tokens are incompatible with Uniswap V3.",
         values: {
-          "0": reason ? reason : 'Unknown error'
+          0: reason ? reason : 'Unknown error'
         }
       });
   }
 }
 
 function ownKeys$3(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$3(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$3(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$3(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$3(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 // returns a function that will execute a swap, if the parameters are all valid
 function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!trade || !provider || !account || !chainId) {
       return {
         callback: null
@@ -15020,9 +15071,9 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
     }
     return {
       callback: function () {
-        var _onSwap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+        var _onSwap = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
           var estimatedCalls, bestCallOption, errorCalls, firstNoErrorCall, _bestCallOption, _bestCallOption$call, address, calldata, value;
-          return _regeneratorRuntime.wrap(function _callee$(_context) {
+          return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
@@ -15045,18 +15096,18 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                       call: call,
                       gasEstimate: gasEstimate
                     };
-                  })["catch"](function (gasError) {
+                  }).catch(function (gasError) {
                     console.debug('Gas estimate failed, trying eth_call to extract error', call);
                     return provider.call(tx).then(function (result) {
                       console.debug('Unexpected successful call after failed estimate gas', call, gasError, result);
                       return {
                         call: call,
-                        error: /*#__PURE__*/React.createElement(Trans, {
+                        error: /*#__PURE__*/React__default["default"].createElement(Trans, {
                           id: "Ff3BTo",
                           message: "Unexpected issue with estimating the gas. Please try again."
                         })
                       };
-                    })["catch"](function (callError) {
+                    }).catch(function (callError) {
                       console.debug('Call threw error', call, callError);
                       return {
                         call: call,
@@ -15112,7 +15163,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                   value: value
                 } : {})).then(function (response) {
                   return response;
-                })["catch"](function (error) {
+                }).catch(function (error) {
                   // if the user rejected the tx, pass this along
                   if (isUserRejection(error)) {
                     throw new UserRejectedRequestError();
@@ -15126,7 +15177,7 @@ function useSendSwapTransaction(account, chainId, provider, trade, swapCalls) {
                         id: "04FGVa",
                         message: "Swap failed: {0}",
                         values: {
-                          "0": swapErrorToUserReadableMessage(error)
+                          0: swapErrorToUserReadableMessage(error)
                         }
                       })
                     });
@@ -15162,7 +15213,7 @@ function useSwapCallback(_ref) {
     signatureData = _ref.signatureData,
     deadline = _ref.deadline,
     feeOptions = _ref.feeOptions;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
@@ -15172,11 +15223,11 @@ function useSwapCallback(_ref) {
   var _useENS = useENS(recipientAddressOrName),
     recipientAddress = _useENS.address;
   var recipient = recipientAddressOrName === null ? account : recipientAddress;
-  return useMemo(function () {
+  return React.useMemo(function () {
     if (!trade || !provider || !account || !chainId || !_callback) {
       return {
         state: SwapCallbackState.INVALID,
-        error: /*#__PURE__*/React.createElement(Trans, {
+        error: /*#__PURE__*/React__default["default"].createElement(Trans, {
           id: "pMrojQ",
           message: "Missing dependencies"
         })
@@ -15186,7 +15237,7 @@ function useSwapCallback(_ref) {
       if (recipientAddressOrName !== null) {
         return {
           state: SwapCallbackState.INVALID,
-          error: /*#__PURE__*/React.createElement(Trans, {
+          error: /*#__PURE__*/React__default["default"].createElement(Trans, {
             id: "kkUlw8",
             message: "Invalid recipient"
           })
@@ -15200,8 +15251,8 @@ function useSwapCallback(_ref) {
     return {
       state: SwapCallbackState.VALID,
       callback: function () {
-        var _callback2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-          return _regeneratorRuntime.wrap(function _callee$(_context) {
+        var _callback2 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+          return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 _context.t0 = TransactionType.SWAP;
@@ -15235,13 +15286,13 @@ function useSwapCallback(_ref) {
 }
 
 function useTokenColorExtraction() {
-  var _useTheme2 = /*#__PURE__*/useTheme(),
+  var _useTheme2 = /*#__PURE__*/_styled.useTheme(),
     tokenColorExtraction = _useTheme2.tokenColorExtraction;
   return tokenColorExtraction ? 'interactive' : 'accent';
 }
 
 function ownKeys$2(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 /**
  * Returns a callback to submit a transaction to the universal router.
  *
@@ -15249,15 +15300,15 @@ function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { 
  * or undefined if the user rejected the transaction.
  **/
 function useUniversalRouterSwapCallback(trade, options) {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId,
     provider = _useWeb3React.provider;
-  var swapCallback = useCallback(function () {
-    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+  var swapCallback = React.useCallback(function () {
+    return WidgetPromise.from( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
       var _options$deadline;
       var _SwapRouter$swapERC, data, value, tx, response;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             if (account) {
@@ -15284,7 +15335,7 @@ function useUniversalRouterSwapCallback(trade, options) {
             }
             throw new Error('missing trade');
           case 8:
-            _SwapRouter$swapERC = SwapRouter$1.swapERC20CallParameters(trade, {
+            _SwapRouter$swapERC = universalRouterSdk.SwapRouter.swapERC20CallParameters(trade, {
               slippageTolerance: options.slippageTolerance,
               deadlineOrPreviousBlockhash: (_options$deadline = options.deadline) === null || _options$deadline === void 0 ? void 0 : _options$deadline.toString(),
               inputTokenPermit: options.permit,
@@ -15292,13 +15343,13 @@ function useUniversalRouterSwapCallback(trade, options) {
             }), data = _SwapRouter$swapERC.calldata, value = _SwapRouter$swapERC.value;
             tx = _objectSpread$2({
               from: account,
-              to: UNIVERSAL_ROUTER_ADDRESS(chainId),
+              to: universalRouterSdk.UNIVERSAL_ROUTER_ADDRESS(chainId),
               data: data
             }, value && !isZero(value) ? {
-              value: toHex$1(value)
+              value: v3Sdk.toHex(value)
             } : {});
             _context.next = 12;
-            return sendTransaction(provider, tx, TX_GAS_MARGIN);
+            return index.sendTransaction(provider, tx, TX_GAS_MARGIN);
           case 12:
             response = _context.sent;
             if (!(tx.data !== response.data)) {
@@ -15336,7 +15387,7 @@ function useUniversalRouterSwapCallback(trade, options) {
       });
     });
   }, [account, chainId, options.deadline, options.feeOptions, options.permit, options.slippageTolerance, provider, trade]);
-  var args = useMemo(function () {
+  var args = React.useMemo(function () {
     return trade && {
       trade: trade
     };
@@ -15344,7 +15395,7 @@ function useUniversalRouterSwapCallback(trade, options) {
   return usePerfEventHandler('onSwapSend', args, swapCallback);
 }
 
-var Context = /*#__PURE__*/createContext({
+var Context = /*#__PURE__*/React.createContext({
   open: false,
   collapse: function collapse() {
     return null;
@@ -15355,8 +15406,8 @@ var Context = /*#__PURE__*/createContext({
 });
 function Provider$3(_ref) {
   var children = _ref.children;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
   var onToggleOpen = function onToggleOpen() {
@@ -15371,7 +15422,7 @@ function Provider$3(_ref) {
     inputCurrency = _useSwapInfo[Field.INPUT].currency,
     outputCurrency = _useSwapInfo[Field.OUTPUT].currency;
   var isWrap = useIsWrap();
-  useEffect(function () {
+  React.useEffect(function () {
     if (isWrap) {
       collapse();
     }
@@ -15379,7 +15430,7 @@ function Provider$3(_ref) {
       collapse();
     }
   }, [isWrap, inputCurrency, outputCurrency]);
-  return /*#__PURE__*/React.createElement(Context.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(Context.Provider, {
     value: {
       open: open,
       onToggleOpen: onToggleOpen,
@@ -15388,7 +15439,7 @@ function Provider$3(_ref) {
   }, children);
 }
 function useCollapseToolbar() {
-  var _useContext = useContext(Context),
+  var _useContext = React.useContext(Context),
     collapse = _useContext.collapse;
   return collapse;
 }
@@ -15403,14 +15454,14 @@ function useCollapseToolbar() {
  * */
 function useOnSubmit() {
   var addTransactionInfo = useAddTransactionInfo();
-  var setDisplayTxHash = useUpdateAtom(displayTxHashAtom);
+  var setDisplayTxHash = utils.useUpdateAtom(displayTxHashAtom);
   var _useSwapAmount = useSwapAmount(Field.INPUT),
-    _useSwapAmount2 = _slicedToArray(_useSwapAmount, 2),
+    _useSwapAmount2 = _slicedToArray__default["default"](_useSwapAmount, 2),
     setInputAmount = _useSwapAmount2[1];
-  return useCallback( /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(submit) {
+  return React.useCallback( /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(submit) {
       var info;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
@@ -15464,7 +15515,7 @@ function useOnSubmit() {
  */
 function SwapButton(_ref) {
   var disabled = _ref.disabled;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     chainId = _useWeb3React.chainId;
   var _useSwapInfo = useSwapInfo(),
@@ -15482,7 +15533,7 @@ function SwapButton(_ref) {
     slippage = _useSwapInfo.slippage,
     impact = _useSwapInfo.impact;
   var deadline = useTransactionDeadline();
-  var feeOptions = useAtomValue(feeOptionsAtom);
+  var feeOptions = utils.useAtomValue(feeOptionsAtom);
   var color = useTokenColorExtraction();
   var missingToken = !inputCurrency || !outputCurrency;
   var permit2Enabled = usePermit2();
@@ -15502,33 +15553,33 @@ function SwapButton(_ref) {
     feeOptions: feeOptions
   });
   var swapCallback = permit2Enabled ? universalRouterSwapCallback : swapRouterCallback;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
   // Close the review modal if there is no available trade.
-  useEffect(function () {
+  React.useEffect(function () {
     return setOpen(function (open) {
       return trade ? open : false;
     });
   }, [trade]);
   // Close the review modal on chain change.
-  useEffect(function () {
+  React.useEffect(function () {
     return setOpen(false);
   }, [chainId]);
   var setOldestValidBlock = useSetOldestValidBlock();
   var onSubmit = useOnSubmit();
   var throwAsync = useAsyncError();
-  var onSwap = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+  var onSwap = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2() {
     var submitted;
-    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
           _context2.next = 3;
-          return onSubmit( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+          return onSubmit( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
             var response;
-            return _regeneratorRuntime.wrap(function _callee$(_context) {
+            return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
@@ -15546,7 +15597,7 @@ function SwapButton(_ref) {
                   response.response.wait(1).then(function (receipt) {
                     setOldestValidBlock(receipt.blockNumber);
                   });
-                  invariant(trade);
+                  invariant__default["default"](trade);
                   // onSubmit expects the TransactionInfo to be returned if the transaction was submitted.
                   return _context.abrupt("return", {
                     type: TransactionType.SWAP,
@@ -15579,10 +15630,10 @@ function SwapButton(_ref) {
       }
     }, _callee2, null, [[0, 7]]);
   })), [onSubmit, setOldestValidBlock, slippage.allowed, swapCallback, throwAsync, trade]);
-  var onReviewSwapClick = useConditionalHandler(useAtomValue(swapEventHandlersAtom).onReviewSwapClick);
+  var onReviewSwapClick = useConditionalHandler(utils.useAtomValue(swapEventHandlersAtom).onReviewSwapClick);
   var collapseToolbar = useCollapseToolbar();
-  var onClick = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3() {
-    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+  var onClick = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee3() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           collapseToolbar();
@@ -15598,20 +15649,20 @@ function SwapButton(_ref) {
       }
     }, _callee3);
   })), [onReviewSwapClick, collapseToolbar]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ActionButton, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     color: color,
     onClick: onClick,
     disabled: disabled
-  }, missingToken ? /*#__PURE__*/React.createElement(Trans, {
+  }, missingToken ? /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "0RrIzN",
     message: "Select token"
-  }) : /*#__PURE__*/React.createElement(Trans, {
+  }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "pacjvx",
     message: "Review swap"
-  })), trade && /*#__PURE__*/React.createElement(ResponsiveDialog, {
+  })), trade && /*#__PURE__*/React__default["default"].createElement(ResponsiveDialog, {
     open: open,
     setOpen: setOpen
-  }, /*#__PURE__*/React.createElement(SummaryDialog, {
+  }, /*#__PURE__*/React__default["default"].createElement(SummaryDialog, {
     trade: trade,
     slippage: slippage,
     gasUseEstimateUSD: gasUseEstimateUSD,
@@ -15635,84 +15686,84 @@ var _JSON_RPC_FALLBACK_EN;
  *
  * These "Safe" URLs are listed first, followed by other fallback URLs, which are taken from chainlist.org.
  */
-var JSON_RPC_FALLBACK_ENDPOINTS = (_JSON_RPC_FALLBACK_EN = {}, _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.MAINNET, [
+var JSON_RPC_FALLBACK_ENDPOINTS = (_JSON_RPC_FALLBACK_EN = {}, _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.MAINNET, [
 // "Safe" URLs
 'https://cloudflare-eth.com',
 // "Fallback" URLs
-'https://rpc.ankr.com/eth', 'https://eth-mainnet.public.blastapi.io']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.ROPSTEN, [
+'https://rpc.ankr.com/eth', 'https://eth-mainnet.public.blastapi.io']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.ROPSTEN, [
 // "Fallback" URLs
-'https://rpc.ankr.com/eth_ropsten']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.RINKEBY, [
+'https://rpc.ankr.com/eth_ropsten']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.RINKEBY, [
 // "Fallback" URLs
-'https://rinkeby-light.eth.linkpool.io/']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.GOERLI, [
+'https://rinkeby-light.eth.linkpool.io/']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.GOERLI, [
 // "Safe" URLs
 'https://rpc.goerli.mudit.blog/',
 // "Fallback" URLs
-'https://rpc.ankr.com/eth_goerli']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.KOVAN, [
+'https://rpc.ankr.com/eth_goerli']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.KOVAN, [
 // "Fallback" URLs
-'https://eth-kovan.public.blastapi.io']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.POLYGON, [
+'https://eth-kovan.public.blastapi.io']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.POLYGON, [
 // "Safe" URLs
-'https://polygon-rpc.com/']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.POLYGON_MUMBAI, [
+'https://polygon-rpc.com/']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.POLYGON_MUMBAI, [
 // "Safe" URLs
-'https://matic-mumbai.chainstacklabs.com', 'https://rpc-mumbai.maticvigil.com', 'https://matic-testnet-archive-rpc.bwarelabs.com']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.ARBITRUM_ONE, [
+'https://matic-mumbai.chainstacklabs.com', 'https://rpc-mumbai.maticvigil.com', 'https://matic-testnet-archive-rpc.bwarelabs.com']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.ARBITRUM_ONE, [
 // "Safe" URLs
 'https://arb1.arbitrum.io/rpc',
 // "Fallback" URLs
-'https://arbitrum.public-rpc.com']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.ARBITRUM_RINKEBY, [
+'https://arbitrum.public-rpc.com']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.ARBITRUM_RINKEBY, [
 // "Safe" URLs
-'https://rinkeby.arbitrum.io/rpc']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.OPTIMISM, [
+'https://rinkeby.arbitrum.io/rpc']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.OPTIMISM, [
 // "Safe" URLs
 'https://mainnet.optimism.io/',
 // "Fallback" URLs
-'https://rpc.ankr.com/optimism']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.OPTIMISM_GOERLI, [
+'https://rpc.ankr.com/optimism']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.OPTIMISM_GOERLI, [
 // "Safe" URLs
-'https://goerli.optimism.io']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.CELO, [
+'https://goerli.optimism.io']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.CELO, [
 // "Safe" URLs
-'https://forno.celo.org']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.CELO_ALFAJORES, [
+'https://forno.celo.org']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.CELO_ALFAJORES, [
 // "Safe" URLs
-'https://alfajores-forno.celo-testnet.org']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.BNB, [
+'https://alfajores-forno.celo-testnet.org']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.BNB, [
 // "Safe" URLs
-'https://endpoints.omniatech.io/v1/bsc/mainnet/public', 'https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d', 'https://1rpc.io/bnb', 'https://bsc-dataseed3.binance.org', 'https://bsc-dataseed2.defibit.io', 'https://bsc-dataseed1.ninicoin.io', 'https://binance.nodereal.io', 'https://bsc-dataseed4.defibit.io', 'https://rpc.ankr.com/bsc']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.FANTOM, ['https://rpc.ftm.tools']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.CANTO, ['https://canto.slingshot.finance']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.AVAX, ['https://canto.slingshot.finance']), _defineProperty(_JSON_RPC_FALLBACK_EN, SupportedChainId.ZKSYNC, ['https://mainnet.era.zksync.io']), _JSON_RPC_FALLBACK_EN);
+'https://endpoints.omniatech.io/v1/bsc/mainnet/public', 'https://bsc-mainnet.gateway.pokt.network/v1/lb/6136201a7bad1500343e248d', 'https://1rpc.io/bnb', 'https://bsc-dataseed3.binance.org', 'https://bsc-dataseed2.defibit.io', 'https://bsc-dataseed1.ninicoin.io', 'https://binance.nodereal.io', 'https://bsc-dataseed4.defibit.io', 'https://rpc.ankr.com/bsc']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.FANTOM, ['https://rpc.ftm.tools']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.CANTO, ['https://canto.slingshot.finance']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.AVAX, ['https://canto.slingshot.finance']), _defineProperty__default["default"](_JSON_RPC_FALLBACK_EN, SupportedChainId.ZKSYNC, ['https://mainnet.era.zksync.io']), _JSON_RPC_FALLBACK_EN);
 
-var JsonRpcUrlMapContext = /*#__PURE__*/createContext(undefined);
+var JsonRpcUrlMapContext = /*#__PURE__*/React.createContext(undefined);
 function Provider$2(_ref) {
   var jsonRpcMap = _ref.jsonRpcMap,
     children = _ref.children;
-  return /*#__PURE__*/React.createElement(JsonRpcUrlMapContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(JsonRpcUrlMapContext.Provider, {
     value: jsonRpcMap
   }, children);
 }
 function useJsonRpcUrlsMap() {
-  var jsonRpcMap = useContext(JsonRpcUrlMapContext);
-  return useMemo(function () {
+  var jsonRpcMap = React.useContext(JsonRpcUrlMapContext);
+  return React.useMemo(function () {
     return toJsonRpcUrlsMap(jsonRpcMap);
   }, [jsonRpcMap]);
 }
 function toJsonRpcMap(getChainConnections) {
   var _ref2;
-  return _ref2 = {}, _defineProperty(_ref2, SupportedChainId.MAINNET, getChainConnections(SupportedChainId.MAINNET)), _defineProperty(_ref2, SupportedChainId.ROPSTEN, getChainConnections(SupportedChainId.ROPSTEN)), _defineProperty(_ref2, SupportedChainId.RINKEBY, getChainConnections(SupportedChainId.RINKEBY)), _defineProperty(_ref2, SupportedChainId.GOERLI, getChainConnections(SupportedChainId.GOERLI)), _defineProperty(_ref2, SupportedChainId.KOVAN, getChainConnections(SupportedChainId.KOVAN)), _defineProperty(_ref2, SupportedChainId.POLYGON, getChainConnections(SupportedChainId.POLYGON)), _defineProperty(_ref2, SupportedChainId.POLYGON_MUMBAI, getChainConnections(SupportedChainId.POLYGON_MUMBAI)), _defineProperty(_ref2, SupportedChainId.ARBITRUM_ONE, getChainConnections(SupportedChainId.ARBITRUM_ONE)), _defineProperty(_ref2, SupportedChainId.ARBITRUM_RINKEBY, getChainConnections(SupportedChainId.ARBITRUM_RINKEBY)), _defineProperty(_ref2, SupportedChainId.OPTIMISM, getChainConnections(SupportedChainId.OPTIMISM)), _defineProperty(_ref2, SupportedChainId.OPTIMISM_GOERLI, getChainConnections(SupportedChainId.OPTIMISM_GOERLI)), _defineProperty(_ref2, SupportedChainId.CELO, getChainConnections(SupportedChainId.CELO)), _defineProperty(_ref2, SupportedChainId.CELO_ALFAJORES, getChainConnections(SupportedChainId.CELO_ALFAJORES)), _defineProperty(_ref2, SupportedChainId.BNB, getChainConnections(SupportedChainId.BNB)), _defineProperty(_ref2, SupportedChainId.CANTO, getChainConnections(SupportedChainId.CANTO)), _defineProperty(_ref2, SupportedChainId.FANTOM, getChainConnections(SupportedChainId.FANTOM)), _defineProperty(_ref2, SupportedChainId.ZKSYNC, getChainConnections(SupportedChainId.ZKSYNC)), _defineProperty(_ref2, SupportedChainId.AVAX, getChainConnections(SupportedChainId.AVAX)), _ref2;
+  return _ref2 = {}, _defineProperty__default["default"](_ref2, SupportedChainId.MAINNET, getChainConnections(SupportedChainId.MAINNET)), _defineProperty__default["default"](_ref2, SupportedChainId.ROPSTEN, getChainConnections(SupportedChainId.ROPSTEN)), _defineProperty__default["default"](_ref2, SupportedChainId.RINKEBY, getChainConnections(SupportedChainId.RINKEBY)), _defineProperty__default["default"](_ref2, SupportedChainId.GOERLI, getChainConnections(SupportedChainId.GOERLI)), _defineProperty__default["default"](_ref2, SupportedChainId.KOVAN, getChainConnections(SupportedChainId.KOVAN)), _defineProperty__default["default"](_ref2, SupportedChainId.POLYGON, getChainConnections(SupportedChainId.POLYGON)), _defineProperty__default["default"](_ref2, SupportedChainId.POLYGON_MUMBAI, getChainConnections(SupportedChainId.POLYGON_MUMBAI)), _defineProperty__default["default"](_ref2, SupportedChainId.ARBITRUM_ONE, getChainConnections(SupportedChainId.ARBITRUM_ONE)), _defineProperty__default["default"](_ref2, SupportedChainId.ARBITRUM_RINKEBY, getChainConnections(SupportedChainId.ARBITRUM_RINKEBY)), _defineProperty__default["default"](_ref2, SupportedChainId.OPTIMISM, getChainConnections(SupportedChainId.OPTIMISM)), _defineProperty__default["default"](_ref2, SupportedChainId.OPTIMISM_GOERLI, getChainConnections(SupportedChainId.OPTIMISM_GOERLI)), _defineProperty__default["default"](_ref2, SupportedChainId.CELO, getChainConnections(SupportedChainId.CELO)), _defineProperty__default["default"](_ref2, SupportedChainId.CELO_ALFAJORES, getChainConnections(SupportedChainId.CELO_ALFAJORES)), _defineProperty__default["default"](_ref2, SupportedChainId.BNB, getChainConnections(SupportedChainId.BNB)), _defineProperty__default["default"](_ref2, SupportedChainId.CANTO, getChainConnections(SupportedChainId.CANTO)), _defineProperty__default["default"](_ref2, SupportedChainId.FANTOM, getChainConnections(SupportedChainId.FANTOM)), _defineProperty__default["default"](_ref2, SupportedChainId.ZKSYNC, getChainConnections(SupportedChainId.ZKSYNC)), _defineProperty__default["default"](_ref2, SupportedChainId.AVAX, getChainConnections(SupportedChainId.AVAX)), _ref2;
 }
 function getChainConnections(connectionMap, chainId) {
   var _filter;
   var value = connectionMap === null || connectionMap === void 0 ? void 0 : connectionMap[chainId];
   return (_filter = (Array.isArray(value) ? value : [value]).filter(function (value) {
     return Boolean(value);
-  })).concat.apply(_filter, _toConsumableArray(JSON_RPC_FALLBACK_ENDPOINTS[chainId]));
+  })).concat.apply(_filter, _toConsumableArray__default["default"](JSON_RPC_FALLBACK_ENDPOINTS[chainId]));
 }
 function toJsonRpcConnectionMap(connectionMap) {
   function getJsonRpcProvider(chainId) {
     var _getChainConnections = getChainConnections(connectionMap, chainId),
-      _getChainConnections2 = _slicedToArray(_getChainConnections, 1),
+      _getChainConnections2 = _slicedToArray__default["default"](_getChainConnections, 1),
       connection = _getChainConnections2[0];
-    return JsonRpcProvider.isProvider(connection) ? connection : new StaticJsonRpcProvider(connection, Number(chainId));
+    return providers.JsonRpcProvider.isProvider(connection) ? connection : new providers.StaticJsonRpcProvider(connection, Number(chainId));
   }
   return toJsonRpcMap(getJsonRpcProvider);
 }
 function toJsonRpcUrlMap(connectionMap) {
   function getJsonRpcUrl(chainId) {
     var _getChainConnections3 = getChainConnections(connectionMap, chainId),
-      _getChainConnections4 = _slicedToArray(_getChainConnections3, 1),
+      _getChainConnections4 = _slicedToArray__default["default"](_getChainConnections3, 1),
       connection = _getChainConnections4[0];
-    return JsonRpcProvider.isProvider(connection) ? connection.connection.url : connection;
+    return providers.JsonRpcProvider.isProvider(connection) ? connection.connection.url : connection;
   }
   return toJsonRpcMap(getJsonRpcUrl);
 }
@@ -15720,17 +15771,17 @@ function toJsonRpcUrlsMap(connectionMap) {
   function getJsonRpcUrls(chainId) {
     var connections = getChainConnections(connectionMap, chainId);
     return connections.map(function (connection) {
-      return JsonRpcProvider.isProvider(connection) ? connection.connection.url : connection;
+      return providers.JsonRpcProvider.isProvider(connection) ? connection.connection.url : connection;
     });
   }
   return toJsonRpcMap(getJsonRpcUrls);
 }
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 /** Defined by EIP-3085. */
 
@@ -15740,7 +15791,7 @@ function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { 
  * If that Promise rejects, the error will be ignored so as not to crash the widget.
  */
 
-var onSwitchChainAtom = atom(undefined);
+var onSwitchChainAtom = jotai.atom(undefined);
 function toHex(chainId) {
   return "0x".concat(chainId.toString(16));
 }
@@ -15750,9 +15801,9 @@ function addChain(_x, _x2) {
   return _addChain.apply(this, arguments);
 }
 function _addChain() {
-  _addChain = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(provider, addChainParameter) {
+  _addChain = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2(provider, addChainParameter) {
     var _iterator, _step, rpcUrl;
-    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _iterator = _createForOfIteratorHelper(addChainParameter.rpcUrls);
@@ -15807,8 +15858,8 @@ function switchChain(_x3, _x4, _x5) {
   return _switchChain.apply(this, arguments);
 }
 function _switchChain() {
-  _switchChain = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee3(provider, chainId, addChainParameter) {
-    return _regeneratorRuntime.wrap(function _callee3$(_context3) {
+  _switchChain = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee3(provider, chainId, addChainParameter) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
@@ -15838,17 +15889,17 @@ function _switchChain() {
   return _switchChain.apply(this, arguments);
 }
 function useSwitchChain() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     connector = _useWeb3React.connector,
     provider = _useWeb3React.provider;
   var connectors = useConnectors();
   var urlMap = useJsonRpcUrlsMap();
-  var onSwitchChain = useAtomValue(onSwitchChainAtom);
-  return useCallback( /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(chainId) {
+  var onSwitchChain = utils.useAtomValue(onSwitchChainAtom);
+  return React.useCallback( /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(chainId) {
       var _safe$label, _safe$symbol;
       var _getChainInfo, safe, label, nativeCurrency, explorer, addChainParameter, switching;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _getChainInfo = getChainInfo(chainId), safe = _getChainInfo.safe, label = _getChainInfo.label, nativeCurrency = _getChainInfo.nativeCurrency, explorer = _getChainInfo.explorer;
@@ -15943,17 +15994,17 @@ function useSwitchChain() {
 /** A chain-switching ActionButton. */
 function ChainSwitchButton(_ref) {
   var chainId = _ref.chainId;
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account;
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     isPending = _useState2[0],
     setIsPending = _useState2[1];
   var color = useTokenColorExtraction();
   var switchChain = useSwitchChain();
   var throwError = useAsyncError();
-  var onSwitchChain = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var onSwitchChain = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           setIsPending(true);
@@ -15977,29 +16028,29 @@ function ChainSwitchButton(_ref) {
       }
     }, _callee, null, [[1, 6, 9, 12]]);
   })), [chainId, switchChain, throwError]);
-  var message = useMemo(function () {
+  var message = React.useMemo(function () {
     var _getChainInfo;
     if (isPending) {
-      return account ? /*#__PURE__*/React.createElement(Trans, {
+      return account ? /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "BHyzfY",
         message: "Switch network in your wallet"
-      }) : /*#__PURE__*/React.createElement(Trans, {
+      }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
         id: "C3Qn9Q",
         message: "Switching network"
       });
     }
-    return getChainInfo(chainId) ? /*#__PURE__*/React.createElement(Trans, {
+    return getChainInfo(chainId) ? /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "TyF6nf",
       message: "Connect to {0}",
       values: {
-        "0": (_getChainInfo = getChainInfo(chainId)) === null || _getChainInfo === void 0 ? void 0 : _getChainInfo.label
+        0: (_getChainInfo = getChainInfo(chainId)) === null || _getChainInfo === void 0 ? void 0 : _getChainInfo.label
       }
-    }) : /*#__PURE__*/React.createElement(Trans, {
+    }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "aRPqbz",
       message: "Switch network"
     });
   }, [account, chainId, isPending]);
-  return /*#__PURE__*/React.createElement(ActionButton, {
+  return /*#__PURE__*/React__default["default"].createElement(ActionButton, {
     color: color,
     disabled: isPending,
     onClick: onSwitchChain
@@ -16016,20 +16067,20 @@ function WrapButton(_ref) {
     wrapType = _useWrapCallback.type,
     wrapCallback = _useWrapCallback.callback;
   var color = useTokenColorExtraction();
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     isPending = _useState2[0],
     setIsPending = _useState2[1];
   // Reset the pending state if user updates the wrap.
-  useEffect(function () {
+  React.useEffect(function () {
     return setIsPending(false);
   }, [wrapCallback]);
-  var _native = useNativeCurrency();
-  var inputCurrency = wrapType === TransactionType.WRAP ? _native : _native.wrapped;
+  var native = useNativeCurrency();
+  var inputCurrency = wrapType === TransactionType.WRAP ? native : native.wrapped;
   var onSubmit = useOnSubmit();
   var throwAsync = useAsyncError();
-  var onWrap = useCallback( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+  var onWrap = React.useCallback( /*#__PURE__*/_asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           setIsPending(true);
@@ -16053,10 +16104,10 @@ function WrapButton(_ref) {
       }
     }, _callee, null, [[1, 6, 9, 12]]);
   })), [onSubmit, throwAsync, wrapCallback]);
-  var actionProps = useMemo(function () {
+  var actionProps = React.useMemo(function () {
     return isPending ? {
       action: {
-        message: /*#__PURE__*/React.createElement(Trans, {
+        message: /*#__PURE__*/React__default["default"].createElement(Trans, {
           id: "QvIt9E",
           message: "Confirm in your wallet"
         }),
@@ -16067,22 +16118,22 @@ function WrapButton(_ref) {
       onClick: onWrap
     };
   }, [isPending, onWrap]);
-  return /*#__PURE__*/React.createElement(ActionButton, _extends$a({
+  return /*#__PURE__*/React__default["default"].createElement(ActionButton, _extends__default["default"]({
     color: color
   }, actionProps, {
     disabled: disabled || isPending
-  }), /*#__PURE__*/React.createElement(Trans, {
+  }), /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "xYxQCZ",
     message: "{0} {1}",
     values: {
-      "0": wrapType === TransactionType.WRAP ? 'Wrap' : 'Unwrap',
-      "1": inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
+      0: wrapType === TransactionType.WRAP ? 'Wrap' : 'Unwrap',
+      1: inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
     }
   }));
 }
 
 function SwapActionButton() {
-  var _useWeb3React = useWeb3React(),
+  var _useWeb3React = core.useWeb3React(),
     account = _useWeb3React.account,
     isActive = _useWeb3React.isActive;
   var _useSwapInfo = useSwapInfo(),
@@ -16096,26 +16147,26 @@ function SwapActionButton() {
     trade = _useSwapInfo.trade.trade;
   var isWrap = useIsWrap();
   var permit2Enabled = usePermit2();
-  var isDisabled = useMemo(function () {
+  var isDisabled = React.useMemo(function () {
     return !permit2Enabled && approval.state !== SwapApprovalState.APPROVED || error !== undefined || !isWrap && !trade || !inputCurrencyAmount ||
     // If there is no balance loaded, we should default to isDisabled=false
     Boolean(inputCurrencyBalance === null || inputCurrencyBalance === void 0 ? void 0 : inputCurrencyBalance.lessThan(inputCurrencyAmount));
   }, [permit2Enabled, approval.state, error, isWrap, trade, inputCurrencyAmount, inputCurrencyBalance]);
   if (!account || !isActive) {
-    return /*#__PURE__*/React.createElement(ConnectWalletButton, null);
+    return /*#__PURE__*/React__default["default"].createElement(ConnectWalletButton, null);
   } else if (error === ChainError.MISMATCHED_CHAINS || error === ChainError.UNSUPPORTED_CHAIN) {
     var _inputCurrency$chainI;
     var tokenChainId = (_inputCurrency$chainI = inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.chainId) !== null && _inputCurrency$chainI !== void 0 ? _inputCurrency$chainI : outputCurrency === null || outputCurrency === void 0 ? void 0 : outputCurrency.chainId;
     var supportedTokenChainId = isSupportedChainId(tokenChainId) ? tokenChainId : SupportedChainId.MAINNET;
-    return /*#__PURE__*/React.createElement(ChainSwitchButton, {
+    return /*#__PURE__*/React__default["default"].createElement(ChainSwitchButton, {
       chainId: supportedTokenChainId
     });
   } else if (isWrap) {
-    return /*#__PURE__*/React.createElement(WrapButton, {
+    return /*#__PURE__*/React__default["default"].createElement(WrapButton, {
       disabled: isDisabled
     });
   } else {
-    return /*#__PURE__*/React.createElement(SwapButton, {
+    return /*#__PURE__*/React__default["default"].createElement(SwapButton, {
       disabled: isDisabled
     });
   }
@@ -16124,12 +16175,12 @@ function SwapActionButton() {
 var _line;
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 var SvgDotLine = function SvgDotLine(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends({
+  return /*#__PURE__*/React__default["default"].createElement("svg", _extends({
     width: "100%",
     height: 35,
     viewBox: "850 0 300 200",
     xmlns: "http://www.w3.org/2000/svg"
-  }, props), _line || (_line = /*#__PURE__*/React.createElement("line", {
+  }, props), _line || (_line = /*#__PURE__*/React__default["default"].createElement("line", {
     x1: 0,
     x2: 3000,
     y1: 100,
@@ -16153,7 +16204,7 @@ function getTokenPath(trade) {
       inputAmount = _ref.inputAmount,
       outputAmount = _ref.outputAmount;
     var portion = isExactInput(trade.tradeType) ? inputAmount.divide(trade.inputAmount) : outputAmount.divide(trade.outputAmount);
-    var percent = new Percent(portion.numerator, portion.denominator);
+    var percent = new sdkCore.Percent(portion.numerator, portion.denominator);
     var path = [];
     for (var i = 0; i < pools.length; i++) {
       var nextPool = pools[i];
@@ -16170,42 +16221,42 @@ function getTokenPath(trade) {
   });
 }
 
-var StyledAutoRouterLabel = /*#__PURE__*/_styled(ButtonSmall).withConfig({
+var StyledAutoRouterLabel = /*#__PURE__*/_styled__default["default"](ButtonSmall).withConfig({
   displayName: "RoutingDiagram__StyledAutoRouterLabel",
   componentId: "sc-10g9a7u-0"
 })(["@supports (-webkit-background-clip:text) and (-webkit-text-fill-color:transparent){background-image:linear-gradient(90deg,#2172e5 0%,#54e521 163.16%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}"]);
-var AutoRouterHeader = /*#__PURE__*/forwardRef(function AutoRouterHeader(props, ref) {
-  return /*#__PURE__*/React.createElement(Row, _extends$a({
+var AutoRouterHeader = /*#__PURE__*/React.forwardRef(function AutoRouterHeader(props, ref) {
+  return /*#__PURE__*/React__default["default"].createElement(Row, _extends__default["default"]({
     justify: "left",
     gap: 0.25,
     ref: ref
-  }, props), /*#__PURE__*/React.createElement(AutoRouter, null), /*#__PURE__*/React.createElement(StyledAutoRouterLabel, {
+  }, props), /*#__PURE__*/React__default["default"].createElement(AutoRouter, null), /*#__PURE__*/React__default["default"].createElement(StyledAutoRouterLabel, {
     color: "primary",
     lineHeight: '16px'
-  }, /*#__PURE__*/React.createElement(Subhead2, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Subhead2, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "N08lDG",
     message: "Auto Router"
   }))));
 });
-var Dots = /*#__PURE__*/_styled(SvgDotLine).withConfig({
+var Dots = /*#__PURE__*/_styled__default["default"](SvgDotLine).withConfig({
   displayName: "RoutingDiagram__Dots",
   componentId: "sc-10g9a7u-1"
 })(["color:", ";position:absolute;z-index:", ";"], function (_ref) {
   var theme = _ref.theme;
   return theme.outline;
 }, Layer.UNDERLAYER);
-var RouteRow = /*#__PURE__*/_styled(Row).withConfig({
+var RouteRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "RoutingDiagram__RouteRow",
   componentId: "sc-10g9a7u-2"
 })(["flex-wrap:nowrap;margin:0 0.5rem;position:relative;"]);
-var GasEstimateRow = /*#__PURE__*/_styled(Row).withConfig({
+var GasEstimateRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "RoutingDiagram__GasEstimateRow",
   componentId: "sc-10g9a7u-3"
 })(["border-top:1px solid ", ";max-width:350px;padding:0.5rem 0 0;"], function (_ref2) {
   var theme = _ref2.theme;
   return theme.outline;
 });
-var RouteNode = /*#__PURE__*/_styled(Row).withConfig({
+var RouteNode = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "RoutingDiagram__RouteNode",
   componentId: "sc-10g9a7u-4"
 })(["background-color:", ";border-radius:", ";margin-left:0.5rem;padding:0.25rem;width:max-content;"], function (_ref3) {
@@ -16216,7 +16267,7 @@ var RouteNode = /*#__PURE__*/_styled(Row).withConfig({
   var theme = _ref4.theme;
   return "".concat(((_theme$borderRadius$m = theme.borderRadius.medium) !== null && _theme$borderRadius$m !== void 0 ? _theme$borderRadius$m : 1) * 0.5, "rem");
 });
-var RouteBadge = /*#__PURE__*/_styled.div.withConfig({
+var RouteBadge = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "RoutingDiagram__RouteBadge",
   componentId: "sc-10g9a7u-5"
 })(["background-color:", ";border-radius:", ";padding:0.25rem;"], function (_ref5) {
@@ -16230,14 +16281,14 @@ var RouteBadge = /*#__PURE__*/_styled.div.withConfig({
 function RouteDetail(_ref7) {
   var route = _ref7.route;
   var protocol = route.protocol.toUpperCase();
-  return /*#__PURE__*/React.createElement(RouteNode, null, /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(RouteNode, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.375
-  }, /*#__PURE__*/React.createElement(RouteBadge, null, /*#__PURE__*/React.createElement(Badge, {
+  }, /*#__PURE__*/React__default["default"].createElement(RouteBadge, null, /*#__PURE__*/React__default["default"].createElement(Badge, {
     fontSize: '12px',
     color: "secondary"
-  }, protocol === Protocol.MIXED ? 'V3 + V2' : protocol)), /*#__PURE__*/React.createElement(Caption$1, null, route.percent.toSignificant(2), "%")));
+  }, protocol === routerSdk.Protocol.MIXED ? 'V3 + V2' : protocol)), /*#__PURE__*/React__default["default"].createElement(Caption$1, null, route.percent.toSignificant(2), "%")));
 }
-var RoutePool = /*#__PURE__*/_styled(RouteNode).withConfig({
+var RoutePool = /*#__PURE__*/_styled__default["default"](RouteNode).withConfig({
   displayName: "RoutingDiagram__RoutePool",
   componentId: "sc-10g9a7u-6"
 })(["margin:0 0.75rem;padding:0.25rem;"]);
@@ -16245,63 +16296,63 @@ function Pool(_ref8) {
   var originCurrency = _ref8.originCurrency,
     targetCurrency = _ref8.targetCurrency,
     feeAmount = _ref8.feeAmount;
-  return /*#__PURE__*/React.createElement(RoutePool, null, /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(RoutePool, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     flex: true,
     align: "center"
-  }, /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: originCurrency,
     size: 0.75
-  }), /*#__PURE__*/React.createElement(Row, {
+  }), /*#__PURE__*/React__default["default"].createElement(Row, {
     style: {
       marginLeft: '-0.25rem'
     },
     flex: true,
     align: "center"
-  }, /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: targetCurrency,
     size: 0.75
-  }))), /*#__PURE__*/React.createElement(Caption$1, null, feeAmount / 10000, "%")));
+  }))), /*#__PURE__*/React__default["default"].createElement(Caption$1, null, feeAmount / 10000, "%")));
 }
 function Route(_ref9) {
   var route = _ref9.route;
-  var _route$path$ = _slicedToArray(route.path[0], 1),
+  var _route$path$ = _slicedToArray__default["default"](route.path[0], 1),
     originCurrency = _route$path$[0];
-  var _route$path = _slicedToArray(route.path[route.path.length - 1], 2),
+  var _route$path = _slicedToArray__default["default"](route.path[route.path.length - 1], 2),
     targetCurrency = _route$path[1];
-  return /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, {
     align: "center",
     justify: "space-between",
     flex: true,
     grow: true
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     align: "center",
     justify: "flex-start",
     flex: true
-  }, /*#__PURE__*/React.createElement(TokenImg$1, {
+  }, /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: originCurrency
-  }), /*#__PURE__*/React.createElement(RouteDetail, {
+  }), /*#__PURE__*/React__default["default"].createElement(RouteDetail, {
     route: route
-  })), /*#__PURE__*/React.createElement(RouteRow, {
+  })), /*#__PURE__*/React__default["default"].createElement(RouteRow, {
     flex: true,
     grow: true
-  }, /*#__PURE__*/React.createElement(Dots, null), /*#__PURE__*/React.createElement(RouteRow, {
+  }, /*#__PURE__*/React__default["default"].createElement(Dots, null), /*#__PURE__*/React__default["default"].createElement(RouteRow, {
     justify: "space-around",
     flex: true,
     grow: true
   }, route.path.map(function (_ref10, index) {
-    var _ref11 = _slicedToArray(_ref10, 3),
+    var _ref11 = _slicedToArray__default["default"](_ref10, 3),
       originCurrency = _ref11[0],
       targetCurrency = _ref11[1],
       feeAmount = _ref11[2];
-    return /*#__PURE__*/React.createElement(Pool, {
+    return /*#__PURE__*/React__default["default"].createElement(Pool, {
       key: index,
       originCurrency: originCurrency,
       targetCurrency: targetCurrency,
       feeAmount: feeAmount
     });
-  }))), /*#__PURE__*/React.createElement(TokenImg$1, {
+  }))), /*#__PURE__*/React__default["default"].createElement(TokenImg$1, {
     token: targetCurrency
   }));
 }
@@ -16309,24 +16360,24 @@ function RoutingDiagram(_ref12) {
   var trade = _ref12.trade,
     gasUseEstimateUSD = _ref12.gasUseEstimateUSD,
     hideHeader = _ref12.hideHeader;
-  var routes = useMemo(function () {
+  var routes = React.useMemo(function () {
     return getTokenPath(trade);
   }, [trade]);
-  return /*#__PURE__*/React.createElement(Column, {
+  return /*#__PURE__*/React__default["default"].createElement(Column, {
     gap: 0.75,
     padding: "0.5rem"
-  }, !hideHeader && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(AutoRouterHeader, null), /*#__PURE__*/React.createElement(Rule, null)), routes.map(function (route, index) {
-    return /*#__PURE__*/React.createElement(Route, {
+  }, !hideHeader && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(AutoRouterHeader, null), /*#__PURE__*/React__default["default"].createElement(Rule, null)), routes.map(function (route, index) {
+    return /*#__PURE__*/React__default["default"].createElement(Route, {
       key: index,
       route: route
     });
-  }), gasUseEstimateUSD && /*#__PURE__*/React.createElement(GasEstimateRow, null, /*#__PURE__*/React.createElement(Caption$1, {
+  }), gasUseEstimateUSD && /*#__PURE__*/React__default["default"].createElement(GasEstimateRow, null, /*#__PURE__*/React__default["default"].createElement(Caption$1, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "0YS0q8",
     message: "Best price route costs {0} in gas. Your price is optimized by considering split routes, multiple hops, and gas costs.",
     values: {
-      "0": formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice)
+      0: format.formatCurrencyAmount(gasUseEstimateUSD, format.NumberType.FiatGasPrice)
     }
   }))));
 }
@@ -16342,17 +16393,17 @@ function GasEstimateTooltip(_ref) {
     trade = _ref.trade;
   var isWide = useIsWideWidget();
   var isMobile = useIsMobileWidth();
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     tooltip = _useState2[0],
     setTooltip = _useState2[1];
   var showTooltip = useTooltip(tooltip);
-  var _useState3 = useState(false),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(false),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     open = _useState4[0],
     setOpen = _useState4[1];
-  var displayEstimate = formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice);
-  return isMobile ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Row, {
+  var displayEstimate = format.formatCurrencyAmount(gasUseEstimateUSD, format.NumberType.FiatGasPrice);
+  return isMobile ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25,
     onClick: function onClick(e) {
       setOpen(function (open) {
@@ -16360,48 +16411,48 @@ function GasEstimateTooltip(_ref) {
       });
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React.createElement(Gas, {
+  }, /*#__PURE__*/React__default["default"].createElement(Gas, {
     color: "secondary"
-  }), isWide && /*#__PURE__*/React.createElement(Body2, {
+  }), isWide && /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary"
-  }, displayEstimate)), /*#__PURE__*/React.createElement(BottomSheetModal, {
+  }, displayEstimate)), /*#__PURE__*/React__default["default"].createElement(BottomSheetModal, {
     title: "Route details",
     onClose: function onClose() {
       return setOpen(false);
     },
     open: Boolean(trade) && open
-  }, trade && /*#__PURE__*/React.createElement(Column, {
+  }, trade && /*#__PURE__*/React__default["default"].createElement(Column, {
     padded: true
-  }, /*#__PURE__*/React.createElement(RoutingDiagram, {
+  }, /*#__PURE__*/React__default["default"].createElement(RoutingDiagram, {
     trade: trade,
     hideHeader: true,
     gasUseEstimateUSD: gasUseEstimateUSD
-  })))) : /*#__PURE__*/React.createElement(Popover, {
-    content: trade ? /*#__PURE__*/React.createElement(RoutingDiagram, {
+  })))) : /*#__PURE__*/React__default["default"].createElement(Popover, {
+    content: trade ? /*#__PURE__*/React__default["default"].createElement(RoutingDiagram, {
       trade: trade,
       gasUseEstimateUSD: gasUseEstimateUSD
     }) : null,
     placement: "bottom",
     show: Boolean(trade) && showTooltip
-  }, /*#__PURE__*/React.createElement(Row, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, {
     ref: setTooltip,
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(Gas, {
+  }, /*#__PURE__*/React__default["default"].createElement(Gas, {
     color: "secondary"
-  }), isWide && /*#__PURE__*/React.createElement(Body2, {
+  }), isWide && /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary"
   }, displayEstimate)));
 }
 
 var _templateObject;
-var Loading = /*#__PURE__*/_styled.span.withConfig({
+var Loading = /*#__PURE__*/_styled__default["default"].span.withConfig({
   displayName: "Caption__Loading",
   componentId: "sc-ocsm9i-0"
 })(["color:", ";", ";"], function (_ref) {
   var theme = _ref.theme;
   return theme.secondary;
 }, loadingCss);
-var CaptionRow$1 = /*#__PURE__*/_styled(Row).withConfig({
+var CaptionRow$1 = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Caption__CaptionRow",
   componentId: "sc-ocsm9i-1"
 })(["align-items:center;flex-shrink:", ";gap:", "rem;height:100%;"], function (_ref2) {
@@ -16413,7 +16464,7 @@ var CaptionRow$1 = /*#__PURE__*/_styled(Row).withConfig({
 });
 
 // TODO (tina): consolidate this and Expando icon
-var ExpandIcon = /*#__PURE__*/_styled(ChevronDown).withConfig({
+var ExpandIcon = /*#__PURE__*/_styled__default["default"](ChevronDown).withConfig({
   displayName: "Caption__ExpandIcon",
   componentId: "sc-ocsm9i-2"
 })(["color:", ";cursor:pointer;transform:", ";transition:transform ", ";:hover{opacity:0.6;}"], function (_ref4) {
@@ -16430,45 +16481,45 @@ function Caption(_ref6) {
     _ref6$color = _ref6.color,
     color = _ref6$color === void 0 ? 'secondary' : _ref6$color,
     tooltip = _ref6.tooltip;
-  return /*#__PURE__*/React.createElement(CaptionRow$1, {
+  return /*#__PURE__*/React__default["default"].createElement(CaptionRow$1, {
     gap: 0.5,
     shrink: 0
-  }, tooltip ? /*#__PURE__*/React.createElement(Tooltip, {
+  }, tooltip ? /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     placement: (_tooltip$placement = tooltip === null || tooltip === void 0 ? void 0 : tooltip.placement) !== null && _tooltip$placement !== void 0 ? _tooltip$placement : 'bottom',
     icon: LargeIcon,
     iconProps: {
       icon: Icon,
       color: color
     }
-  }, tooltip === null || tooltip === void 0 ? void 0 : tooltip.content) : Icon && /*#__PURE__*/React.createElement(LargeIcon, {
+  }, tooltip === null || tooltip === void 0 ? void 0 : tooltip.content) : Icon && /*#__PURE__*/React__default["default"].createElement(LargeIcon, {
     icon: Icon,
     color: color
-  }), /*#__PURE__*/React.createElement(Body2, {
+  }), /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: color
   }, caption));
 }
 function Connecting() {
-  return /*#__PURE__*/React.createElement(Caption, {
+  return /*#__PURE__*/React__default["default"].createElement(Caption, {
     icon: Spinner,
-    caption: /*#__PURE__*/React.createElement(Loading, null, /*#__PURE__*/React.createElement(Trans, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Loading, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "JrFTcr",
       message: "Connecting\u2026"
     }))
   });
 }
 function Error$1() {
-  return /*#__PURE__*/React.createElement(Caption, {
+  return /*#__PURE__*/React__default["default"].createElement(Caption, {
     icon: AlertTriangle,
-    caption: /*#__PURE__*/React.createElement(Trans, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "li38LN",
       message: "Error fetching trade"
     })
   });
 }
 function MissingInputs() {
-  return /*#__PURE__*/React.createElement(Caption, {
+  return /*#__PURE__*/React__default["default"].createElement(Caption, {
     icon: Info,
-    caption: /*#__PURE__*/React.createElement(Trans, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "iPMIoT",
       message: "Enter an amount"
     })
@@ -16476,16 +16527,16 @@ function MissingInputs() {
 }
 function LoadingTrade(_ref7) {
   var gasUseEstimateUSD = _ref7.gasUseEstimateUSD;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Caption, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Caption, {
     icon: Spinner,
     color: "primary",
-    caption: /*#__PURE__*/React.createElement(Loading, null, /*#__PURE__*/React.createElement(Trans, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Loading, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "MtNUMK",
       message: "Fetching best price\u2026"
     }))
-  }), /*#__PURE__*/React.createElement(CaptionRow$1, {
+  }), /*#__PURE__*/React__default["default"].createElement(CaptionRow$1, {
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(GasEstimateTooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(GasEstimateTooltip, {
     gasUseEstimateUSD: gasUseEstimateUSD
   })));
 }
@@ -16493,35 +16544,35 @@ function Wrap(_ref8) {
   var inputCurrency = _ref8.inputCurrency,
     outputCurrency = _ref8.outputCurrency;
   var isWideWidget = useIsWideWidget();
-  var Text = useCallback(function () {
-    return isWideWidget ? /*#__PURE__*/React.createElement(Trans, {
+  var Text = React.useCallback(function () {
+    return isWideWidget ? /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "Jrdeg2",
       message: "Convert {0} to {1} with no slippage",
       values: {
-        "0": inputCurrency.symbol,
-        "1": outputCurrency.symbol
+        0: inputCurrency.symbol,
+        1: outputCurrency.symbol
       }
-    }) : /*#__PURE__*/React.createElement(Trans, {
+    }) : /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "p/80nE",
       message: "Convert {0} to {1}",
       values: {
-        "0": inputCurrency.symbol,
-        "1": outputCurrency.symbol
+        0: inputCurrency.symbol,
+        1: outputCurrency.symbol
       }
     });
   }, [inputCurrency.symbol, isWideWidget, outputCurrency.symbol]);
-  return /*#__PURE__*/React.createElement(Caption, {
-    caption: /*#__PURE__*/React.createElement(Text, null)
+  return /*#__PURE__*/React__default["default"].createElement(Caption, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Text, null)
   });
 }
-var ExpanderRow = /*#__PURE__*/_styled(Row).withConfig({
+var ExpanderRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Caption__ExpanderRow",
   componentId: "sc-ocsm9i-3"
 })(["", ""], function (_ref9) {
   var warning = _ref9.warning,
     $expanded = _ref9.$expanded;
   if (!warning) return undefined;
-  return css(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      background-color: ", ";\n      border-radius: ", "rem;\n      padding: 0.375rem 0.5rem 0.375rem 0.375rem;\n      transition: background-color ", " linear, padding ", " linear,\n        width ", " linear;\n    "])), function (_ref10) {
+  return _styled.css(_templateObject || (_templateObject = _taggedTemplateLiteral__default["default"](["\n      background-color: ", ";\n      border-radius: ", "rem;\n      padding: 0.375rem 0.5rem 0.375rem 0.375rem;\n      transition: background-color ", " linear, padding ", " linear,\n        width ", " linear;\n    "])), function (_ref10) {
     var theme = _ref10.theme;
     return $expanded ? 'transparent' : warning === 'error' ? theme.criticalSoft : theme.warningSoft;
   }, function (_ref11) {
@@ -16532,20 +16583,20 @@ var ExpanderRow = /*#__PURE__*/_styled(Row).withConfig({
 function Expander(_ref12) {
   var expanded = _ref12.expanded,
     warning = _ref12.warning;
-  return /*#__PURE__*/React.createElement(ExpanderRow, {
+  return /*#__PURE__*/React__default["default"].createElement(ExpanderRow, {
     $expanded: expanded,
     warning: warning,
     gap: 0.5
-  }, warning && !expanded && /*#__PURE__*/React.createElement(Tooltip, {
+  }, warning && !expanded && /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     icon: AlertTriangle,
     iconProps: {
       color: warning
     },
     placement: "auto"
-  }, /*#__PURE__*/React.createElement(Caption$1, null, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Caption$1, null, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "wMiarp",
     message: "Your trade will have a high impact on the market price of this pool."
-  }))), /*#__PURE__*/React.createElement(ExpandIcon, {
+  }))), /*#__PURE__*/React__default["default"].createElement(ExpandIcon, {
     $expanded: expanded,
     color: expanded ? undefined : warning
   }));
@@ -16560,34 +16611,34 @@ function Trade(_ref13) {
   var widgetWidth = useWidgetWidth();
   // The USD value doesn't fit in the widget at small sizes when we show the warning UI.
   var shouldHideUSD = widgetWidth < WIDGET_BREAKPOINTS.EXTRA_SMALL && warning && !expanded;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Caption, {
-    caption: /*#__PURE__*/React.createElement(Body2, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(Caption, {
+    caption: /*#__PURE__*/React__default["default"].createElement(Body2, {
       opacity: loading ? 0.4 : 1
-    }, /*#__PURE__*/React.createElement(Price, {
+    }, /*#__PURE__*/React__default["default"].createElement(Price, {
       trade: trade,
       outputUSDC: shouldHideUSD ? undefined : outputUSDC
     })),
     icon: loading ? Spinner : null
-  }), !loading && /*#__PURE__*/React.createElement(CaptionRow$1, {
+  }), !loading && /*#__PURE__*/React__default["default"].createElement(CaptionRow$1, {
     gap: 0.75
-  }, !expanded && /*#__PURE__*/React.createElement(CaptionRow$1, {
+  }, !expanded && /*#__PURE__*/React__default["default"].createElement(CaptionRow$1, {
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(GasEstimateTooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(GasEstimateTooltip, {
     gasUseEstimateUSD: gasUseEstimateUSD,
     trade: trade
-  })), /*#__PURE__*/React.createElement(Expander, {
+  })), /*#__PURE__*/React__default["default"].createElement(Expander, {
     expanded: expanded,
     warning: warning
   })));
 }
 function PriceImpactWarningTooltipContent() {
-  return /*#__PURE__*/React.createElement(Caption$1, null, "There will be a large difference between your input and output values due to current liquidity.");
+  return /*#__PURE__*/React__default["default"].createElement(Caption$1, null, "There will be a large difference between your input and output values due to current liquidity.");
 }
 
 var CONTAINER_VERTICAL_PADDING_REM = 1;
 var ORDER_ROUTING_HEIGHT_REM = CONTAINER_VERTICAL_PADDING_REM * 2 + Body2LineHeightRem; /* Body2 line height */
 
-var OrderRoutingRow = /*#__PURE__*/_styled(Row).withConfig({
+var OrderRoutingRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "ToolbarOrderRouting__OrderRoutingRow",
   componentId: "sc-nigz1m-0"
 })(["height:", "rem;margin:0 1rem;padding:", "rem 0;"], ORDER_ROUTING_HEIGHT_REM, CONTAINER_VERTICAL_PADDING_REM);
@@ -16595,52 +16646,52 @@ function ToolbarOrderRouting(_ref) {
   var trade = _ref.trade,
     gasUseEstimateUSD = _ref.gasUseEstimateUSD;
   var isMobile = useIsMobileWidth();
-  var _useState = useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(false),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
-  var _useState3 = useState(null),
-    _useState4 = _slicedToArray(_useState3, 2),
+  var _useState3 = React.useState(null),
+    _useState4 = _slicedToArray__default["default"](_useState3, 2),
     tooltip = _useState4[0],
     setTooltip = _useState4[1];
   var showTooltip = useTooltip(tooltip);
-  return /*#__PURE__*/React.createElement(OrderRoutingRow, {
+  return /*#__PURE__*/React__default["default"].createElement(OrderRoutingRow, {
     flex: true
-  }, /*#__PURE__*/React.createElement(Body2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Body2, {
     color: "secondary"
-  }, /*#__PURE__*/React.createElement(Trans, {
+  }, /*#__PURE__*/React__default["default"].createElement(Trans, {
     id: "oYELUJ",
     message: "Order routing"
-  })), trade && (isMobile ? /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(AutoRouterHeader, {
+  })), trade && (isMobile ? /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(AutoRouterHeader, {
     ref: setTooltip,
     onClick: function onClick() {
       return setOpen(true);
     }
-  }), /*#__PURE__*/React.createElement(BottomSheetModal, {
+  }), /*#__PURE__*/React__default["default"].createElement(BottomSheetModal, {
     title: "Route details",
     onClose: function onClose() {
       return setOpen(false);
     },
     open: open
-  }, /*#__PURE__*/React.createElement(Column, {
+  }, /*#__PURE__*/React__default["default"].createElement(Column, {
     padded: true
-  }, /*#__PURE__*/React.createElement(RoutingDiagram, {
+  }, /*#__PURE__*/React__default["default"].createElement(RoutingDiagram, {
     trade: trade,
     hideHeader: true
-  })))) : /*#__PURE__*/React.createElement(Popover, {
-    content: trade ? /*#__PURE__*/React.createElement(RoutingDiagram, {
+  })))) : /*#__PURE__*/React__default["default"].createElement(Popover, {
+    content: trade ? /*#__PURE__*/React__default["default"].createElement(RoutingDiagram, {
       gasUseEstimateUSD: gasUseEstimateUSD,
       trade: trade
     }) : null,
     show: Boolean(trade) && showTooltip,
     placement: "auto"
-  }, /*#__PURE__*/React.createElement(AutoRouterHeader, {
+  }, /*#__PURE__*/React__default["default"].createElement(AutoRouterHeader, {
     ref: setTooltip
   }))));
 }
 
 var SUMMARY_COLUMN_GAP_REM = 0.75;
-var TradeSummaryColumn = /*#__PURE__*/_styled(Column).withConfig({
+var TradeSummaryColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "ToolbarTradeSummary__TradeSummaryColumn",
   componentId: "sc-yzye3t-0"
 })(["border-bottom:1px solid ", ";border-top:1px solid ", ";margin:0 1rem;padding:", "rem 0;"], function (_ref) {
@@ -16650,7 +16701,7 @@ var TradeSummaryColumn = /*#__PURE__*/_styled(Column).withConfig({
   var theme = _ref2.theme;
   return theme.outline;
 }, SUMMARY_COLUMN_GAP_REM);
-var TradeAttributeName = /*#__PURE__*/_styled(Body2).withConfig({
+var TradeAttributeName = /*#__PURE__*/_styled__default["default"](Body2).withConfig({
   displayName: "ToolbarTradeSummary__TradeAttributeName",
   componentId: "sc-yzye3t-1"
 })(["color:", ";"], function (_ref3) {
@@ -16658,7 +16709,7 @@ var TradeAttributeName = /*#__PURE__*/_styled(Body2).withConfig({
     color = _ref3.color;
   return color !== null && color !== void 0 ? color : theme.secondary;
 });
-var TradeAttributeValue = /*#__PURE__*/_styled(Body2).withConfig({
+var TradeAttributeValue = /*#__PURE__*/_styled__default["default"](Body2).withConfig({
   displayName: "ToolbarTradeSummary__TradeAttributeValue",
   componentId: "sc-yzye3t-2"
 })(["color:", ";"], function (_ref4) {
@@ -16672,41 +16723,41 @@ function SummaryRow(_ref5) {
     color = _ref5.color,
     nameTooltip = _ref5.nameTooltip,
     valueTooltip = _ref5.valueTooltip;
-  return /*#__PURE__*/React.createElement(Row, null, nameTooltip ? /*#__PURE__*/React.createElement(Row, {
+  return /*#__PURE__*/React__default["default"].createElement(Row, null, nameTooltip ? /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(TradeAttributeName, {
+  }, /*#__PURE__*/React__default["default"].createElement(TradeAttributeName, {
     color: color
-  }, /*#__PURE__*/React.createElement(TooltipText, {
+  }, /*#__PURE__*/React__default["default"].createElement(TooltipText, {
     text: name,
     placement: "top"
-  }, /*#__PURE__*/React.createElement(Caption$1, null, nameTooltip.content)))) : /*#__PURE__*/React.createElement(TradeAttributeName, {
+  }, /*#__PURE__*/React__default["default"].createElement(Caption$1, null, nameTooltip.content)))) : /*#__PURE__*/React__default["default"].createElement(TradeAttributeName, {
     color: color
-  }, name), valueTooltip ? /*#__PURE__*/React.createElement(Row, {
+  }, name), valueTooltip ? /*#__PURE__*/React__default["default"].createElement(Row, {
     gap: 0.25
-  }, /*#__PURE__*/React.createElement(Tooltip, {
+  }, /*#__PURE__*/React__default["default"].createElement(Tooltip, {
     icon: valueTooltip.icon,
     iconProps: {
       color: color
     },
     placement: "auto"
-  }, valueTooltip.content), /*#__PURE__*/React.createElement(TradeAttributeValue, {
+  }, valueTooltip.content), /*#__PURE__*/React__default["default"].createElement(TradeAttributeValue, {
     color: color
-  }, value)) : /*#__PURE__*/React.createElement(TradeAttributeValue, {
+  }, value)) : /*#__PURE__*/React__default["default"].createElement(TradeAttributeValue, {
     color: color
   }, value));
 }
 function ToolbarTradeSummary(_ref6) {
   var rows = _ref6.rows;
-  return /*#__PURE__*/React.createElement(TradeSummaryColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(TradeSummaryColumn, {
     gap: SUMMARY_COLUMN_GAP_REM
   }, rows.map(function (row, i) {
-    return /*#__PURE__*/React.createElement(SummaryRow, _extends$a({
+    return /*#__PURE__*/React__default["default"].createElement(SummaryRow, _extends__default["default"]({
       key: i
     }, row));
   }));
 }
 
-var StyledExpando = /*#__PURE__*/_styled(Expando).withConfig({
+var StyledExpando = /*#__PURE__*/_styled__default["default"](Expando).withConfig({
   displayName: "Toolbar__StyledExpando",
   componentId: "sc-1d8fk2t-0"
 })(["border:1px solid ", ";border-radius:", "rem;overflow:hidden;"], function (_ref) {
@@ -16717,7 +16768,7 @@ var StyledExpando = /*#__PURE__*/_styled(Expando).withConfig({
   return theme.borderRadius.medium;
 });
 var COLLAPSED_TOOLBAR_HEIGHT_REM = 3;
-var ToolbarRow = /*#__PURE__*/_styled(Row).withConfig({
+var ToolbarRow = /*#__PURE__*/_styled__default["default"](Row).withConfig({
   displayName: "Toolbar__ToolbarRow",
   componentId: "sc-1d8fk2t-1"
 })(["cursor:", ";flex-wrap:nowrap;gap:0.5rem;height:", "rem;padding:0 1rem;"], function (_ref3) {
@@ -16739,23 +16790,23 @@ function CaptionRow() {
     slippage = _useSwapInfo.slippage;
   var isAmountPopulated = useIsAmountPopulated();
   var isWrap = useIsWrap();
-  var _useContext = useContext(Context),
+  var _useContext = React.useContext(Context),
     open = _useContext.open,
     onToggleOpen = _useContext.onToggleOpen;
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       switch (error) {
         case ChainError.ACTIVATING_CHAIN:
           return {
-            caption: /*#__PURE__*/React.createElement(Connecting, null)
+            caption: /*#__PURE__*/React__default["default"].createElement(Connecting, null)
           };
         case ChainError.MISMATCHED_TOKEN_CHAINS:
           return {
-            caption: /*#__PURE__*/React.createElement(Error$1, null)
+            caption: /*#__PURE__*/React__default["default"].createElement(Error$1, null)
           };
       }
       if (state === TradeState.LOADING && !trade) {
         return {
-          caption: /*#__PURE__*/React.createElement(LoadingTrade, {
+          caption: /*#__PURE__*/React__default["default"].createElement(LoadingTrade, {
             gasUseEstimateUSD: gasUseEstimateUSD
           })
         };
@@ -16763,7 +16814,7 @@ function CaptionRow() {
       if (inputCurrency && outputCurrency && isAmountPopulated) {
         if (isWrap) {
           return {
-            caption: /*#__PURE__*/React.createElement(Wrap, {
+            caption: /*#__PURE__*/React__default["default"].createElement(Wrap, {
               inputCurrency: inputCurrency,
               outputCurrency: outputCurrency
             })
@@ -16771,7 +16822,7 @@ function CaptionRow() {
         }
         if (trade) {
           return {
-            caption: /*#__PURE__*/React.createElement(Trade, {
+            caption: /*#__PURE__*/React__default["default"].createElement(Trade, {
               trade: trade,
               outputUSDC: outputUSDC,
               gasUseEstimateUSD: open ? null : gasUseEstimateUSD,
@@ -16784,7 +16835,7 @@ function CaptionRow() {
         }
         if (state === TradeState.INVALID) {
           return {
-            caption: /*#__PURE__*/React.createElement(Error$1, null)
+            caption: /*#__PURE__*/React__default["default"].createElement(Error$1, null)
           };
         }
         if (state === TradeState.NO_ROUTE_FOUND) {
@@ -16794,17 +16845,17 @@ function CaptionRow() {
         }
       }
       return {
-        caption: /*#__PURE__*/React.createElement(MissingInputs, null)
+        caption: /*#__PURE__*/React__default["default"].createElement(MissingInputs, null)
       };
     }, [error, state, trade, inputCurrency, outputCurrency, isAmountPopulated, gasUseEstimateUSD, isWrap, outputUSDC, open, impact === null || impact === void 0 ? void 0 : impact.warning]),
     caption = _useMemo.caption,
     isExpandable = _useMemo.isExpandable;
-  var maybeToggleOpen = useCallback(function () {
+  var maybeToggleOpen = React.useCallback(function () {
     if (isExpandable) {
       onToggleOpen();
     }
   }, [isExpandable, onToggleOpen]);
-  var tradeSummaryRows = useMemo(function () {
+  var tradeSummaryRows = React.useMemo(function () {
     var _trade$outputAmount$c, _trade$outputAmount;
     var currencySymbol = (_trade$outputAmount$c = trade === null || trade === void 0 ? void 0 : (_trade$outputAmount = trade.outputAmount) === null || _trade$outputAmount === void 0 ? void 0 : _trade$outputAmount.currency.symbol) !== null && _trade$outputAmount$c !== void 0 ? _trade$outputAmount$c : '';
     var _getEstimateMessage = getEstimateMessage(trade, slippage),
@@ -16826,7 +16877,7 @@ function CaptionRow() {
           message: "The fee paid to miners to process your transaction. This must be paid in ETH."
         })
       },
-      value: gasUseEstimateUSD ? "~".concat(formatCurrencyAmount$1(gasUseEstimateUSD, NumberType.FiatGasPrice)) : '-'
+      value: gasUseEstimateUSD ? "~".concat(format.formatCurrencyAmount(gasUseEstimateUSD, format.NumberType.FiatGasPrice)) : '-'
     }, {
       color: impact === null || impact === void 0 ? void 0 : impact.warning,
       name: i18n._(
@@ -16843,14 +16894,14 @@ function CaptionRow() {
           message: "The impact your trade has on the market price of this pool."
         })
       },
-      value: impact !== null && impact !== void 0 && impact.percent ? formatPriceImpact(impact.percent) : '-',
+      value: impact !== null && impact !== void 0 && impact.percent ? format.formatPriceImpact(impact.percent) : '-',
       valueTooltip: impact !== null && impact !== void 0 && impact.warning ? {
         icon: AlertTriangle,
-        content: /*#__PURE__*/React.createElement(PriceImpactWarningTooltipContent, null)
+        content: /*#__PURE__*/React__default["default"].createElement(PriceImpactWarningTooltipContent, null)
       } : undefined
     }, {
       // min/max output/input after slippage
-      name: /*#__PURE__*/React.createElement("div", {
+      name: /*#__PURE__*/React__default["default"].createElement("div", {
         style: {
           marginRight: '0.5em'
         }
@@ -16866,7 +16917,7 @@ function CaptionRow() {
         id: "5zAbWs",
         message: "Expected output"
       }),
-      value: trade ? "".concat(formatCurrencyAmount$1(trade === null || trade === void 0 ? void 0 : trade.outputAmount), " ").concat(currencySymbol) : '-',
+      value: trade ? "".concat(format.formatCurrencyAmount(trade === null || trade === void 0 ? void 0 : trade.outputAmount), " ").concat(currencySymbol) : '-',
       nameTooltip: trade ? {
         content: i18n._(
         /*i18n*/
@@ -16881,8 +16932,8 @@ function CaptionRow() {
   if (inputCurrency == null || outputCurrency == null || error === ChainError.MISMATCHED_CHAINS || caption === null) {
     return null;
   }
-  return /*#__PURE__*/React.createElement(StyledExpando, {
-    title: /*#__PURE__*/React.createElement(ToolbarRow, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledExpando, {
+    title: /*#__PURE__*/React__default["default"].createElement(ToolbarRow, {
       flex: true,
       align: "center",
       justify: "space-between",
@@ -16894,9 +16945,9 @@ function CaptionRow() {
     open: open,
     onExpand: maybeToggleOpen,
     maxHeight: 16
-  }, /*#__PURE__*/React.createElement(Column, null, /*#__PURE__*/React.createElement(ToolbarTradeSummary, {
+  }, /*#__PURE__*/React__default["default"].createElement(Column, null, /*#__PURE__*/React__default["default"].createElement(ToolbarTradeSummary, {
     rows: tradeSummaryRows
-  }), /*#__PURE__*/React.createElement(ToolbarOrderRouting, {
+  }), /*#__PURE__*/React__default["default"].createElement(ToolbarOrderRouting, {
     trade: trade,
     gasUseEstimateUSD: gasUseEstimateUSD
   })));
@@ -16912,40 +16963,40 @@ function ToolbarActionButton() {
     trade = _useSwapInfo2$trade.trade,
     state = _useSwapInfo2$trade.state;
   var isAmountPopulated = useIsAmountPopulated();
-  var insufficientBalance = useMemo(function () {
+  var insufficientBalance = React.useMemo(function () {
     return inputBalance && inputAmount && inputBalance.lessThan(inputAmount);
   }, [inputAmount, inputBalance]);
   if (insufficientBalance) {
-    return /*#__PURE__*/React.createElement(ActionButton, {
+    return /*#__PURE__*/React__default["default"].createElement(ActionButton, {
       disabled: true
-    }, /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "m6RmA/",
       message: "Insufficient {0} balance",
       values: {
-        "0": inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
+        0: inputCurrency === null || inputCurrency === void 0 ? void 0 : inputCurrency.symbol
       }
     }));
   }
   var hasValidInputs = inputCurrency && outputCurrency && isAmountPopulated;
   if (hasValidInputs && (state === TradeState.NO_ROUTE_FOUND || trade && !trade.swaps)) {
-    return /*#__PURE__*/React.createElement(ActionButton, {
+    return /*#__PURE__*/React__default["default"].createElement(ActionButton, {
       disabled: true
-    }, /*#__PURE__*/React.createElement(Trans, {
+    }, /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "dLAScn",
       message: "Insufficient liquidity"
     }));
   }
-  return /*#__PURE__*/React.createElement(SwapActionButton, null);
+  return /*#__PURE__*/React__default["default"].createElement(SwapActionButton, null);
 }
 function Toolbar() {
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(CaptionRow, null), /*#__PURE__*/React.createElement(ToolbarActionButton, null));
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(CaptionRow, null), /*#__PURE__*/React__default["default"].createElement(ToolbarActionButton, null));
 }
-var Toolbar$1 = /*#__PURE__*/memo(function WrappedToolbar() {
-  return /*#__PURE__*/React.createElement(Provider$3, null, /*#__PURE__*/React.createElement(Toolbar, null));
+var Toolbar$1 = /*#__PURE__*/React.memo(function WrappedToolbar() {
+  return /*#__PURE__*/React__default["default"].createElement(Provider$3, null, /*#__PURE__*/React__default["default"].createElement(Toolbar, null));
 });
 
 function isAddressOrAddressMap(addressOrMap) {
-  if (_typeof(addressOrMap) === 'object') {
+  if (_typeof__default["default"](addressOrMap) === 'object') {
     return Object.values(addressOrMap).every(function (address) {
       return isAddress(address);
     });
@@ -16958,7 +17009,7 @@ function isAddressOrAddressMap(addressOrMap) {
 function useValidate(props) {
   var convenienceFee = props.convenienceFee,
     convenienceFeeRecipient = props.convenienceFeeRecipient;
-  useEffect(function () {
+  React.useEffect(function () {
     if (convenienceFee) {
       if (convenienceFee > 100 || convenienceFee < 0) {
         throw new IntegrationError("convenienceFee must be between 0 and 100 (you set it to ".concat(convenienceFee, ")."));
@@ -16970,7 +17021,7 @@ function useValidate(props) {
         if (!isAddress(convenienceFeeRecipient)) {
           throw new IntegrationError("convenienceFeeRecipient must be a valid address (you set it to ".concat(convenienceFeeRecipient, ")."));
         }
-      } else if (_typeof(convenienceFeeRecipient) === 'object') {
+      } else if (_typeof__default["default"](convenienceFeeRecipient) === 'object') {
         Object.values(convenienceFeeRecipient).forEach(function (recipient) {
           if (!isAddress(recipient)) {
             var values = Object.values(convenienceFeeRecipient).join(', ');
@@ -16982,7 +17033,7 @@ function useValidate(props) {
   }, [convenienceFee, convenienceFeeRecipient]);
   var defaultInputAmount = props.defaultInputAmount,
     defaultOutputAmount = props.defaultOutputAmount;
-  useEffect(function () {
+  React.useEffect(function () {
     if (defaultOutputAmount && defaultInputAmount) {
       throw new IntegrationError('defaultInputAmount and defaultOutputAmount may not both be defined.');
     }
@@ -16995,7 +17046,7 @@ function useValidate(props) {
   }, [defaultInputAmount, defaultOutputAmount]);
   var defaultInputTokenAddress = props.defaultInputTokenAddress,
     defaultOutputTokenAddress = props.defaultOutputTokenAddress;
-  useEffect(function () {
+  React.useEffect(function () {
     if (defaultInputTokenAddress && !isAddressOrAddressMap(defaultInputTokenAddress) && defaultInputTokenAddress !== 'NATIVE') {
       throw new IntegrationError("defaultInputTokenAddress must be a valid address or \"NATIVE\" (you set it to ".concat(defaultInputTokenAddress, ")."));
     }
@@ -17015,32 +17066,32 @@ function Swap(props) {
   useSyncSwapEventHandlers(props);
   useSyncTokenDefaults(props);
   useSyncSwapRouterUrl(props.routerUrl);
-  var _useState = useState(null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     wrapper = _useState2[0],
     setWrapper = _useState2[1];
-  var _useAtom = useAtom(displayTxHashAtom),
-    _useAtom2 = _slicedToArray(_useAtom, 2),
+  var _useAtom = jotai.useAtom(displayTxHashAtom),
+    _useAtom2 = _slicedToArray__default["default"](_useAtom, 2),
     displayTxHash = _useAtom2[0],
     setDisplayTxHash = _useAtom2[1];
   var pendingTxs = usePendingTransactions();
-  var displayTx = useMemo(function () {
+  var displayTx = React.useMemo(function () {
     return displayTxHash && pendingTxs[displayTxHash];
   }, [displayTxHash, pendingTxs]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SwapInfoProvider, null, /*#__PURE__*/React.createElement(Header, {
-    title: /*#__PURE__*/React.createElement(Trans, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(SwapInfoProvider, null, /*#__PURE__*/React__default["default"].createElement(Header, {
+    title: /*#__PURE__*/React__default["default"].createElement(Trans, {
       id: "vH2C/2",
       message: "Swap"
     })
-  }, /*#__PURE__*/React.createElement(Wallet, {
+  }, /*#__PURE__*/React__default["default"].createElement(Wallet, {
     disabled: props.hideConnectionUI
-  }), /*#__PURE__*/React.createElement(Settings, null)), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React__default["default"].createElement(Settings, null)), /*#__PURE__*/React__default["default"].createElement("div", {
     ref: setWrapper
-  }, /*#__PURE__*/React.createElement(PopoverBoundaryProvider, {
+  }, /*#__PURE__*/React__default["default"].createElement(PopoverBoundaryProvider, {
     value: wrapper
-  }, /*#__PURE__*/React.createElement(Input$2, null), /*#__PURE__*/React.createElement(ReverseButton, null), /*#__PURE__*/React.createElement(Output, null), /*#__PURE__*/React.createElement(Toolbar$1, null), useBrandedFooter() && /*#__PURE__*/React.createElement(BrandedFooter, null)))), displayTx && /*#__PURE__*/React.createElement(Dialog, {
+  }, /*#__PURE__*/React__default["default"].createElement(Input$2, null), /*#__PURE__*/React__default["default"].createElement(ReverseButton, null), /*#__PURE__*/React__default["default"].createElement(Output, null), /*#__PURE__*/React__default["default"].createElement(Toolbar$1, null), useBrandedFooter() && /*#__PURE__*/React__default["default"].createElement(BrandedFooter, null)))), displayTx && /*#__PURE__*/React__default["default"].createElement(Dialog, {
     color: "dialog"
-  }, /*#__PURE__*/React.createElement(TransactionStatusDialog, {
+  }, /*#__PURE__*/React__default["default"].createElement(TransactionStatusDialog, {
     tx: displayTx,
     onClose: function onClose() {
       return setDisplayTxHash();
@@ -17051,34 +17102,34 @@ function Swap(props) {
 function useSyncWidgetEventHandlers(_ref) {
   var onConnectWalletClick = _ref.onConnectWalletClick,
     onSwitchChain = _ref.onSwitchChain;
-  var setOnConnectWalletClick = useUpdateAtom(onConnectWalletClickAtom);
-  useEffect(function () {
+  var setOnConnectWalletClick = utils.useUpdateAtom(onConnectWalletClickAtom);
+  React.useEffect(function () {
     setOnConnectWalletClick(function () {
       return onConnectWalletClick;
     });
   }, [onConnectWalletClick, setOnConnectWalletClick]);
-  var setOnSwitchChain = useUpdateAtom(onSwitchChainAtom);
-  useEffect(function () {
+  var setOnSwitchChain = utils.useUpdateAtom(onSwitchChainAtom);
+  React.useEffect(function () {
     setOnSwitchChain(function () {
       return onSwitchChain;
     });
   }, [onSwitchChain, setOnSwitchChain]);
 }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function parseChainId(chainId) {
   return Number.parseInt(chainId, 16);
 }
 var JsonRpcConnector = /*#__PURE__*/function (_Connector) {
-  _inherits(JsonRpcConnector, _Connector);
+  _inherits__default["default"](JsonRpcConnector, _Connector);
   var _super = _createSuper(JsonRpcConnector);
   function JsonRpcConnector(_ref) {
     var _this;
     var actions = _ref.actions,
       provider = _ref.provider,
       onError = _ref.onError;
-    _classCallCheck(this, JsonRpcConnector);
+    _classCallCheck__default["default"](this, JsonRpcConnector);
     _this = _super.call(this, actions, onError);
     _this.customProvider = provider.on('connect', function (_ref2) {
       var chainId = _ref2.chainId;
@@ -17100,12 +17151,12 @@ var JsonRpcConnector = /*#__PURE__*/function (_Connector) {
     });
     return _this;
   }
-  _createClass(JsonRpcConnector, [{
+  _createClass__default["default"](JsonRpcConnector, [{
     key: "activate",
     value: function () {
-      var _activate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+      var _activate = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee() {
         var _yield$Promise$all, _yield$Promise$all2, chainId, accounts;
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               this.actions.startActivation();
@@ -17114,7 +17165,7 @@ var JsonRpcConnector = /*#__PURE__*/function (_Connector) {
               return Promise.all([this.customProvider.getNetwork(), this.customProvider.listAccounts()]);
             case 4:
               _yield$Promise$all = _context.sent;
-              _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
+              _yield$Promise$all2 = _slicedToArray__default["default"](_yield$Promise$all, 2);
               chainId = _yield$Promise$all2[0].chainId;
               accounts = _yield$Promise$all2[1];
               this.actions.update({
@@ -17141,10 +17192,10 @@ var JsonRpcConnector = /*#__PURE__*/function (_Connector) {
     }()
   }]);
   return JsonRpcConnector;
-}(Connector);
+}(types.Connector);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty__default["default"](target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var DEFAULT_CHAIN_ID = SupportedChainId.MAINNET;
 function Provider$1(_ref2) {
   var _ref2$defaultChainId = _ref2.defaultChainId,
@@ -17152,7 +17203,7 @@ function Provider$1(_ref2) {
     jsonRpcUrlMap = _ref2.jsonRpcUrlMap,
     provider = _ref2.provider,
     children = _ref2.children;
-  var defaultChainId = useMemo(function () {
+  var defaultChainId = React.useMemo(function () {
     if (!supportedChainId(chainId)) {
       console.warn("Unsupported chainId: ".concat(chainId, ". Falling back to ").concat(DEFAULT_CHAIN_ID, " (").concat(SupportedChainId[DEFAULT_CHAIN_ID], ")."));
       return DEFAULT_CHAIN_ID;
@@ -17164,8 +17215,8 @@ function Provider$1(_ref2) {
     jsonRpcUrlMap: jsonRpcUrlMap,
     defaultChainId: defaultChainId
   });
-  var key = useRef(0);
-  var prioritizedConnectors = useMemo(function () {
+  var key = React.useRef(0);
+  var prioritizedConnectors = React.useMemo(function () {
     // Re-key Web3ReactProvider before rendering new connectors, as it expects connectors to be
     // referentially static.
     key.current += 1;
@@ -17174,7 +17225,7 @@ function Provider$1(_ref2) {
       return Boolean(connector);
     });
   }, [web3ReactConnectors]);
-  var connectors = useMemo(function () {
+  var connectors = React.useMemo(function () {
     var _web3ReactConnectors$;
     return {
       user: (_web3ReactConnectors$ = web3ReactConnectors.user) === null || _web3ReactConnectors$ === void 0 ? void 0 : _web3ReactConnectors$[0],
@@ -17185,41 +17236,41 @@ function Provider$1(_ref2) {
     };
   }, [web3ReactConnectors]);
   var shouldEagerlyConnect = provider === undefined; // !== null
-  useEffect(function () {
+  React.useEffect(function () {
     // Ignore any errors during connection so they do not propagate to the widget.
     if (connectors.user) {
-      connectors.user.activate()["catch"](function () {
+      connectors.user.activate().catch(function () {
         return undefined;
       });
       return;
     } else if (shouldEagerlyConnect) {
       var eagerConnectors = [connectors.metaMask, connectors.walletConnect];
       eagerConnectors.forEach(function (connector) {
-        return connector.connectEagerly()["catch"](function () {
+        return connector.connectEagerly().catch(function () {
           return undefined;
         });
       });
     }
-    connectors.network.activate()["catch"](function () {
+    connectors.network.activate().catch(function () {
       return undefined;
     });
   }, [connectors.metaMask, connectors.network, connectors.user, connectors.walletConnect, shouldEagerlyConnect]);
-  return /*#__PURE__*/React.createElement(Web3ReactProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(core.Web3ReactProvider, {
     connectors: prioritizedConnectors,
     key: key.current
-  }, /*#__PURE__*/React.createElement(Provider$2, {
+  }, /*#__PURE__*/React__default["default"].createElement(Provider$2, {
     jsonRpcMap: jsonRpcUrlMap
-  }, /*#__PURE__*/React.createElement(Provider$4, {
+  }, /*#__PURE__*/React__default["default"].createElement(Provider$4, {
     connectors: connectors
   }, children)));
 }
 function initializeWeb3ReactConnector(Constructor, options) {
-  var _initializeConnector = initializeConnector(function (actions) {
+  var _initializeConnector = core.initializeConnector(function (actions) {
       return new Constructor(_objectSpread({
         actions: actions
       }, options));
     }),
-    _initializeConnector2 = _slicedToArray(_initializeConnector, 2),
+    _initializeConnector2 = _slicedToArray__default["default"](_initializeConnector, 2),
     connector = _initializeConnector2[0],
     hooks = _initializeConnector2[1];
   if (options && 'provider' in options) {
@@ -17235,37 +17286,37 @@ function useWeb3ReactConnectors(_ref3) {
   var defaultChainId = _ref3.defaultChainId,
     provider = _ref3.provider,
     jsonRpcUrlMap = _ref3.jsonRpcUrlMap;
-  var _useMemo = useMemo(function () {
+  var _useMemo = React.useMemo(function () {
       return [toJsonRpcUrlMap(jsonRpcUrlMap), toJsonRpcConnectionMap(jsonRpcUrlMap)];
     }, [jsonRpcUrlMap]),
-    _useMemo2 = _slicedToArray(_useMemo, 2),
+    _useMemo2 = _slicedToArray__default["default"](_useMemo, 2),
     urlMap = _useMemo2[0],
     connectionMap = _useMemo2[1];
   var throwAsync = useAsyncError();
-  var user = useMemo(function () {
+  var user = React.useMemo(function () {
     if (!provider) return;
-    if (JsonRpcProvider.isProvider(provider)) {
+    if (providers.JsonRpcProvider.isProvider(provider)) {
       return initializeWeb3ReactConnector(JsonRpcConnector, {
         provider: provider,
         onError: console.error
       });
-    } else if (JsonRpcProvider.isProvider(provider.provider)) {
+    } else if (providers.JsonRpcProvider.isProvider(provider.provider)) {
       throw new Error('Eip1193Bridge is experimental: pass your ethers Provider directly');
     } else {
-      return initializeWeb3ReactConnector(EIP1193, {
+      return initializeWeb3ReactConnector(eip1193.EIP1193, {
         provider: provider,
         onError: console.error
       });
     }
   }, [provider]);
-  var metaMask = useMemo(function () {
-    return initializeWeb3ReactConnector(MetaMask, {
+  var metaMask = React.useMemo(function () {
+    return initializeWeb3ReactConnector(metamask.MetaMask, {
       onError: function onError() {
         throwAsync(new MetaMaskConnectionError());
       }
     });
   }, [throwAsync]);
-  var walletConnect = useMemo(function () {
+  var walletConnect = React.useMemo(function () {
     return initializeWeb3ReactConnector(WalletConnectPopup, {
       options: {
         rpc: urlMap
@@ -17274,7 +17325,7 @@ function useWeb3ReactConnectors(_ref3) {
       onError: console.error
     });
   }, [defaultChainId, urlMap]);
-  var walletConnectQR = useMemo(function () {
+  var walletConnectQR = React.useMemo(function () {
     return initializeWeb3ReactConnector(WalletConnectQR, {
       options: {
         rpc: urlMap
@@ -17283,65 +17334,65 @@ function useWeb3ReactConnectors(_ref3) {
       onError: console.error
     });
   }, [defaultChainId, urlMap]);
-  var network = useMemo(function () {
-    return initializeWeb3ReactConnector(Network, {
+  var network$1 = React.useMemo(function () {
+    return initializeWeb3ReactConnector(network.Network, {
       urlMap: connectionMap,
       defaultChainId: defaultChainId
     });
   }, [connectionMap, defaultChainId]);
-  return useMemo(function () {
+  return React.useMemo(function () {
     return {
       user: user,
       metaMask: metaMask,
       walletConnect: walletConnect,
       walletConnectQR: walletConnectQR,
-      network: network
+      network: network$1
     };
-  }, [metaMask, network, user, walletConnect, walletConnectQR]);
+  }, [metaMask, network$1, user, walletConnect, walletConnectQR]);
 }
 
 var _plurals = {
-  'af-ZA': af,
-  'ar-SA': ar,
-  'ca-ES': ca,
-  'cs-CZ': cs,
-  'da-DK': da,
-  'de-DE': de,
-  'el-GR': el,
-  'en-US': en,
-  'es-ES': es,
-  'fi-FI': fi,
-  'fr-FR': fr,
-  'he-IL': he,
-  'hu-HU': hu,
-  'id-ID': id,
-  'it-IT': it,
-  'ja-JP': ja,
-  'ko-KR': ko,
-  'nl-NL': nl,
-  'no-NO': no,
-  'pl-PL': pl,
-  'pt-BR': pt,
-  'pt-PT': pt,
-  'ro-RO': ro,
-  'ru-RU': ru,
-  'sr-SP': sr,
-  'sv-SE': sv,
-  'sw-TZ': sw,
-  'tr-TR': tr,
-  'uk-UA': uk,
-  'vi-VN': vi,
-  'zh-CN': zh,
-  'zh-TW': zh,
-  pseudo: en
+  'af-ZA': plurals.af,
+  'ar-SA': plurals.ar,
+  'ca-ES': plurals.ca,
+  'cs-CZ': plurals.cs,
+  'da-DK': plurals.da,
+  'de-DE': plurals.de,
+  'el-GR': plurals.el,
+  'en-US': plurals.en,
+  'es-ES': plurals.es,
+  'fi-FI': plurals.fi,
+  'fr-FR': plurals.fr,
+  'he-IL': plurals.he,
+  'hu-HU': plurals.hu,
+  'id-ID': plurals.id,
+  'it-IT': plurals.it,
+  'ja-JP': plurals.ja,
+  'ko-KR': plurals.ko,
+  'nl-NL': plurals.nl,
+  'no-NO': plurals.no,
+  'pl-PL': plurals.pl,
+  'pt-BR': plurals.pt,
+  'pt-PT': plurals.pt,
+  'ro-RO': plurals.ro,
+  'ru-RU': plurals.ru,
+  'sr-SP': plurals.sr,
+  'sv-SE': plurals.sv,
+  'sw-TZ': plurals.sw,
+  'tr-TR': plurals.tr,
+  'uk-UA': plurals.uk,
+  'vi-VN': plurals.vi,
+  'zh-CN': plurals.zh,
+  'zh-TW': plurals.zh,
+  pseudo: plurals.en
 };
 function dynamicActivate(_x) {
   return _dynamicActivate.apply(this, arguments);
 }
 function _dynamicActivate() {
-  _dynamicActivate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(locale) {
+  _dynamicActivate = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(locale) {
     var catalog;
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           i18n.loadLocaleData(locale, {
@@ -17351,11 +17402,11 @@ function _dynamicActivate() {
           });
           _context.prev = 1;
           _context.next = 4;
-          return import("./locales/".concat(locale, ".js"));
+          return (function (t) { return Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(t)); }); })("./locales/".concat(locale, ".js"));
         case 4:
           catalog = _context.sent;
           // Bundlers will either export it as default or as a named export named default.
-          i18n.load(locale, catalog.messages || catalog["default"].messages);
+          i18n.load(locale, catalog.messages || catalog.default.messages);
           _context.next = 10;
           break;
         case 8:
@@ -17376,17 +17427,17 @@ function Provider(_ref2) {
     _ref2.forceRenderAfterLocaleChange;
     var onActivate = _ref2.onActivate,
     children = _ref2.children;
-  var processedLocale = useMemo(function () {
-    if (locale && ![].concat(_toConsumableArray(SUPPORTED_LOCALES), ['pseudo']).includes(locale)) {
+  var processedLocale = React.useMemo(function () {
+    if (locale && ![].concat(_toConsumableArray__default["default"](SUPPORTED_LOCALES), ['pseudo']).includes(locale)) {
       console.warn("Unsupported locale: ".concat(locale, ". Falling back to ").concat(DEFAULT_LOCALE, "."));
       return DEFAULT_LOCALE;
     }
     return locale !== null && locale !== void 0 ? locale : DEFAULT_LOCALE;
   }, [locale]);
-  useEffect(function () {
+  React.useEffect(function () {
     dynamicActivate(processedLocale).then(function () {
       return onActivate === null || onActivate === void 0 ? void 0 : onActivate(processedLocale);
-    })["catch"](function (error) {
+    }).catch(function (error) {
       console.error('Failed to activate locale', processedLocale, error);
     });
   }, [processedLocale, onActivate]);
@@ -17404,14 +17455,14 @@ function Provider(_ref2) {
     });
     i18n.activate(DEFAULT_LOCALE);
   }
-  return /*#__PURE__*/React.createElement(I18nProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(I18nProvider, {
     i18n: i18n
   }, children);
 }
 
 var _combineReducers;
-var reducer = combineReducers((_combineReducers = {}, _defineProperty(_combineReducers, multicall.reducerPath, multicall.reducer), _defineProperty(_combineReducers, routing.reducerPath, routing.reducer), _combineReducers));
-var store = configureStore({
+var reducer = redux.combineReducers((_combineReducers = {}, _defineProperty__default["default"](_combineReducers, multicall.reducerPath, multicall.reducer), _defineProperty__default["default"](_combineReducers, routing.reducerPath, routing.reducer), _combineReducers));
+var store = toolkit.configureStore({
   reducer: reducer,
   middleware: function middleware(getDefaultMiddleware) {
     return (
@@ -17446,7 +17497,7 @@ function toLength(length) {
 }
 
 var ROOT_CONTAINER_PADDING = 8;
-var StyledWidgetWrapper = /*#__PURE__*/_styled.div.withConfig({
+var StyledWidgetWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "WidgetWrapper__StyledWidgetWrapper",
   componentId: "sc-o9as1i-0"
 })(["-webkit-tap-highlight-color:rgba(0,0,0,0);background-color:", ";border:", ";border-radius:", "rem;box-shadow:", ";box-sizing:border-box;display:flex;flex-direction:column;max-width:600px;min-height:300px;min-width:300px;padding:", "px;position:relative;user-select:none;width:", ";*{box-sizing:border-box;}", ";"], function (_ref) {
@@ -17466,7 +17517,7 @@ var StyledWidgetWrapper = /*#__PURE__*/_styled.div.withConfig({
   return toLength(width);
 }, globalFontStyles);
 function WidgetWrapper(props) {
-  var initialWidth = useMemo(function () {
+  var initialWidth = React.useMemo(function () {
     var _props$width;
     if (props.width) {
       if (props.width < 300) {
@@ -17485,14 +17536,14 @@ function WidgetWrapper(props) {
    * We need to manually track the width of the widget because the width prop could be a string
    * like "100%" or "400px" instead of a number.
    */
-  var ref = useRef(null);
-  var _useState = useState(toLength(initialWidth) === initialWidth ? WIDGET_BREAKPOINTS.EXTRA_SMALL // If the initial width is a string, use default width until the ResizeObserver gives us the true width as a number.
+  var ref = React.useRef(null);
+  var _useState = React.useState(toLength(initialWidth) === initialWidth ? WIDGET_BREAKPOINTS.EXTRA_SMALL // If the initial width is a string, use default width until the ResizeObserver gives us the true width as a number.
     : initialWidth),
-    _useState2 = _slicedToArray(_useState, 2),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     wrapperWidth = _useState2[0],
     setWidgetWidth = _useState2[1];
-  useEffect(function () {
-    var observer = new ResizeObserver(function (entries) {
+  React.useEffect(function () {
+    var observer = new ResizeObserver__default["default"](function (entries) {
       // contentRect doesn't include padding or borders
       var width = entries[0].contentRect.width;
       setWidgetWidth(width + 2 * ROOT_CONTAINER_PADDING);
@@ -17507,16 +17558,16 @@ function WidgetWrapper(props) {
       }
     };
   }, []);
-  return /*#__PURE__*/React.createElement(StyledWidgetWrapper, {
+  return /*#__PURE__*/React__default["default"].createElement(StyledWidgetWrapper, {
     width: initialWidth,
     className: props.className,
     ref: ref
-  }, /*#__PURE__*/React.createElement(WidgetWidthProvider, {
+  }, /*#__PURE__*/React__default["default"].createElement(WidgetWidthProvider, {
     width: wrapperWidth
   }, props.children));
 }
 
-var DialogWrapper = /*#__PURE__*/_styled.div.withConfig({
+var DialogWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Widget__DialogWrapper",
   componentId: "sc-1gehli9-0"
 })(["border-radius:", "rem;height:100%;left:0;padding:0.5rem;position:absolute;top:0;width:100%;"], function (_ref) {
@@ -17524,29 +17575,29 @@ var DialogWrapper = /*#__PURE__*/_styled.div.withConfig({
   return theme.borderRadius.large;
 });
 function Widget(props) {
-  var _useState = useState(props.dialog || null),
-    _useState2 = _slicedToArray(_useState, 2),
+  var _useState = React.useState(props.dialog || null),
+    _useState2 = _slicedToArray__default["default"](_useState, 2),
     dialog = _useState2[0],
     setDialog = _useState2[1];
-  return /*#__PURE__*/React.createElement(StrictMode, null, /*#__PURE__*/React.createElement(Provider$8, {
+  return /*#__PURE__*/React__default["default"].createElement(React.StrictMode, null, /*#__PURE__*/React__default["default"].createElement(Provider$8, {
     theme: props.theme
-  }, /*#__PURE__*/React.createElement(WidgetWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(WidgetWrapper, {
     width: props.width,
     className: props.className
-  }, /*#__PURE__*/React.createElement(Provider, {
+  }, /*#__PURE__*/React__default["default"].createElement(Provider, {
     locale: props.locale
-  }, /*#__PURE__*/React.createElement(DialogWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(DialogWrapper, {
     ref: setDialog
-  }), /*#__PURE__*/React.createElement(Provider$5, {
+  }), /*#__PURE__*/React__default["default"].createElement(Provider$5, {
     value: props.dialog || dialog,
     options: props.dialogOptions
-  }, /*#__PURE__*/React.createElement(ErrorBoundary, {
+  }, /*#__PURE__*/React__default["default"].createElement(ErrorBoundary, {
     onError: props.onError
-  }, /*#__PURE__*/React.createElement(Provider$9, {
+  }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
     store: store
-  }, /*#__PURE__*/React.createElement(Provider$a, {
+  }, /*#__PURE__*/React__default["default"].createElement(jotai.Provider, {
     initialValues: useInitialFlags(props)
-  }, /*#__PURE__*/React.createElement(WidgetUpdater, props), /*#__PURE__*/React.createElement(Provider$1, props, /*#__PURE__*/React.createElement(Provider$7, null, /*#__PURE__*/React.createElement(MulticallUpdater, null), /*#__PURE__*/React.createElement(TransactionsUpdater, props), /*#__PURE__*/React.createElement(Provider$6, {
+  }, /*#__PURE__*/React__default["default"].createElement(WidgetUpdater, props), /*#__PURE__*/React__default["default"].createElement(Provider$1, props, /*#__PURE__*/React__default["default"].createElement(Provider$7, null, /*#__PURE__*/React__default["default"].createElement(MulticallUpdater, null), /*#__PURE__*/React__default["default"].createElement(TransactionsUpdater, props), /*#__PURE__*/React__default["default"].createElement(Provider$6, {
     list: props.tokenList
   }, props.children)))))))))));
 }
@@ -17557,11 +17608,11 @@ function WidgetUpdater(props) {
   return null;
 }
 
-var LoadingWrapper = /*#__PURE__*/_styled.div.withConfig({
+var LoadingWrapper = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Skeleton__LoadingWrapper",
   componentId: "sc-r81uha-0"
 })(["display:flex;flex-direction:column;justify-content:space-between;"]);
-var Blob = /*#__PURE__*/_styled.div.withConfig({
+var Blob = /*#__PURE__*/_styled__default["default"].div.withConfig({
   displayName: "Skeleton__Blob",
   componentId: "sc-r81uha-1"
 })(["background-color:", ";border-radius:", ";height:", ";width:", ";"], function (_ref) {
@@ -17578,15 +17629,15 @@ var Blob = /*#__PURE__*/_styled.div.withConfig({
   var width = _ref4.width;
   return width;
 });
-var WideColumn = /*#__PURE__*/_styled(Column).withConfig({
+var WideColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Skeleton__WideColumn",
   componentId: "sc-r81uha-2"
 })(["width:100%;"]);
-var TitleColumn = /*#__PURE__*/_styled(Column).withConfig({
+var TitleColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Skeleton__TitleColumn",
   componentId: "sc-r81uha-3"
 })(["padding:0.5rem;padding-bottom:1.25rem;width:100%;"]);
-var InputColumn = /*#__PURE__*/_styled(Column).withConfig({
+var InputColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Skeleton__InputColumn",
   componentId: "sc-r81uha-4"
 })(["background-color:", ";border-radius:", "rem;display:flex;gap:1.875rem;margin-bottom:0.25rem;padding:0.75rem;padding-bottom:3.25rem;padding-top:3.25rem;"], function (_ref5) {
@@ -17596,37 +17647,37 @@ var InputColumn = /*#__PURE__*/_styled(Column).withConfig({
   var theme = _ref6.theme;
   return theme.borderRadius.medium;
 });
-var OutputColumn = /*#__PURE__*/_styled(InputColumn).withConfig({
+var OutputColumn = /*#__PURE__*/_styled__default["default"](InputColumn).withConfig({
   displayName: "Skeleton__OutputColumn",
   componentId: "sc-r81uha-5"
 })(["padding-bottom:3rem;padding-top:3.5rem;"]);
-var ButtonColumn = /*#__PURE__*/_styled(Column).withConfig({
+var ButtonColumn = /*#__PURE__*/_styled__default["default"](Column).withConfig({
   displayName: "Skeleton__ButtonColumn",
   componentId: "sc-r81uha-6"
 })(["padding-bottom:0rem;padding-top:0.55rem;width:100%;"]);
 function FloatingTitle() {
-  return /*#__PURE__*/React.createElement(TitleColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(TitleColumn, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Blob, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(Blob, {
     height: "1rem",
     width: "2.5rem"
   })));
 }
 function FloatingInput() {
-  return /*#__PURE__*/React.createElement(WideColumn, {
+  return /*#__PURE__*/React__default["default"].createElement(WideColumn, {
     gap: 0.75
-  }, /*#__PURE__*/React.createElement(Row, null, /*#__PURE__*/React.createElement(Blob, {
+  }, /*#__PURE__*/React__default["default"].createElement(Row, null, /*#__PURE__*/React__default["default"].createElement(Blob, {
     height: "2rem",
     width: "3.75rem",
     isModule: true
-  }), /*#__PURE__*/React.createElement(Blob, {
+  }), /*#__PURE__*/React__default["default"].createElement(Blob, {
     height: "2rem",
     width: "7.25rem",
     isModule: true
   })));
 }
 function FloatingButton() {
-  return /*#__PURE__*/React.createElement(ButtonColumn, null, /*#__PURE__*/React.createElement(Blob, {
+  return /*#__PURE__*/React__default["default"].createElement(ButtonColumn, null, /*#__PURE__*/React__default["default"].createElement(Blob, {
     height: "3.5rem",
     width: "100%",
     radius: 0.75
@@ -17635,15 +17686,45 @@ function FloatingButton() {
 function SwapWidgetSkeleton(_ref7) {
   var theme = _ref7.theme,
     width = _ref7.width;
-  return /*#__PURE__*/React.createElement(StrictMode, null, /*#__PURE__*/React.createElement(Provider$8, {
+  return /*#__PURE__*/React__default["default"].createElement(React.StrictMode, null, /*#__PURE__*/React__default["default"].createElement(Provider$8, {
     theme: theme
-  }, /*#__PURE__*/React.createElement(WidgetWrapper, {
+  }, /*#__PURE__*/React__default["default"].createElement(WidgetWrapper, {
     width: width
-  }, /*#__PURE__*/React.createElement(LoadingWrapper, null, /*#__PURE__*/React.createElement(FloatingTitle, null), /*#__PURE__*/React.createElement(InputColumn, null, /*#__PURE__*/React.createElement(FloatingInput, null)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ReverseButton, null), /*#__PURE__*/React.createElement(OutputColumn, null, /*#__PURE__*/React.createElement(FloatingInput, null)), /*#__PURE__*/React.createElement(FloatingButton, null))))));
+  }, /*#__PURE__*/React__default["default"].createElement(LoadingWrapper, null, /*#__PURE__*/React__default["default"].createElement(FloatingTitle, null), /*#__PURE__*/React__default["default"].createElement(InputColumn, null, /*#__PURE__*/React__default["default"].createElement(FloatingInput, null)), /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement(ReverseButton, null), /*#__PURE__*/React__default["default"].createElement(OutputColumn, null, /*#__PURE__*/React__default["default"].createElement(FloatingInput, null)), /*#__PURE__*/React__default["default"].createElement(FloatingButton, null))))));
 }
 
 function SwapWidget(props) {
-  return /*#__PURE__*/React.createElement(Widget, props, /*#__PURE__*/React.createElement(Swap, props));
+  return /*#__PURE__*/React__default["default"].createElement(Widget, props, /*#__PURE__*/React__default["default"].createElement(Swap, props));
 }
 
-export { DialogAnimationType as D, EMPTY_TOKEN_LIST as E, Field as F, Logo as L, QuoteState as Q, RouterPreference as R, SwapRouterNativeAssets as S, TransactionType as T, UnknownError as U, WidgetError as W, SwapWidget as a, getNativeLogoURI as b, LogoUpdater as c, useLogos as d, SwapWidgetSkeleton as e, SupportedChainId as f, getAssetsRepoURI as g, DEFAULT_LOCALE as h, isExactInput as i, SUPPORTED_LOCALES as j, UserRejectedRequestError as k, UNISWAP_TOKEN_LIST as l, validateTokens as m, nativeOnChain as n, darkTheme as o, defaultTheme as p, lightTheme as q, invertTradeType as r, toTradeType as t, useLogo as u, validateTokenList as v };
+exports.DEFAULT_LOCALE = DEFAULT_LOCALE;
+exports.DialogAnimationType = DialogAnimationType;
+exports.EMPTY_TOKEN_LIST = EMPTY_TOKEN_LIST;
+exports.Field = Field;
+exports.Logo = Logo;
+exports.LogoUpdater = LogoUpdater;
+exports.QuoteState = QuoteState;
+exports.RouterPreference = RouterPreference;
+exports.SUPPORTED_LOCALES = SUPPORTED_LOCALES;
+exports.SupportedChainId = SupportedChainId;
+exports.SwapRouterNativeAssets = SwapRouterNativeAssets;
+exports.SwapWidget = SwapWidget;
+exports.SwapWidgetSkeleton = SwapWidgetSkeleton;
+exports.TransactionType = TransactionType;
+exports.UNISWAP_TOKEN_LIST = UNISWAP_TOKEN_LIST;
+exports.UnknownError = UnknownError;
+exports.UserRejectedRequestError = UserRejectedRequestError;
+exports.WidgetError = WidgetError;
+exports.darkTheme = darkTheme;
+exports.defaultTheme = defaultTheme;
+exports.getAssetsRepoURI = getAssetsRepoURI;
+exports.getNativeLogoURI = getNativeLogoURI;
+exports.invertTradeType = invertTradeType;
+exports.isExactInput = isExactInput;
+exports.lightTheme = lightTheme;
+exports.nativeOnChain = nativeOnChain;
+exports.toTradeType = toTradeType;
+exports.useLogo = useLogo;
+exports.useLogos = useLogos;
+exports.validateTokenList = validateTokenList;
+exports.validateTokens = validateTokens;

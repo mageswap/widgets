@@ -1,4 +1,10 @@
-import _typeof from '@babel/runtime/helpers/typeof';
+'use strict';
+
+var _typeof = require('@babel/runtime/helpers/typeof');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var _typeof__default = /*#__PURE__*/_interopDefaultLegacy(_typeof);
 
 var validate = validate10;
 var func2 = require("ajv/dist/runtime/ucs2length")["default"];
@@ -372,7 +378,7 @@ function validate14(data) {
   if (!valid0) {
     var _errs12 = errors;
     if (errors === _errs12) {
-      if (data && _typeof(data) == "object" && !Array.isArray(data)) {
+      if (data && _typeof__default["default"](data) == "object" && !Array.isArray(data)) {
         if (Object.keys(data).length > 10) {
           var err7 = {
             instancePath: instancePath,
@@ -727,7 +733,7 @@ function validate13(data) {
   if (!valid0) {
     var _errs12 = errors;
     if (errors === _errs12) {
-      if (data && _typeof(data) == "object" && !Array.isArray(data)) {
+      if (data && _typeof__default["default"](data) == "object" && !Array.isArray(data)) {
         if (Object.keys(data).length > 10) {
           var err7 = {
             instancePath: instancePath,
@@ -925,7 +931,7 @@ function validate12(data) {
   var vErrors = null;
   var errors = 0;
   if (errors === 0) {
-    if (data && _typeof(data) == "object" && !Array.isArray(data)) {
+    if (data && _typeof__default["default"](data) == "object" && !Array.isArray(data)) {
       if (Object.keys(data).length > 10) {
         validate12.errors = [{
           instancePath: instancePath,
@@ -1085,7 +1091,7 @@ function validate11(data) {
   var vErrors = null;
   var errors = 0;
   if (errors === 0) {
-    if (data && _typeof(data) == "object" && !Array.isArray(data)) {
+    if (data && _typeof__default["default"](data) == "object" && !Array.isArray(data)) {
       var missing0;
       if (data.chainId === undefined && (missing0 = "chainId") || data.address === undefined && (missing0 = "address") || data.decimals === undefined && (missing0 = "decimals") || data.name === undefined && (missing0 = "name") || data.symbol === undefined && (missing0 = "symbol")) {
         validate11.errors = [{
@@ -1666,7 +1672,7 @@ function validate10(data) {
   var vErrors = null;
   var errors = 0;
   if (errors === 0) {
-    if (data && _typeof(data) == "object" && !Array.isArray(data)) {
+    if (data && _typeof__default["default"](data) == "object" && !Array.isArray(data)) {
       var missing0;
       if (data.tokens === undefined && (missing0 = "tokens")) {
         validate10.errors = [{
@@ -1799,7 +1805,7 @@ function validate10(data) {
                 var _errs6 = errors;
                 var _errs7 = errors;
                 if (errors === _errs7) {
-                  if (data2 && _typeof(data2) == "object" && !Array.isArray(data2)) {
+                  if (data2 && _typeof__default["default"](data2) == "object" && !Array.isArray(data2)) {
                     var missing1;
                     if (data2.major === undefined && (missing1 = "major") || data2.minor === undefined && (missing1 = "minor") || data2.patch === undefined && (missing1 = "patch")) {
                       validate10.errors = [{
@@ -2159,7 +2165,7 @@ function validate10(data) {
                       var data10 = data.tags;
                       var _errs23 = errors;
                       if (errors === _errs23) {
-                        if (data10 && _typeof(data10) == "object" && !Array.isArray(data10)) {
+                        if (data10 && _typeof__default["default"](data10) == "object" && !Array.isArray(data10)) {
                           if (Object.keys(data10).length > 20) {
                             validate10.errors = [{
                               instancePath: instancePath + "/tags",
@@ -2279,7 +2285,7 @@ function validate10(data) {
                                 var _errs29 = errors;
                                 var _errs30 = errors;
                                 if (errors === _errs30) {
-                                  if (data11 && _typeof(data11) == "object" && !Array.isArray(data11)) {
+                                  if (data11 && _typeof__default["default"](data11) == "object" && !Array.isArray(data11)) {
                                     var missing2 = void 0;
                                     if (data11.name === undefined && (missing2 = "name") || data11.description === undefined && (missing2 = "description")) {
                                       validate10.errors = [{
@@ -2532,4 +2538,5 @@ function validate10(data) {
   return errors === 0;
 }
 
-export { validate10 as default, validate };
+exports["default"] = validate10;
+exports.validate = validate;
