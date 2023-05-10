@@ -4,6 +4,9 @@ const isDevelopment =
 
 module.exports = {
   compact: false,
+  targets:[
+    
+  ],
   presets: [
     '@babel/preset-env',
     [
