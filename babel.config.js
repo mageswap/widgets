@@ -4,19 +4,15 @@ const isDevelopment =
 
 module.exports = {
   compact: false,
-  targets:[
-    
-  ],
+  targets: [],
   presets: [
     '@babel/preset-env',
-    [
-      '@babel/preset-react'
-    ],
+    ['@babel/preset-react'],
     ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
   ],
   plugins: [
     '@babel/plugin-transform-runtime',
-    "@babel/plugin-syntax-flow",
+    '@babel/plugin-syntax-flow',
     'macros',
     [
       'module-resolver',

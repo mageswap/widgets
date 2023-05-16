@@ -3119,7 +3119,7 @@ function processTokens(tokens, mapText) {
     } else if (token.type === "argument") {
       return [token.arg];
     } else if (token.type === "function") {
-      const _param = token?.param?.[0];
+      const _param = token && token.param && token.param[0];
       if (_param) {
         return [token.arg, token.key, _param.value.trim()];
       } else {
@@ -3188,7 +3188,12 @@ function plural(locales, ordinal, value, { offset = 0, ...rules }) {
     () => cacheKey("plural-cardinal", _locales, {}),
     () => new Intl.PluralRules(_locales, { type: "cardinal" })
   );
-  return rules[value] ?? rules[plurals.select(value - offset)] ?? rules.other;
+
+  if(rules[value]){
+    return  rules[plurals.select(value - offset)] 
+  }else{
+    return rules.other
+  }
 }
 function getMemoized(getKey, construct) {
   const key = getKey();
@@ -3316,13 +3321,13 @@ class I18n extends EventEmitter {
     return this._locales;
   }
   get messages() {
-    return this._messages[this._locale] ?? {};
+    return this._messages[this._locale]|| {};
   }
   /**
    * @deprecated this has no effect. Please remove this from the code. Deprecated in v4
    */
   get localeData() {
-    return this._localeData[this._locale] ?? {};
+    return this._localeData[this._locale] || {};
   }
   _loadLocaleData(locale, localeData) {
     if (this._localeData[locale] == null) {
